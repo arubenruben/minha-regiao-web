@@ -96,20 +96,18 @@ const PlotElection = (props) => {
         const lastYear = xAxis[xAxis.length - 1];
         const nextYear = 2025;
 
-        results.forEach(element => {
+        for (let i = 0; i < results.length; i++) {
+            const element = results[i];
             const yAxis = [...element.y];
-            if (element.name === 'PCP-PEV') {
-                yAxis.push(0.0);
-            }
-            else{
-                yAxis.push(0.0);
-            }
-            results.push({
+
+            yAxis.push(0);
+
+            results[i] = {
                 ...element,
                 'y': yAxis,
                 'x': [...element.x, nextYear]
-            });
-        });
+            };
+        }
 
         return results;
     }
@@ -127,7 +125,7 @@ const PlotElection = (props) => {
                     text: 'Histórico de Eleições Autárquicas',
                 },
                 xaxis: {
-                    range: [1975, currentYear + 5 ],
+                    range: [1975, currentYear + 5],
                     autorange: false
                 },
                 yaxis: {
