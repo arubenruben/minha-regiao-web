@@ -17,4 +17,4 @@ FROM nginxinc/nginx-unprivileged:1.24-bullseye-perl
 EXPOSE 8080
 
 # Copy the built artifacts from the build stage to the Nginx HTML directory
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html
