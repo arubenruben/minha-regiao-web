@@ -1,0 +1,21 @@
+name: "Push Docker Image to GiHub Container Registry"
+
+on: 
+    push:
+        branches:
+        - main
+        - develop
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            
+            - name: Login to GitHub Container Registry
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            - name: Build and Push Docker Images
+              run: |
+                    docker build . --tag ghcr.io/${{ github.repository }}:latest --tag
+                    docker push ghcr.io/${{ github.repository }}:latest 
