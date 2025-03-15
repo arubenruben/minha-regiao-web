@@ -2,22 +2,33 @@ import MenuItem from '@mui/material/MenuItem';
 import React, { useState, useEffect } from 'react';
 import FormControl from '@mui/material/FormControl';
 import { Select } from '@mui/material';
+import { sendRequest } from '../../utils';
 
-const SelectMunicipality = (props) => {
+
+const SelectMunicipality = () => {
     const [districts, setDistricts] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedConstituency, setSelectedConstituency] = useState('');
 
     // TODO: Load districts when component mounts
     useEffect(() => {
-        const districts = sendRequest(
-            `${process.env.ENDPOINT}/districts`,
-            'GET',
-        );
+        const fetchDistricts = async () => {
+            
+            console.log(process.env.REACT_APP_ENDPOINT);
+            
+            const districts = await sendRequest(
+                `${process.env.REACT_APP_ENDPOINT}/districts`,
+                'GET',
+            );
+            
+            console.log("Aqui");
+            
+            console.log(districts);
 
-        console.log(districts);
-
-        setDistricts([])
+            setDistricts(districts);
+        };
+        
+        fetchDistricts();
     }, []);
 
     return (

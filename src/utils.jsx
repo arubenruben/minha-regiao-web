@@ -1,4 +1,4 @@
-const sendRequest = async (url, method, body) => {
+export const sendRequest = async (url, method, body) => {
     const response = await fetch(url, {
         method,
         headers: {

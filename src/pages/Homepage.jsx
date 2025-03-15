@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid from '@mui/material/Grid2';
-import SelectMunicipality from '../components/forms/SelectMunicipality';
-import HomepageMap from '../components/maps/HomepageMap';
+import SelectMunicipality from '../components/select/SelectMunicipality';
+//import HomepageMap from '../components/maps/HomepageMap';
 import GenericLayout from '../layouts/GenericLayout';
 
 const Homepage = (props) => {
@@ -14,9 +14,9 @@ const Homepage = (props) => {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                    <Grid item size={{ xs: 6 }}>
+                    {/* {<Grid item size={{ xs: 6 }}>
                         <HomepageMap />
-                    </Grid>
+                    </Grid>} */}
                     <Grid item size={{ xs: 6 }} sx={{ px: 3 }}>
                         <SelectMunicipality />
                     </Grid>
