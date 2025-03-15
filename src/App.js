@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router';
 import './assets/css/app.css';
 import 'leaflet/dist/leaflet.css';
 import Municipality from './pages/Municipality';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   return (
