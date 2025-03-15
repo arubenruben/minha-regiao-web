@@ -1,6 +1,11 @@
 import React from 'react'
 import Plot from 'react-plotly.js';
 
+
+//TODO: Add Abstention
+//TODO: Add Blank Votes
+//TODO: Add Null Votes
+
 const PlotElection = (props) => {
     const xAxis = props.elections?.map(e => e.year) || [];
 
@@ -56,9 +61,6 @@ const PlotElection = (props) => {
     const buildYAxis = (xAxis, elections) => {
         const results = []
 
-        console.log("Building Y Axis", xAxis, elections);
-
-
         if (!elections) {
             return results;
         }
@@ -92,8 +94,7 @@ const PlotElection = (props) => {
             });
         });
 
-        //TODO: Duplicate all results but for year 2022
-        const lastYear = xAxis[xAxis.length - 1];
+        //TODO: Remove This Debug Code: Duplicate all results but for year 2022
         const nextYear = 2025;
 
         for (let i = 0; i < results.length; i++) {
@@ -114,15 +115,12 @@ const PlotElection = (props) => {
 
     const yAxis = buildYAxis(xAxis, props.elections);
 
-    console.log(yAxis);
-
-
     return (
         <Plot
             data={yAxis}
             layout={{
                 title: {
-                    text: 'Histórico de Eleições Autárquicas',
+                    text: 'Resultados Autárquicos',
                 },
                 xaxis: {
                     range: [1975, currentYear + 5],

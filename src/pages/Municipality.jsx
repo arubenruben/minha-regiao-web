@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { Divider } from '@mui/material';
 import PlotElection from '../components/plot/PlotElection';
+import CardElection from '../components/card/CardElection';
 
 const Municipality = (props) => {
   const [searchParams] = useSearchParams();
@@ -19,7 +20,6 @@ const Municipality = (props) => {
       'GET'
     );
     setMunicipality(municipality[0]);
-    console.log(municipality);
   }
 
 
@@ -120,8 +120,15 @@ const Municipality = (props) => {
             </Grid>
           </Grid>
           <Divider />
-          <Grid container direction={'row'} justifyContent={'space-between'}>
+          <Grid item>
+            <h2>Eleições Autárquicas</h2>
+          </Grid>
+          <Grid container direction={'row'} justifyContent={'center'}>
             <PlotElection elections={municipality?.elections} />
+          </Grid>
+          <Divider />
+          <Grid container direction={'row'} justifyContent={'center'}>
+            {municipality?.elections?.map((election, index) => <CardElection key={index} election={election} />)}
           </Grid>
         </Grid>
       }

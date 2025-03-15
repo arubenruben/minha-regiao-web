@@ -30,3 +30,7 @@ footer {
     height: 100%;
     min-height: 600px;
 }
+
+.party-card-img{
+    max-width: 150px;
+}

@@ -15,8 +15,13 @@ const Homepage = (props) => {
                     justifyContent: "center",
                     alignItems: "center",
                 }}>
-                    <Grid item size={{ xs: 6 }}>
-                        <HomepageMap />
+                    <Grid container item size={{ xs: 6 }} direction={"column"}>
+                        <Grid item>
+                            <h1>Escolha a tua localidade</h1>
+                        </Grid>
+                        <Grid item>
+                            <HomepageMap />
+                        </Grid>
                     </Grid>
                     <Grid item size={{ xs: 6 }} sx={{ px: 3 }}>
                         <SelectMunicipality />
