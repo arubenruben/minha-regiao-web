@@ -8,6 +8,13 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-ENTRYPOINT [ "npm", "start" ]
+# Use a specific version of the official Nginx image as the base image for the deployable image
+FROM nginxinc/nginx-unprivileged:1.24-bullseye-perl
+
+# Expose the port that the Nginx server will listen on
+EXPOSE 8080
+
+# Copy the built artifacts from the build stage to the Nginx HTML directory
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
