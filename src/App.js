@@ -7,11 +7,13 @@ import 'leaflet/dist/leaflet.css';
 import Municipality from './pages/Municipality';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Election from './pages/Election';
+import District from './pages/District';
 
 const App = () => {
   return (
     <Routes>
       <Route path='/freguesia' element={<Municipality />} />
+      <Route path='/distrito' element={<District />} />
       <Route path='/cidade' element={<City />} />
       <Route path="/eleicoes" element={<Election />} />
       <Route path="/" element={<Homepage />} />

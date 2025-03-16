@@ -5,6 +5,7 @@ import { InputLabel, Select } from '@mui/material';
 import { sendRequest } from '../../utils';
 import Button from '@mui/material/Button';
 import { Link } from "react-router";
+import Grid from '@mui/material/Grid2';
 
 const SelectMunicipality = () => {
     const [districts, setDistricts] = useState([]);
@@ -81,55 +82,81 @@ const SelectMunicipality = () => {
     };
 
     return (
-        <>
-            <FormControl fullWidth>
-                <InputLabel>Distrito</InputLabel>
-                <Select
-                    value={selectedValues.district}
-                    label="Distrito"
-                    onChange={(e) => handleChange('district', e.target.value)}
-                >
-                    {districts.map((district, index) => (
-                        <MenuItem key={index} value={district.name}>
-                            {district.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-
-            {selectedValues.district && (
-                <FormControl fullWidth sx={{ mt: 5 }}>
-                    <InputLabel>Cidade</InputLabel>
-                    <Select
-                        value={selectedValues.city}
-                        label="Cidade"
-                        onChange={(e) => handleChange('city', e.target.value)}
-                    >
-                        {cities.map((city, index) => (
-                            <MenuItem key={index} value={city.name}>
-                                {city.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            )}
-
-            {selectedValues.city && (
-                <FormControl fullWidth sx={{ mt: 5 }}>
-                    <InputLabel>Freguesia</InputLabel>
-                    <Select
-                        value={selectedValues.municipality}
-                        label="Freguesia"
-                        onChange={(e) => handleChange('municipality', e.target.value)}
-                    >
-                        {municipalities.map((municipality, index) => (
-                            <MenuItem key={index} value={municipality.name}>
-                                {municipality.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            )}
+        <Grid container spacing={2} direction={"column"}>
+            <Grid container item direction={"row"}>
+                <Grid item size={{ xs: 6 }}>
+                    <FormControl fullWidth>
+                        <InputLabel>Distrito</InputLabel>
+                        <Select
+                            value={selectedValues.district}
+                            label="Distrito"
+                            onChange={(e) => handleChange('district', e.target.value)}
+                        >
+                            {districts.map((district, index) => (
+                                <MenuItem key={index} value={district.name}>
+                                    {district.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                {selectedValues.district && <Grid item size={{ xs: 6 }}>
+                    <Link to={{
+                        pathname: "/distrito",
+                        search: `?name=${selectedValues.district}`
+                    }}>
+                        <Button variant="contained" sx={{ mt: 5 }}>Ver o Meu Distrito</Button>
+                    </Link>
+                </Grid>}
+            </Grid>
+            <Grid container item direction={"row"}>
+                <Grid item size={{ xs: 6 }}>
+                    {selectedValues.district && (
+                        <FormControl fullWidth sx={{ mt: 5 }}>
+                            <InputLabel>Cidade</InputLabel>
+                            <Select
+                                value={selectedValues.city}
+                                label="Cidade"
+                                onChange={(e) => handleChange('city', e.target.value)}
+                            >
+                                {cities.map((city, index) => (
+                                    <MenuItem key={index} value={city.name}>
+                                        {city.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    )}
+                </Grid>
+                {selectedValues.city && (
+                    <Grid item size={{ xs: 6 }}>
+                        <Link to={{
+                            pathname: "/cidade",
+                            search: `?name=${selectedValues.city}`
+                        }}>
+                            <Button variant="contained" sx={{ mt: 5 }}>Ver a Minha Cidade</Button>
+                        </Link>
+                    </Grid>
+                )}
+            </Grid>
+            <Grid container item>
+                {selectedValues.city && (
+                    <FormControl fullWidth sx={{ mt: 5 }}>
+                        <InputLabel>Freguesia</InputLabel>
+                        <Select
+                            value={selectedValues.municipality}
+                            label="Freguesia"
+                            onChange={(e) => handleChange('municipality', e.target.value)}
+                        >
+                            {municipalities.map((municipality, index) => (
+                                <MenuItem key={index} value={municipality.name}>
+                                    {municipality.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
+            </Grid>
             {selectedValues.municipality && (
                 <Link to={{
                     pathname: "/freguesia",
@@ -138,7 +165,7 @@ const SelectMunicipality = () => {
                     <Button variant="contained" sx={{ mt: 5 }}>Ver a Minha Região</Button>
                 </Link>
             )}
-        </>
+        </Grid>
     );
 };
 
