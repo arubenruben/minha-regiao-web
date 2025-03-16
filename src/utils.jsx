@@ -54,3 +54,46 @@ export const fetchMunicipality = async (municipalityName = null, cityName = null
 
     return await sendRequest(url, 'GET');
 }
+
+export const averageLocalElections = (local) => {
+
+    if (!local)
+        return [];
+
+    const parties = ['PS', 'PPD/PSD', 'PCP-PEV', 'B.E.'];
+
+    const results = [];
+
+    //Obtain the existing years
+    const years = local.map((city) => city.elections.map((election) => election.year)).flat();
+    const uniqueYears = [...new Set(years)];
+
+
+    for (const year of uniqueYears) {
+
+        const accumulator = {}
+
+        const localElections = local.map((city) => city.elections.find((election) => election.year === year)).filter((election) => election !== undefined);
+
+        for (const party of parties) {
+
+            accumulator[party] = 0;
+
+            for (const cityElections of localElections) {
+                for (const result of cityElections.results) {
+                    if (result.party === party)
+                        accumulator[party] += (result.votes / cityElections.number_voters) * 100;
+                }
+            }
+
+            accumulator[party] /= localElections.length;
+        }
+
+        results.push({
+            year: year,
+            results: accumulator
+        });
+    }
+
+    return results;
+}
