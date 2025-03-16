@@ -1,39 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import GenericLayout from '../layouts/GenericLayout'
 import { useSearchParams } from "react-router-dom";
-import { fetchDistrict } from '../utils';
-/*
-  const fetchMunicipality = async (municipalityName) => {
-    const municipality = await sendRequest(
-      `${process.env.REACT_APP_ENDPOINT}/municipalities/?name=${municipalityName}`,
-      'GET'
-    );
-    setMunicipality(municipality[0]);
-  }
+import { fetchDistrict, fetchCity } from '../utils';
+import LocalLayout from '../layouts/LocalLayout';
+import FormGeography from '../components/form/city/FormGeography';
+import FormContacts from '../components/form/city/FormContacts';
+import FormUsefullLinks from '../components/form/city/FormUsefullLinks';
 
-
-  useEffect(() => {
-    const municipalityName = searchParams.get('name');
-    fetchMunicipality(municipalityName);
-  }, []);
-*/
 const District = (props) => {
     const [searchParams] = useSearchParams();
     const [district, setDistrict] = useState("");
+    const [cities, setCities] = useState("");
+    const [districtCapital, setDistrictCapital] = useState("");
 
 
     useEffect(() => {
-        setDistrict(fetchDistrict(searchParams.get('name')));
-    }, []);
+        const getDistrictData = async () => {
+            try {
+                const districtData = await fetchDistrict(searchParams.get('name'));
+                setDistrict(districtData);
+                
+                const citiesData = await fetchCity(null, searchParams.get('name'));
+                setCities(citiesData);
+                
+                const capital = await fetchCity(searchParams.get('name'), searchParams.get('name'));
+                setDistrictCapital(capital[0]);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        
+        getDistrictData();
 
+    }, [searchParams]);
 
     return (
-        <GenericLayout
-            main={
-                <div>
-                    Not Implemented Yet
-                </div>
-            }
+        <LocalLayout
+            name={district.name}
+            contactsTitle={'Contactos da Capital de Distrito'}
+            formContacts={<FormContacts city={districtCapital} />}
+            usefullLinksTitle={'Links Úteis'}
+            formUsefullLinks={<FormUsefullLinks city={districtCapital} />}
+            elections={district.elections}
         />
     )
 }
