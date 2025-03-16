@@ -45,7 +45,7 @@ const District = (props) => {
             formContacts={<FormContacts city={districtCapital} />}
             usefullLinksTitle={'Links Úteis'}
             formUsefullLinks={<FormUsefullLinks city={districtCapital} />}
-            elections={district.elections}
+            averageElections={elections}
         />
     )
 }

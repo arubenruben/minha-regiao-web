@@ -5,6 +5,7 @@ import PlotElection from '../components/plot/PlotElection';
 import CardElection from '../components/card/CardElection';
 import LocalMap from '../components/maps/LocalMap';
 import GenericLayout from './GenericLayout';
+import PlotAverage from '../components/plot/PlotAverage';
 
 const LocalLayout = (props) => {
     return (
@@ -46,10 +47,10 @@ const LocalLayout = (props) => {
                     <Grid item container direction={'row'} sx={{ mb: 5 }}>
                         {props.elections?.map((election, index) => <CardElection key={index} election={election} />)}
                     </Grid>
-                    {props.averageResults && <>
+                    {props.averageElections && <>
                         <Divider />
                         <Grid item>
-                            <PlotElection elections={props.averageResults} />
+                            <PlotAverage elections={props.averageElections} />
                         </Grid>
                     </>}
                 </Grid>
