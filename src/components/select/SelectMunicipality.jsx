@@ -7,6 +7,48 @@ import Button from '@mui/material/Button';
 import { Link } from "react-router";
 import Grid from '@mui/material/Grid2';
 
+// Extracted reusable component for select + button
+const SelectWithButton = ({
+    label,
+    value,
+    options,
+    onChange,
+    buttonText,
+    linkPath,
+    selectedValue
+}) => (
+    <Grid container item direction="row" spacing={2}>
+        <Grid item size={{ xs: 6 }}>
+            <FormControl fullWidth sx={{ mt: 5 }}>
+                <InputLabel>{label}</InputLabel>
+                <Select
+                    value={value}
+                    label={label}
+                    onChange={onChange}
+                >
+                    {options.map((option, index) => (
+                        <MenuItem key={index} value={option.name}>
+                            {option.name}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Grid>
+        {selectedValue && (
+            <Grid item size={{ xs: 6 }}>
+                <Link to={{
+                    pathname: linkPath,
+                    search: `?name=${encodeURIComponent(selectedValue)}`
+                }}>
+                    <Button variant="contained" sx={{ mt: 5 }}>
+                        {buttonText}
+                    </Button>
+                </Link>
+            </Grid>
+        )}
+    </Grid>
+);
+
 const SelectMunicipality = () => {
     const [districts, setDistricts] = useState([]);
     const [cities, setCities] = useState([]);
@@ -19,11 +61,11 @@ const SelectMunicipality = () => {
 
     const fetchDistricts = useCallback(async () => {
         try {
-            const districts = await sendRequest(
+            const data = await sendRequest(
                 `${process.env.REACT_APP_ENDPOINT}/districts/`,
                 'GET'
             );
-            setDistricts(districts || []);
+            setDistricts(data || []);
         } catch (error) {
             console.error('Failed to fetch districts:', error);
             setDistricts([]);
@@ -33,11 +75,11 @@ const SelectMunicipality = () => {
     const fetchCities = useCallback(async (district) => {
         if (!district) return;
         try {
-            const cities = await sendRequest(
+            const data = await sendRequest(
                 `${process.env.REACT_APP_ENDPOINT}/cities/?district=${district}`,
                 'GET'
             );
-            setCities(cities || []);
+            setCities(data || []);
         } catch (error) {
             console.error('Failed to fetch cities:', error);
             setCities([]);
@@ -47,11 +89,11 @@ const SelectMunicipality = () => {
     const fetchMunicipalities = useCallback(async (city) => {
         if (!city) return;
         try {
-            const municipalities = await sendRequest(
+            const data = await sendRequest(
                 `${process.env.REACT_APP_ENDPOINT}/municipalities/?city=${city}`,
                 'GET'
             );
-            setMunicipalities(municipalities || []);
+            setMunicipalities(data || []);
         } catch (error) {
             console.error('Failed to fetch municipalities:', error);
             setMunicipalities([]);
@@ -62,11 +104,11 @@ const SelectMunicipality = () => {
         fetchDistricts();
     }, [fetchDistricts]);
 
-    const handleChange = (type, value) => {
+    const handleChange = (type) => (e) => {
+        const value = e.target.value;
         setSelectedValues(prev => {
             const newValues = { ...prev, [type]: value };
 
-            // Reset dependent fields
             if (type === 'district') {
                 newValues.city = '';
                 newValues.municipality = '';
@@ -82,71 +124,40 @@ const SelectMunicipality = () => {
     };
 
     return (
-        <Grid container spacing={2} direction={"column"}>
-            <Grid container item direction={"row"}>
-                <Grid item size={{ xs: 6 }}>
-                    <FormControl fullWidth>
-                        <InputLabel>Distrito</InputLabel>
-                        <Select
-                            value={selectedValues.district}
-                            label="Distrito"
-                            onChange={(e) => handleChange('district', e.target.value)}
-                        >
-                            {districts.map((district, index) => (
-                                <MenuItem key={index} value={district.name}>
-                                    {district.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                {selectedValues.district && <Grid item size={{ xs: 6 }}>
-                    <Link to={{
-                        pathname: "/distrito",
-                        search: `?name=${selectedValues.district}`
-                    }}>
-                        <Button variant="contained" sx={{ mt: 5 }}>Ver o Meu Distrito</Button>
-                    </Link>
-                </Grid>}
-            </Grid>
-            <Grid container item direction={"row"}>
-                <Grid item size={{ xs: 6 }}>
-                    {selectedValues.district && (
-                        <FormControl fullWidth sx={{ mt: 5 }}>
-                            <InputLabel>Cidade</InputLabel>
-                            <Select
-                                value={selectedValues.city}
-                                label="Cidade"
-                                onChange={(e) => handleChange('city', e.target.value)}
-                            >
-                                {cities.map((city, index) => (
-                                    <MenuItem key={index} value={city.name}>
-                                        {city.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    )}
-                </Grid>
-                {selectedValues.city && (
-                    <Grid item size={{ xs: 6 }}>
-                        <Link to={{
-                            pathname: "/cidade",
-                            search: `?name=${selectedValues.city}`
-                        }}>
-                            <Button variant="contained" sx={{ mt: 5 }}>Ver a Minha Cidade</Button>
-                        </Link>
-                    </Grid>
-                )}
-            </Grid>
-            <Grid container item>
-                {selectedValues.city && (
+        <Grid container spacing={2} direction="column">
+            {/* District Selection */}
+            <SelectWithButton
+                label="Distrito"
+                value={selectedValues.district}
+                options={districts}
+                onChange={handleChange('district')}
+                buttonText="Ver o Meu Distrito"
+                linkPath="/distrito"
+                selectedValue={selectedValues.district}
+            />
+
+            {/* City Selection */}
+            {selectedValues.district && (
+                <SelectWithButton
+                    label="Cidade"
+                    value={selectedValues.city}
+                    options={cities}
+                    onChange={handleChange('city')}
+                    buttonText="Ver a Minha Cidade"
+                    linkPath="/cidade"
+                    selectedValue={selectedValues.city}
+                />
+            )}
+
+            {/* Municipality Selection */}
+            {selectedValues.city && (
+                <Grid container item>
                     <FormControl fullWidth sx={{ mt: 5 }}>
                         <InputLabel>Freguesia</InputLabel>
                         <Select
                             value={selectedValues.municipality}
                             label="Freguesia"
-                            onChange={(e) => handleChange('municipality', e.target.value)}
+                            onChange={handleChange('municipality')}
                         >
                             {municipalities.map((municipality, index) => (
                                 <MenuItem key={index} value={municipality.name}>
@@ -155,14 +166,17 @@ const SelectMunicipality = () => {
                             ))}
                         </Select>
                     </FormControl>
-                )}
-            </Grid>
+                </Grid>
+            )}
+
             {selectedValues.municipality && (
                 <Link to={{
                     pathname: "/freguesia",
-                    search: `?name=${selectedValues.municipality}`
+                    search: `?name=${encodeURIComponent(selectedValues.municipality)}`
                 }}>
-                    <Button variant="contained" sx={{ mt: 5 }}>Ver a Minha Região</Button>
+                    <Button variant="contained" sx={{ mt: 5, ml: 2 }}>
+                        Ver a Minha Região
+                    </Button>
                 </Link>
             )}
         </Grid>
