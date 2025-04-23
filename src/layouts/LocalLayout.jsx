@@ -1,5 +1,5 @@
 import React from 'react'
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import { Divider } from '@mui/material';
 import PlotElection from '../components/plot/PlotElection';
 import CardElection from '../components/card/CardElection';

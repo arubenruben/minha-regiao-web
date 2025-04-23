@@ -1,6 +1,6 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Image from 'react-bootstrap/Image';
 import { Button } from '@mui/material';
 import { Link } from "react-router";

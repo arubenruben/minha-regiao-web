@@ -5,7 +5,7 @@ import { InputLabel, Select } from '@mui/material';
 import { sendRequest } from '../../utils';
 import Button from '@mui/material/Button';
 import { Link } from "react-router";
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 
 // Extracted reusable component for select + button
 const SelectWithButton = ({

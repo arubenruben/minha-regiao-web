@@ -34,3 +34,7 @@ footer {
 .party-card-img{
     max-width: 150px;
 }
+
+#title{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
