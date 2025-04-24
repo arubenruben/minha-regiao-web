@@ -5,6 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Link } from 'react-router-dom';
 
 const TableDistrict = (props) => {
     const [elections, setElections] = useState([]);
@@ -64,7 +65,11 @@ const TableDistrict = (props) => {
                         <TableCell align="right">{election.winner.party}</TableCell>
                         <TableCell align="right">{election.winner.president}</TableCell>
                         <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
-                        <TableCell align="right"><OpenInNewIcon /></TableCell>
+                        <TableCell align="right">
+                            <Link to={`/cidade/${election.city.name}`}>
+                                <OpenInNewIcon />
+                            </Link>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>

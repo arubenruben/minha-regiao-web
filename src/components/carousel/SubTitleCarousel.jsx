@@ -1,17 +1,17 @@
 import React from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 
-const SubTitleCarousel = () => {
+const SubTitleCarousel = (props) => {
     return (
-        <Carousel indicators={false} controls={false}>
+        <Carousel indicators={false} controls={false} interval={props.interval ?? 2000}>
             <Carousel.Item>
-                <h4 id="subtitle">O seu Portal Autárquico</h4>
+                <h5 id="subtitle">O seu Portal Autárquico</h5>
             </Carousel.Item>
             <Carousel.Item>
-                <h4 id="subtitle">Notícias da Região</h4>
+                <h5 id="subtitle">Notícias da Região</h5>
             </Carousel.Item>
             <Carousel.Item>
-                <h4 id="subtitle">E muito mais...</h4>
+                <h5 id="subtitle">E muito mais...</h5>
             </Carousel.Item>
         </Carousel>
     )
