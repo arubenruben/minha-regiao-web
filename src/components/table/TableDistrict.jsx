@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,10 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-// Sample data function removed as it's not being used
-//cities={district?.cities} selectedElectionYear={selectedElectionYear}
 const TableDistrict = (props) => {
-
     const [elections, setElections] = useState([]);
 
     useEffect(() => {
@@ -18,52 +15,33 @@ const TableDistrict = (props) => {
         // Filter the elections based on the selected election year
         const filteredElections = props.cities?.map((city) => {
             return city.elections.filter((election) => election.year === props.selectedElectionYear);
-        });
+        }).flat();
 
-        // Flatten the array of arrays into a single array
-        const flattenedElections = filteredElections.flat();
+        // Process elections data using map and reduce instead of for loops
+        const newElections = filteredElections.map((election, i) => {
+            // Use reduce to find both totalVotes and winner in a single pass
+            const { totalVotes, winner } = election.election_results.reduce(
+                (acc, result) => {
+                    const newTotal = acc.totalVotes + result.number_votes;
+                    const newWinner = !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner;
+                    return { totalVotes: newTotal, winner: newWinner };
+                },
+                { totalVotes: 0, winner: null }
+            );
 
-        // flattenedElections[0] corresponds to the first city
-        // flattenedElections[1] corresponds to the second city
-
-        // The winner party is the one with the highest number of votes in election.election_results array
-        const newElections = []
-
-
-        for (let i = 0; i < flattenedElections.length; i++) {
-            let winner = null
-            let totalVotes = 0
-
-            for (let j = 0; j < flattenedElections[i].election_results.length; j++) {
-                const election_result = flattenedElections[i].election_results[j];
-
-                totalVotes += election_result.number_votes;
-
-                if (winner === null || election_result.number_votes > winner.number_votes) {
-                    winner = election_result;
-                }
-            }
-
-            newElections.push({
+            return {
                 city: props.cities[i],
-                election: flattenedElections[i],
-                winner:
-                {
+                election,
+                winner: {
                     ...winner,
                     president: "John Doe", // Placeholder for president name
                 },
-                totalVotes: totalVotes,
-            });
-        }
+                totalVotes,
+            };
+        });
 
-        // Sort newElections by city.name
-
-        newElections.sort((a, b) => a.city.name.localeCompare(b.city.name));
-
-        setElections(newElections);
-
-
-
+        // Sort newElections by city name
+        setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));
     }, [props.cities, props.selectedElectionYear]);
 
     return (
@@ -90,9 +68,8 @@ const TableDistrict = (props) => {
                     </TableRow>
                 ))}
             </TableBody>
-
         </Table>
-    )
-}
+    );
+};
 
-export default TableDistrict
+export default TableDistrict;
