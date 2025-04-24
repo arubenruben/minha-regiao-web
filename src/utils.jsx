@@ -14,14 +14,7 @@ export const sendRequest = async (url, method, body) => {
     return response.json();
 }
 
-export const fetchDistrict = async (districtName) => {
-    const district = await sendRequest(
-        `${process.env.REACT_APP_ENDPOINT}/districts/?name=${districtName}`,
-        'GET'
-    );
 
-    return district;
-}
 
 export const fetchCity = async (cityName = null, districtName = null) => {
     if (!cityName && !districtName) {

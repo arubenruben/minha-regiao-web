@@ -4,6 +4,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+    margin-bottom: 10rem;
 }
 
 header {
@@ -22,7 +23,7 @@ footer {
     width: 100%;
     bottom: 0;
     text-align: center;
-    min-height: min(30vh, 40px);
+    min-height: min(30vh, 40px);    
 }
 
 
