@@ -52,9 +52,7 @@ const District = (props) => {
             console.error('Error fetching district:', error);
         });
     }, []);
-
-    console.log(electionYears);
-
+    
     return (
         <GenericLayout
             main={
@@ -104,7 +102,7 @@ const District = (props) => {
                             </Grid>
                         </Grid>
                         <Grid item>
-                            <TableDistrict />
+                            <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
                         </Grid>
                     </Grid>
                 </Grid>
