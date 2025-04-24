@@ -6,16 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+// Sample data function removed as it's not being used
 //cities={district?.cities} selectedElectionYear={selectedElectionYear}
 const TableDistrict = (props) => {
 
@@ -36,47 +27,47 @@ const TableDistrict = (props) => {
         // flattenedElections[1] corresponds to the second city
 
         // The winner party is the one with the highest number of votes in election.election_results array
+        const newElections = []
 
-        const winnerResult = flattenedElections.map((election) => {
-            const electionResults = election.election_results;
-            if (electionResults && electionResults.length > 0) {
-                // Sort the election results by number of votes in descending order
-                const sortedResults = electionResults.sort((a, b) => b.votes - a.votes);
-                // Return the party with the highest number of votes
-                return sortedResults[0];
+
+        for (let i = 0; i < flattenedElections.length; i++) {
+            let winner = null
+            let totalVotes = 0
+
+            for (let j = 0; j < flattenedElections[i].election_results.length; j++) {
+                const election_result = flattenedElections[i].election_results[j];
+
+                totalVotes += election_result.number_votes;
+
+                if (winner === null || election_result.number_votes > winner.number_votes) {
+                    winner = election_result;
+                }
             }
-            return null; // or some default value
-        });
 
-        const totalVotes = flattenedElections.map((election) => {
-            const electionResults = election.election_results;
-            if (electionResults && electionResults.length > 0) {
-                // Calculate the total number of votes
-                return electionResults.reduce((total, result) => total + result.votes, 0);
-            }
-            return null; // or some default value
-        });
+            newElections.push({
+                city: props.cities[i],
+                election: flattenedElections[i],
+                winner:
+                {
+                    ...winner,
+                    president: "John Doe", // Placeholder for president name
+                },
+                totalVotes: totalVotes,
+            });
+        }
 
-        // Create a new array of objects with the desired structure
-        const newElections = flattenedElections.map((election, index) => {
-            return {
-                city: props.cities[index],
-                election: election,
-                winnerPresident: "John Doe",
-                winnerParty: winnerResult?.party,
-                winnerPercentage: Math.round((winnerResult.votes / totalVotes) * 100, 2) ? winnerResult && winnerResult.votes : null,
-            };
-        });
+        // Sort newElections by city.name
+
+        newElections.sort((a, b) => a.city.name.localeCompare(b.city.name));
 
         setElections(newElections);
 
 
+
     }, [props.cities, props.selectedElectionYear]);
 
-    console.log(elections);
-
     return (
-        <Table>
+        <Table size="small">
             <TableHead>
                 <TableRow>
                     <TableCell>Concelho</TableCell>
@@ -92,9 +83,9 @@ const TableDistrict = (props) => {
                         <TableCell component="th" scope="row">
                             {election.city.name}
                         </TableCell>
-                        <TableCell align="right">{election.winnerParty}</TableCell>
-                        <TableCell align="right">{election.winnerPresident}</TableCell>
-                        <TableCell align="right">{election.winnerPercentage}</TableCell>
+                        <TableCell align="right">{election.winner.party}</TableCell>
+                        <TableCell align="right">{election.winner.president}</TableCell>
+                        <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
                         <TableCell align="right"><OpenInNewIcon /></TableCell>
                     </TableRow>
                 ))}
