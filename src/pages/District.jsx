@@ -8,6 +8,7 @@ import PlotVoters from '../components/plot/PlotVoters';
 import { Divider, Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import TableDistrict from '../components/table/TableDistrict';
+import CardWikipedia from '../components/card/CardWikipedia';
 
 
 const District = (props) => {
@@ -57,34 +58,32 @@ const District = (props) => {
         <GenericLayout
             main={
                 <Grid container direction="column">
-                    <Grid item container direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
-                        <Grid item container direction="column" size={{ xs: 12, md: 6 }}>
-                            <Grid item>
-                                <h1>{district?.name}</h1>
-                            </Grid>
-                            <Grid item>
-                                <LocalMap />
-                            </Grid>
+                    <Grid item>
+                        <h1>Distrito: {district?.name}</h1>
+                    </Grid>
+                    <Grid item container direction="row" sx={{ justifyContent: "space-around", mb: 5 }}>
+                        <Grid item size={{ xs: 5 }} >
+                            <LocalMap />
                         </Grid>
-                        <Grid item container direction="column" size={{ xs: 12, md: 6 }} sx={{ justifyContent: "center", alignItems: "center" }}>
+                        <Grid item container direction="column" sx={{ alignItems: "center" }} size={{ xs: 6 }}>
                             <Grid item>
-                                <p>{district?.wikipedia?.summary}</p>
+                                <CardWikipedia wikipedia={district?.wikipedia} />
                             </Grid>
                             <Grid item>
                                 <PlotVoters name={district?.name} elections={district?.elections} />
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Divider />
+                    <hr />
                     <Grid item>
                         <h2>Eleições Autárquicas em {district?.name}</h2>
                     </Grid>
-                    <Grid item container direction="row" sx={{ alignItems: "center"}}>
+                    <Grid item container direction="row" sx={{ alignItems: "center" }}>
                         <Grid item container direction="row" sx={{ alignItems: "center" }}>
-                            <Grid item size={{ xs: 12, md: 5 }}>
-                                <PlotNumberCities name={district?.name} elections={district?.elections} selectedElectionYear={selectedElectionYear} />
+                            <Grid item size={{ xs: 6 }}>
+                                <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
                             </Grid>
-                            <Grid item sx={{ height: "300px" }} size={{ xs: 1 }}>
+                            <Grid item size={{ xs: 1 }} sx={{ height: "400px"}}>
                                 <Slider
                                     defaultValue={electionYears[0]}
                                     step={null}
@@ -100,9 +99,13 @@ const District = (props) => {
                                     }}
                                 />
                             </Grid>
-                        </Grid>
-                        <Grid item size={{ xs: 12, md: 8 }}>
-                            <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
+                            <Grid item size={{ xs: 5 }}>
+                                <PlotNumberCities
+                                    name={district?.name}
+                                    elections={district?.elections}
+                                    selectedElectionYear={selectedElectionYear}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -1,20 +1,16 @@
 import React from 'react'
-import Plot from 'react-plotly.js';
+import { LineChart } from '@mui/x-charts/LineChart';
 
 const PlotNumberCities = (props) => {
     return (
-        <Plot
-            data={[
+        <LineChart
+            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+            series={[
                 {
-                    x: [1, 2, 3],
-                    y: [2, 6, 3],
-                    type: 'scatter',
-                    mode: 'lines+markers',
-                    marker: { color: 'red' },
+                    data: [2, 5.5, 2, 8.5, 1.5, 5],
                 },
-                { type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
             ]}
-            layout={{ title: { text: `Número de Câmaras Municipais em ${props.name} - ${props.selectedElectionYear}` } }}
+            height={300}
         />
     )
 }

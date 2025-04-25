@@ -29,6 +29,7 @@ main {
     max-height: 150px;
 }
 
+
 footer {
     background-color: var(--blue-at);
     color: white;
@@ -44,6 +45,11 @@ html a {
     border: none;
     margin: 0;
     color: inherit;
+}
+
+.card-link {
+    text-decoration: underline;
+    color: var(--blue-at);
 }
 
 .map-container {

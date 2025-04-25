@@ -30,10 +30,9 @@ const TableDistrict = (props) => {
                 { totalVotes: 0, winner: null }
             );
 
-            console.log(election);
 
             return {
-                city: props.cities[i],                
+                city: props.cities[i],
                 election,
                 winner: winner,
                 totalVotes,
@@ -45,10 +44,8 @@ const TableDistrict = (props) => {
         setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));
     }, [props.cities, props.selectedElectionYear]);
 
-    console.log(elections);
-
     return (
-        <Table size="small">
+        <Table size="small" stickyHeader>
             <TableHead>
                 <TableRow>
                     <TableCell>Concelho</TableCell>

@@ -81,7 +81,6 @@ const PlotAverage = (props) => {
             });
         });
 
-        console.log(results);
 
         return results;
     }
