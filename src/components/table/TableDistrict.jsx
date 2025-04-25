@@ -30,20 +30,22 @@ const TableDistrict = (props) => {
                 { totalVotes: 0, winner: null }
             );
 
+            console.log(election);
+
             return {
-                city: props.cities[i],
+                city: props.cities[i],                
                 election,
-                winner: {
-                    ...winner,
-                    president: "John Doe", // Placeholder for president name
-                },
+                winner: winner,
                 totalVotes,
             };
         });
 
+
         // Sort newElections by city name
         setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));
     }, [props.cities, props.selectedElectionYear]);
+
+    console.log(elections);
 
     return (
         <Table size="small">
@@ -63,7 +65,7 @@ const TableDistrict = (props) => {
                             {election.city.name}
                         </TableCell>
                         <TableCell align="right">{election.winner.party}</TableCell>
-                        <TableCell align="right">{election.winner.president}</TableCell>
+                        <TableCell align="right">{election.election.president?.name}</TableCell>
                         <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
                         <TableCell align="right">
                             <Link to={`/cidade/${election.city.name}`}>

@@ -52,7 +52,7 @@ const District = (props) => {
             console.error('Error fetching district:', error);
         });
     }, []);
-    
+
     return (
         <GenericLayout
             main={
@@ -79,12 +79,12 @@ const District = (props) => {
                     <Grid item>
                         <h2>Eleições Autárquicas em {district?.name}</h2>
                     </Grid>
-                    <Grid item container direction="row" sx={{ alignItems: "center", justifyContent: "space-between" }}>
+                    <Grid item container direction="row" sx={{ alignItems: "center"}}>
                         <Grid item container direction="row" sx={{ alignItems: "center" }}>
-                            <Grid item size={"auto"}>
+                            <Grid item size={{ xs: 12, md: 5 }}>
                                 <PlotNumberCities name={district?.name} elections={district?.elections} selectedElectionYear={selectedElectionYear} />
                             </Grid>
-                            <Grid item sx={{ height: "300px" }}>
+                            <Grid item sx={{ height: "300px" }} size={{ xs: 1 }}>
                                 <Slider
                                     defaultValue={electionYears[0]}
                                     step={null}
@@ -101,7 +101,7 @@ const District = (props) => {
                                 />
                             </Grid>
                         </Grid>
-                        <Grid item>
+                        <Grid item size={{ xs: 12, md: 8 }}>
                             <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
                         </Grid>
                     </Grid>
