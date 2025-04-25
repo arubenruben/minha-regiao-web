@@ -5,7 +5,7 @@ import GenericLayout from '../layouts/GenericLayout';
 import Grid from '@mui/material/Grid';
 import LocalMap from '../components/maps/LocalMap';
 import PlotVoters from '../components/plot/PlotVoters';
-import { Divider, Slider } from '@mui/material';
+import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import TableDistrict from '../components/table/TableDistrict';
 import CardWikipedia from '../components/card/CardWikipedia';
@@ -18,6 +18,16 @@ const District = (props) => {
     const [district, setDistrict] = useState(null);
     const [electionYears, setElectionYears] = useState([]);
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
+
+
+    const fetchElectionYears = async (name) => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+            "GET"
+        );
+
+        setElectionYears(response);
+    }
 
     // Fetch districts from the API
     const fetchDistrict = async (name) => {
@@ -52,6 +62,11 @@ const District = (props) => {
         fetchDistrict(name).catch((error) => {
             console.error('Error fetching district:', error);
         });
+
+        fetchElectionYears(name).catch((error) => {
+            console.error('Error fetching election years:', error);
+        });
+
     }, []);
 
     return (
@@ -83,7 +98,7 @@ const District = (props) => {
                             <Grid item size={{ xs: 6 }}>
                                 <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
                             </Grid>
-                            <Grid item size={{ xs: 1 }} sx={{ height: "400px"}}>
+                            <Grid item size={{ xs: 1 }} sx={{ height: "400px" }}>
                                 <Slider
                                     defaultValue={electionYears[0]}
                                     step={null}

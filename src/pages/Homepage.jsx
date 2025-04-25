@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Image from 'react-bootstrap/Image';
 import logo from '../assets/images/logo.png'
-import Autocomplete from '@mui/material/Autocomplete';
 import SubTitleCarousel from '../components/carousel/SubTitleCarousel';
-import { TextField } from '@mui/material';
-import { Divider } from '@mui/material';
 import { sendRequest } from '../utils';
-import { Link, useNavigate } from 'react-router-dom';
+import { Slider } from '@mui/material';
 import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepage';
 import HomepageMap from '../components/maps/HomepageMap';
 import TableHomepage from '../components/table/TableHomepage';
@@ -17,6 +14,9 @@ const Homepage = (props) => {
 
     const [regions, setRegions] = useState([]);
     const [selectedYear, setSelectedYear] = useState(null)
+    const [electionYears, setElectionYears] = useState([]);
+    const [electionSummary, setElectionSummary] = useState([]);
+    const [parties, setParties] = useState([]);
 
 
     // Fetch regions from the API
@@ -32,11 +32,48 @@ const Homepage = (props) => {
         setRegions(response);
     };
 
+    const fetchParties = async () => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/parties/`,
+            "GET"
+        );
+
+        setParties(response);
+    }
+
+
     const fetchRegionsById = async (id) => {
         return await sendRequest(
             `${process.env.REACT_APP_ENDPOINT}/freguesias_pt_entries/${id}`,
             "GET"
         );
+    }
+
+    const fetchElectionYears = async (name) => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+            "GET"
+        );
+
+        // Sort the election years
+        response.sort((a, b) => b - a);
+
+        setElectionYears(response);
+
+        if (response.length > 0) {
+            setSelectedYear(response[0]);
+            fetchCountryElections(response[0]).catch((error) => {
+                console.error('Error fetching country elections:', error);
+            });
+        }
+    }
+
+    const fetchCountryElections = async (year) => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/elections/country/${year}`,
+            "GET"
+        );
+        setElectionSummary(response);
     }
 
     useEffect(() => {
@@ -55,6 +92,16 @@ const Homepage = (props) => {
                 return (typeOrder[a.type] || 4) - (typeOrder[b.type] || 4);
             });
         });
+
+        fetchElectionYears().catch((error) => {
+            console.error('Error fetching election years:', error);
+        });
+
+        fetchParties().catch((error) => {
+            console.error('Error fetching parties:', error);
+        });
+
+
     }, []);
 
     return (
@@ -80,7 +127,26 @@ const Homepage = (props) => {
                 </Grid>
                 <Grid item container direction="row">
                     <Grid item size={{ xs: 6 }}>
-                        <TableHomepage />
+                        <TableHomepage electionSummary={electionSummary} parties={parties} />
+                    </Grid>
+                    <Grid item>
+                        <Slider
+                            defaultValue={electionYears[0]}
+                            step={null}
+                            marks={electionYears.map(year => ({ value: year, label: year }))}
+                            orientation="vertical"
+                            min={Math.min(...electionYears)}
+                            max={Math.max(...electionYears)}
+                            valueLabelDisplay="auto"
+                            onChange={(event, value) => {
+                                if (value) {
+                                    setSelectedYear(value);
+                                    fetchCountryElections(value).catch((error) => {
+                                        console.error('Error fetching country elections:', error);
+                                    });
+                                }
+                            }}
+                        />
                     </Grid>
                     <Grid item size={{ xs: 4 }} sx={{ mx: "auto" }}>
                         <HomepageMap />

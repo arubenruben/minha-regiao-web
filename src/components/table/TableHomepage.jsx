@@ -1,54 +1,71 @@
-import * as React from 'react';
+import React from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
+const TableHomepage = (props) => {
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+    const calculateElectionSummary = (parties, districts) => {
+        // Create a list of dicts where each dict.party is a party from props.parties        
+        const results = {}
 
-export default function TableHomepage() {
+        for (let i = 0; i < parties.length; i++) {
+            results[parties[i]] = 0
+        }
+
+        // Loop through each election summary and add the number of votes to the party in results
+        for (let i = 0; i < districts.length; i++) {
+            const district = districts[i]
+
+            for (let j = 0; j < district.election_summaries.length; j++) {
+                const election_summary = district.election_summaries[j]
+                results[election_summary.winner_election_result.party] += 1
+            }
+        }
+        // Remove parties with 0 votes from results
+        for (const party in results) {
+            if (results[party] == 0) {
+                delete results[party]
+            }
+        }
+        // Sort the results by number of votes
+        const sortedResults = Object.entries(results).sort((a, b) => b[1] - a[1]);
+        // Create a list of dicts where each dict.party is a party from props.parties
+
+        return sortedResults.map((party) => {
+            return {
+                name: party[0],
+                numberCities: party[1],
+            }
+        })
+    }
+
+    const electionSummary = calculateElectionSummary(props.parties, props.electionSummary);
+
+
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Dessert (100g serving)</TableCell>
-                        <TableCell align="right">Calories</TableCell>
-                        <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                        <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                        <TableCell align="right">Protein&nbsp;(g)</TableCell>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Partido</TableCell>
+                    <TableCell align="right">Número de Câmaras Municipais</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {electionSummary?.map((row, index) => (
+                    <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                            {row.name}
+                        </TableCell>
+                        <TableCell align="right">{row.numberCities}</TableCell>
                     </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row) => (
-                        <TableRow
-                            key={row.name}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.calories}</TableCell>
-                            <TableCell align="right">{row.fat}</TableCell>
-                            <TableCell align="right">{row.carbs}</TableCell>
-                            <TableCell align="right">{row.protein}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+                ))}
+
+            </TableBody>
+        </Table>
+    )
 }
+
+export default TableHomepage
