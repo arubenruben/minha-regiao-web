@@ -11,6 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepage';
 import HomepageMap from '../components/maps/HomepageMap';
 import TableHomepage from '../components/table/TableHomepage';
+import GenericFooter from '../components/footer/GenericFooter';
 
 const Homepage = (props) => {
 
@@ -57,7 +58,7 @@ const Homepage = (props) => {
     }, []);
 
     return (
-        <Grid>
+        <Grid direction="column">
             <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
                 <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", pb: 3 }}>
                     <Grid container direction="column" size={{ xs: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
@@ -86,7 +87,7 @@ const Homepage = (props) => {
                     </Grid>
                 </Grid>
             </Grid>
-
+            <GenericFooter />
         </Grid>
     )
 }
