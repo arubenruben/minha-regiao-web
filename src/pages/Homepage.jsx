@@ -16,8 +16,12 @@ const Homepage = (props) => {
 
     // Fetch regions from the API
     const fetchRegions = async () => {
+        const params = new URLSearchParams({
+            new_municipalities: true
+        });
+
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/freguesias_pt_entries/`,
+            `${process.env.REACT_APP_ENDPOINT}/freguesias_pt_entries?${params.toString()}`,
             "GET"
         );
         setRegions(response);
@@ -34,7 +38,21 @@ const Homepage = (props) => {
         fetchRegions().catch((error) => {
             console.error('Error fetching regions:', error);
         });
+
+        // Sort by type. First "Distrito", then "Concelho", then "Freguesia"
+        setRegions((prevRegions) => {
+            return prevRegions.sort((a, b) => {
+                const typeOrder = {
+                    "Distrito": 1,
+                    "Concelho": 2,
+                    "Freguesia": 3
+                };
+                return (typeOrder[a.type] || 4) - (typeOrder[b.type] || 4);
+            });
+        });
     }, []);
+
+    console.log(regions);
 
     return (
         <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center" }} >
@@ -48,13 +66,14 @@ const Homepage = (props) => {
             <Grid item size={8}>
                 <Autocomplete
                     disablePortal
-                    options={regions.sort((a, b) => a.name.localeCompare(b.name))}
+                    options={regions}
                     getOptionLabel={(option) => option.name}
                     renderOption={(props, option) => (
                         <li {...props} key={option.id}>
                             {option.name}
                         </li>
                     )}
+                    groupBy={(option) => option.type}
                     onChange={(event, value) => {
                         if (value) {
                             // Fetch the region by ID
