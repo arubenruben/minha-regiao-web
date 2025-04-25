@@ -5,13 +5,17 @@ import logo from '../assets/images/logo.png'
 import Autocomplete from '@mui/material/Autocomplete';
 import SubTitleCarousel from '../components/carousel/SubTitleCarousel';
 import { TextField } from '@mui/material';
+import { Divider } from '@mui/material';
 import { sendRequest } from '../utils';
 import { Link, useNavigate } from 'react-router-dom';
+import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepage';
+import HomepageMap from '../components/maps/HomepageMap';
+import TableHomepage from '../components/table/TableHomepage';
 
 const Homepage = (props) => {
-    const navigate = useNavigate();
 
     const [regions, setRegions] = useState([]);
+    const [selectedYear, setSelectedYear] = useState(null)
 
 
     // Fetch regions from the API
@@ -52,50 +56,37 @@ const Homepage = (props) => {
         });
     }, []);
 
-    console.log(regions);
-
     return (
-        <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center" }} >
-            <Grid container direction="row">
-                <Grid container direction="column" sx={{ "width": "400px" }}>
-                    <Grid item><h1 id="title">A Minha Região</h1></Grid>
-                    <Grid item sx={{ "width": "100%" }}><SubTitleCarousel /></Grid>
+        <Grid>
+            <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
+                <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", pb: 3 }}>
+                    <Grid container direction="column" size={{ xs: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
+                        <Grid item size={{ xs: 12 }}><h1 id="title">A Minha Região</h1></Grid>
+                        <Grid item size={{ xs: 12 }}><SubTitleCarousel /></Grid>
+                    </Grid>
+                    <Grid item>
+                        <Image id="homepage-logo" src={logo} roundedCircle />
+                    </Grid>
                 </Grid>
-                <Grid item><Image src={logo} /></Grid>
+                <Grid item size={6}>
+                    <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
+                </Grid>
             </Grid>
-            <Grid item size={8}>
-                <Autocomplete
-                    disablePortal
-                    options={regions}
-                    getOptionLabel={(option) => option.name}
-                    renderOption={(props, option) => (
-                        <li {...props} key={option.id}>
-                            {option.name}
-                        </li>
-                    )}
-                    groupBy={(option) => option.type}
-                    onChange={(event, value) => {
-                        if (value) {
-                            // Fetch the region by ID
-                            fetchRegionsById(value.id).then((region) => {
-                                // Check if the region has a parent
-                                if (region.type === "Distrito") {
-                                    navigate(`/distrito/${region.name}`);
-                                } else if (region.type === "Concelho") {
-                                    navigate(`/cidade/${region.name}`);
-                                } else if (region.type === "Freguesia") {
-                                    navigate(`/freguesia/${region.name}`);
-                                } else {
-                                    console.error("Unknown region type:", region.type);
-                                }
-                            });
-                        }
-                    }}
-                    label="Região"
-                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                    renderInput={(params) => <TextField {...params} placeholder="Insira o Nome da sua Região" />}
-                />
+            <hr />
+            <Grid item container direction="column" sx={{ mx: 3 }}>
+                <Grid item>
+                    <h2>Panorama Autárquico {selectedYear}</h2>
+                </Grid>
+                <Grid item container direction="row">
+                    <Grid item size={{ xs: 6 }}>
+                        <TableHomepage />
+                    </Grid>
+                    <Grid item size={{ xs: 4 }} sx={{ mx: "auto" }}>
+                        <HomepageMap />
+                    </Grid>
+                </Grid>
             </Grid>
+
         </Grid>
     )
 }

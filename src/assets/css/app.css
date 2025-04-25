@@ -25,6 +25,10 @@ main {
     min-height: 100vh;
 }
 
+#homepage-logo{
+    max-height: 150px;
+}
+
 footer {
     background-color: var(--blue-at);
     color: white;

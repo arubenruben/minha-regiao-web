@@ -11,6 +11,9 @@ const SubTitleCarousel = (props) => {
                 <h5 id="subtitle">Notícias da Região</h5>
             </Carousel.Item>
             <Carousel.Item>
+                <h5 id="subtitle">A Regionalização</h5>
+            </Carousel.Item>
+            <Carousel.Item>
                 <h5 id="subtitle">E muito mais...</h5>
             </Carousel.Item>
         </Carousel>
