@@ -64,7 +64,7 @@ const TableCityHistoric = (props) => {
                         <TableCell align="right">{election.election.president?.name ?? "-"}</TableCell>
                         <TableCell align="right">{((election.winner.number_votes / election.totalVotes) * 100).toFixed(2)}%</TableCell>
                         <TableCell align="right">
-                            <Link to={`/election/cidade/${props.name}/${election.year}`}>
+                            <Link to={`/eleicao/cidade/${props.name}/${election.year}`}>
                                 <OpenInNewIcon />
                             </Link>
                         </TableCell>

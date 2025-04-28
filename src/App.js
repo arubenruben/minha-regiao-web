@@ -15,7 +15,7 @@ const App = () => {
       <Route path='/freguesia/:name' element={<Municipality />} />
       <Route path='/distrito/:name' element={<District />} />
       <Route path='/cidade/:name' element={<City />} />
-      <Route path="/eleicoes" element={<Election />} />
+      <Route path="/eleicao/:type/:name/:year" element={<Election />} />
       <Route path="/" element={<Homepage />} />
     </Routes>
   )
