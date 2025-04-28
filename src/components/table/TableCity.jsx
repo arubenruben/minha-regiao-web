@@ -9,61 +9,12 @@ import { Link } from 'react-router-dom';
 
 const TableCity = (props) => {
     const [elections, setElections] = useState([]);
-    
-    return (
-        <Table size="small" stickyHeader>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Freguesia</TableCell>
-                    <TableCell align="right">Partido Vencedor</TableCell>
-                    <TableCell align="right">Presidente Eleito</TableCell>
-                    <TableCell align="right">% Votos</TableCell>
-                    <TableCell align="right"></TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {elections.map((election, index) => (
-                    <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                            {election.city.name}
-                        </TableCell>
-                        <TableCell align="right">{election.winner.party}</TableCell>
-                        <TableCell align="right">{election.election.president?.name}</TableCell>
-                        <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
-                        <TableCell align="right">
-                            <Link to={`/freguesia/${election.city.name}`}>
-                                <OpenInNewIcon />
-                            </Link>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-    )
-}
-
-export default TableCity
-
-
-/*
-
-import React, { useEffect, useState } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Link } from 'react-router-dom';
-
-const TableDistrict = (props) => {
-    const [elections, setElections] = useState([]);
 
     useEffect(() => {
-        if (!props.cities || !props.selectedElectionYear) return;
+        if (!props.municipalities || !props.selectedElectionYear) return;
 
         // Filter the elections based on the selected election year
-        const filteredElections = props.cities?.map((city) => {
+        const filteredElections = props.municipalities?.map((city) => {
             return city.elections.filter((election) => election.year === props.selectedElectionYear);
         }).flat();
 
@@ -81,40 +32,42 @@ const TableDistrict = (props) => {
 
 
             return {
-                city: props.cities[i],
+                municipality: props.municipalities[i],
                 election,
                 winner: winner,
                 totalVotes,
             };
         });
 
-
         // Sort newElections by city name
-        setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));
-    }, [props.cities, props.selectedElectionYear]);
-
+        setElections(newElections.sort((a, b) => a.municipality.name.localeCompare(b.municipality.name)));
+    }, [props.municipalities, props.selectedElectionYear]);
+    
+    console.log(props.municipalities);
+    console.log(elections);
+    
     return (
         <Table size="small" stickyHeader>
             <TableHead>
                 <TableRow>
-                    <TableCell>Concelho</TableCell>
-                    <TableCell align="right">Partido Vencedor</TableCell>
-                    <TableCell align="right">Presidente Eleito</TableCell>
-                    <TableCell align="right">% Votos</TableCell>
-                    <TableCell align="right"></TableCell>
+                    <TableCell>Freguesia</TableCell>
+                    <TableCell align="center">Partido Vencedor</TableCell>
+                    <TableCell align="center">Presidente Eleito</TableCell>
+                    <TableCell align="center">% Votos</TableCell>
+                    <TableCell align="center"></TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {elections.map((election, index) => (
                     <TableRow key={index}>
                         <TableCell component="th" scope="row">
-                            {election.city.name}
+                            {election.municipality.name}
                         </TableCell>
                         <TableCell align="right">{election.winner.party}</TableCell>
-                        <TableCell align="right">{election.election.president?.name}</TableCell>
-                        <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
-                        <TableCell align="right">
-                            <Link to={`/cidade/${election.city.name}`}>
+                        <TableCell align="center">{election.election.president?.name ?? '-'}</TableCell>
+                        <TableCell align="center">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
+                        <TableCell align="center">
+                            <Link to={`/freguesia/${election.municipality.name}`}>
                                 <OpenInNewIcon />
                             </Link>
                         </TableCell>
@@ -122,11 +75,7 @@ const TableDistrict = (props) => {
                 ))}
             </TableBody>
         </Table>
-    );
-};
+    )
+}
 
-export default TableDistrict;
-
-
-
-*/
+export default TableCity

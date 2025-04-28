@@ -9,14 +9,19 @@ import PlotVoters from '../components/plot/PlotVoters';
 import TableCity from '../components/table/TableCity';
 import TableCityHistoric from '../components/table/TableCityHistoric';
 import CarouselPresidents from '../components/carousel/CarouselPresidents';
+import { Link } from 'react-router-dom';
+import NorthWestIcon from '@mui/icons-material/NorthWest';
+import CardPresident from '../components/card/CardPresident';
+import { Slider } from '@mui/material';
 
 
 const City = (props) => {
     const [city, setCity] = useState(null);
 
-    const { name } = useParams();
+    const [electionYears, setElectionYears] = useState([]);
+    const [selectedElectionYear, setSelectedElectionYear] = useState(null);
 
-    console.log(name);
+    const { name } = useParams();
 
     const fetchCity = async (name) => {
         const response = await sendRequest(
@@ -27,28 +32,56 @@ const City = (props) => {
         setCity(response);
     }
 
+    const fetchElectionYears = async (name) => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+            "GET"
+        );
+
+        setElectionYears(response);
+        setSelectedElectionYear(response[0]);
+    }
+
     useEffect(() => {
         fetchCity(name);
-
+        fetchElectionYears(name);
     }, []);
 
+    // filter elections that include the president
+    const elections = city?.elections?.filter((election) => {
+        return election?.president != null;
+    });
+
+    console.log(city);
+    
 
     return (
         <GenericLayout main={
             <Grid container direction="column">
-                <Grid item>
-                    <h1>Cidade: {city?.name}</h1>
+                <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
+                    <Grid item>
+                        <span>
+                            <NorthWestIcon sx={{ fontSize: 20 }} />
+                            <Link to={`/district/${city?.district?.name}`}>
+                                Voltar para a Página do Distrito{city?.district?.name}
+                            </Link>
+                        </span>
+                    </Grid>
                 </Grid>
-                <Grid item container direction="row" sx={{ justifyContent: "space-around", mb: 5 }}>
-                    <Grid item container direction="column" sx={{ alignItems: "center" }} size={{ xs: 6 }}>
+                <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
+                    <Grid item container direction="column" size={{ xs: 7 }}>
                         <Grid item>
                             <CardWikipedia wikipedia={city?.wikipedia} />
                         </Grid>
+                        <hr />
                         <Grid item>
+                            <h3>Eleitores:</h3>
+                        </Grid>
+                        <Grid item sx={{ alignItems: "center" }}>
                             <PlotVoters name={city?.name} elections={city?.elections} />
                         </Grid>
                     </Grid>
-                    <Grid item size={{ xs: 5 }} >
+                    <Grid item size={{ xs: 4 }} >
                         <LocalMap />
                     </Grid>
                 </Grid>
@@ -59,18 +92,43 @@ const City = (props) => {
                 <Grid item>
                     <TableCityHistoric />
                 </Grid>
-                <Grid item>
-                    <h4>Os Presidentes:</h4>
+                <Grid item sx={{ mt: 3 }}>
+                    <h3>Os Presidentes de Câmara:</h3>
                 </Grid>
-                <Grid item>
-                    <CarouselPresidents />
+                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
+                    {elections?.map((election, index) => {
+                        return (
+                            <Grid item size={{ xs: 2 }} key={index} >
+                                <CardPresident election={election} />
+                            </Grid>
+                        )
+                    })}
                 </Grid>
                 <hr />
                 <Grid item>
-                    <h3>Histórico Autárquico no Munícipio</h3>
+                    <h2>Resumo Autárquico na Concelhia:</h2>
                 </Grid>
-                <Grid item>
-                    <TableCity elections={city?.elections} />
+                <Grid item container direction="row" sx={{ alignItems: "center", justifyContent: "space-around" }}>
+                    <Grid item size={{ xs: 7 }}>
+                        <TableCity municipalities={city?.municipalities} selectedElectionYear={selectedElectionYear} />
+                    </Grid>
+                    <Grid item container direction="column" size={{ xs: 5 }} sx={{ alignItems: "center", justifyContent: "center" }}>
+                        <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
+                            <Slider
+                                defaultValue={electionYears[0]}
+                                step={null}
+                                marks={electionYears.map(year => ({ value: year, label: year }))}
+                                min={Math.min(...electionYears)}
+                                max={Math.max(...electionYears)}
+                                valueLabelDisplay="auto"
+                                onChange={(event, value) => {
+                                    if (value) {
+                                        setSelectedElectionYear(value);
+                                    }
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
                 </Grid>
 
             </Grid>

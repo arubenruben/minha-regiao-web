@@ -1,18 +1,25 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import CarouselPresidentImages from '../carousel/CarouselPresidentImages';
+import unknownPerson from '../../assets/images/Unknown_person.jpg';
 
 const CardPresident = (props) => {
+    
     return (
-        <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
+        <Card className="card-president">
+            {props.election.president.images.length === 0 ? (
+                <Card.Img variant="top" src={unknownPerson} />
+            ) : (
+                <CarouselPresidentImages images={props.election.president.images} />
+            )}
             <Card.Body>
-                <Card.Title>Card Title</Card.Title>
+                <Card.Title>{props.election.president.name}</Card.Title>
                 <Card.Text>
-                    Some quick example text to build on the card title and make up the
-                    bulk of the card's content.
+                    Início Mandato: {props.election.president.start_year}
                 </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
+                <Card.Text>
+                    Fim Mandato: {props.election.president.end_year}
+                </Card.Text>                
             </Card.Body>
         </Card>
     )

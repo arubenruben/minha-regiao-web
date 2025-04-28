@@ -27,6 +27,7 @@ const District = (props) => {
         );
 
         setElectionYears(response);
+        setSelectedElectionYear(response[0]);
     }
 
     // Fetch districts from the API
@@ -37,26 +38,8 @@ const District = (props) => {
         );
 
         setDistrict(response);
-
-        parseElectionYears(response);
     };
 
-    const parseElectionYears = (district) => {
-        const electionYears = new Set();
-
-        district?.cities?.forEach(city => {
-            city?.elections?.forEach(election => {
-                if (election.year)
-                    electionYears.add(election.year);
-            });
-        });
-
-        const sortedYears = Array.from(electionYears).sort((a, b) => b - a)
-
-        // Sort the election years
-        setSelectedElectionYear(sortedYears[0]);
-        setElectionYears(sortedYears);
-    };
 
     useEffect(() => {
         fetchDistrict(name).catch((error) => {
@@ -92,20 +75,13 @@ const District = (props) => {
                     </Grid>
                     <hr />
                     <Grid item>
-                        <h2>Eleições Autárquicas em {district?.name}</h2>
+                        <h2>Resumo Autárquico no Distrito:</h2>
                     </Grid>
                     <Grid item container direction="row" sx={{ alignItems: "center", justifyContent: "space-around" }}>
                         <Grid item size={{ xs: 7 }}>
                             <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
                         </Grid>
                         <Grid item container direction="column" size={{ xs: 5 }} sx={{ alignItems: "center", justifyContent: "center" }}>
-                            <Grid item size={{ xs: 12 }}>
-                                <PlotNumberCities
-                                    name={district?.name}
-                                    elections={district?.elections}
-                                    selectedElectionYear={selectedElectionYear}
-                                />
-                            </Grid>
                             <Grid item size={{ xs: 10 }} sx={{mx: "auto"}}>
                                 <Slider
                                     defaultValue={electionYears[0]}
@@ -119,6 +95,13 @@ const District = (props) => {
                                             setSelectedElectionYear(value);
                                         }
                                     }}
+                                />
+                            </Grid>
+                            <Grid item size={{ xs: 12 }}>
+                                <PlotNumberCities
+                                    name={district?.name}
+                                    elections={district?.elections}
+                                    selectedElectionYear={selectedElectionYear}
                                 />
                             </Grid>
                         </Grid>
