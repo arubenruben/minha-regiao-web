@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
 import { Slider } from '@mui/material';
+import PlotNumberCities from '../components/plot/PlotNumberCities';
 
 
 const City = (props) => {
@@ -52,9 +53,6 @@ const City = (props) => {
         return election?.president != null;
     });
 
-    console.log(city);
-    
-
     return (
         <GenericLayout main={
             <Grid container direction="column">
@@ -90,7 +88,7 @@ const City = (props) => {
                     <h3>Histórico na Câmara Municipal</h3>
                 </Grid>
                 <Grid item>
-                    <TableCityHistoric />
+                    <TableCityHistoric name={city?.name} elections={city?.elections} />
                 </Grid>
                 <Grid item sx={{ mt: 3 }}>
                     <h3>Os Presidentes de Câmara:</h3>
@@ -126,6 +124,13 @@ const City = (props) => {
                                         setSelectedElectionYear(value);
                                     }
                                 }}
+                            />
+                        </Grid>
+                        <Grid item size={{ xs: 12 }}>
+                            <PlotNumberCities
+                                name={city?.name}
+                                elections={city?.elections}
+                                selectedElectionYear={selectedElectionYear}
                             />
                         </Grid>
                     </Grid>

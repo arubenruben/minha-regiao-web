@@ -42,10 +42,7 @@ const TableCity = (props) => {
         // Sort newElections by city name
         setElections(newElections.sort((a, b) => a.municipality.name.localeCompare(b.municipality.name)));
     }, [props.municipalities, props.selectedElectionYear]);
-    
-    console.log(props.municipalities);
-    console.log(elections);
-    
+
     return (
         <Table size="small" stickyHeader>
             <TableHead>
