@@ -1,4 +1,5 @@
 @import url("variables.css");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 html,
 body {
@@ -6,6 +7,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+    font-family: 'Montserrat', sans-serif;
 }
 
 
@@ -59,6 +61,13 @@ html a {
 
 .party-card-img {
     max-width: 150px;
+}
+
+.card-wikipedia .card-header {
+    background-color: var(--blue-at);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
 #title {

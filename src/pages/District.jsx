@@ -72,19 +72,20 @@ const District = (props) => {
     return (
         <GenericLayout
             main={
-                <Grid container direction="column">
-                    <Grid item>
-                        <h1>Distrito: {district?.name}</h1>
-                    </Grid>
-                    <Grid item container direction="row" sx={{ justifyContent: "space-around", mb: 5 }}>
-                        <Grid item size={{ xs: 5 }} >
+                <Grid container direction="column" >
+                    <Grid item container direction="row" sx={{ my: 5, justifyContent: "space-around" }}>
+                        <Grid item size={{ xs: 4}} >
                             <LocalMap />
                         </Grid>
-                        <Grid item container direction="column" sx={{ alignItems: "center" }} size={{ xs: 6 }}>
+                        <Grid item container direction="column" size={{ xs: 7 }}>
                             <Grid item>
                                 <CardWikipedia wikipedia={district?.wikipedia} />
                             </Grid>
+                            <hr />
                             <Grid item>
+                                <h3>Eleitores:</h3>
+                            </Grid>
+                            <Grid item sx={{ alignItems: "center" }}>
                                 <PlotVoters name={district?.name} elections={district?.elections} />
                             </Grid>
                         </Grid>
@@ -93,17 +94,23 @@ const District = (props) => {
                     <Grid item>
                         <h2>Eleições Autárquicas em {district?.name}</h2>
                     </Grid>
-                    <Grid item container direction="row" sx={{ alignItems: "center" }}>
-                        <Grid item container direction="row" sx={{ alignItems: "center" }}>
-                            <Grid item size={{ xs: 6 }}>
-                                <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
+                    <Grid item container direction="row" sx={{ alignItems: "center", justifyContent: "space-around" }}>
+                        <Grid item size={{ xs: 7 }}>
+                            <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
+                        </Grid>
+                        <Grid item container direction="column" size={{ xs: 5 }} sx={{ alignItems: "center", justifyContent: "center" }}>
+                            <Grid item size={{ xs: 12 }}>
+                                <PlotNumberCities
+                                    name={district?.name}
+                                    elections={district?.elections}
+                                    selectedElectionYear={selectedElectionYear}
+                                />
                             </Grid>
-                            <Grid item size={{ xs: 1 }} sx={{ height: "400px" }}>
+                            <Grid item size={{ xs: 10 }} sx={{mx: "auto"}}>
                                 <Slider
                                     defaultValue={electionYears[0]}
                                     step={null}
                                     marks={electionYears.map(year => ({ value: year, label: year }))}
-                                    orientation="vertical"
                                     min={Math.min(...electionYears)}
                                     max={Math.max(...electionYears)}
                                     valueLabelDisplay="auto"
@@ -112,13 +119,6 @@ const District = (props) => {
                                             setSelectedElectionYear(value);
                                         }
                                     }}
-                                />
-                            </Grid>
-                            <Grid item size={{ xs: 5 }}>
-                                <PlotNumberCities
-                                    name={district?.name}
-                                    elections={district?.elections}
-                                    selectedElectionYear={selectedElectionYear}
                                 />
                             </Grid>
                         </Grid>

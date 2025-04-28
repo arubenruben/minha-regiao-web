@@ -46,7 +46,7 @@ const TableHomepage = (props) => {
 
 
     return (
-        <Table>
+        <Table stickyHeader>
             <TableHead>
                 <TableRow>
                     <TableCell>Partido</TableCell>

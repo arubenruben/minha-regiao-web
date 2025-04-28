@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 const CardWikipedia = (props) => {
 
     return (
-        <Card>
+        <Card className="card-wikipedia">
             <Card.Header>{props.wikipedia?.title}</Card.Header>
             <Card.Body>
                 <Card.Text>
