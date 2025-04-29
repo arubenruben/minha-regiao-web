@@ -1,148 +1,125 @@
 import React, { useEffect, useState } from 'react'
-import { useSearchParams } from "react-router-dom";
+import { Grid } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import GenericLayout from '../layouts/GenericLayout';
 import { sendRequest } from '../utils';
-import LocalLayout from '../layouts/LocalLayout';
-import FormGeography from '../components/form/municipality/FormGeography';
-import FormContacts from '../components/form/municipality/FormContacts';
-import FormUsefullLinks from '../components/form/municipality/FormUsefullLinks';
+import LocalMap from '../components/maps/LocalMap';
+import CardWikipedia from '../components/card/CardWikipedia';
+import PlotVoters from '../components/plot/PlotVoters';
+import TableCityHistoric from '../components/table/TableCityHistoric';
+import { Link } from 'react-router-dom';
+import NorthWestIcon from '@mui/icons-material/NorthWest';
+import CardPresident from '../components/card/CardPresident';
+import PlotElection from '../components/plot/PlotElection';
+import WarningIcon from '@mui/icons-material/Warning';
+import Alert from 'react-bootstrap/Alert';
 
 const Municipality = (props) => {
-  const [searchParams] = useSearchParams();
+  const { name } = useParams();
+
   const [municipality, setMunicipality] = useState({});
+  const [electionYears, setElectionYears] = useState([]);
+  const [selectedElectionYear, setSelectedElectionYear] = useState(null);
 
   const fetchMunicipality = async (municipalityName) => {
-    const municipality = await sendRequest(
-      `${process.env.REACT_APP_ENDPOINT}/municipalities/?name=${municipalityName}`,
+    const response = await sendRequest(
+      `${process.env.REACT_APP_ENDPOINT}/municipalities/${municipalityName}`,
       'GET'
     );
-    setMunicipality(municipality[0]);
+    setMunicipality(response);
   }
 
+  const fetchElectionYears = async (name) => {
+    const response = await sendRequest(
+      `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+      "GET"
+    );
+
+    setElectionYears(response);
+    setSelectedElectionYear(response[0]);
+  }
 
   useEffect(() => {
-    const municipalityName = searchParams.get('name');
-    fetchMunicipality(municipalityName);
+    fetchMunicipality(name);
+    fetchElectionYears(name);
   }, []);
 
-  return (
-    <LocalLayout
-      name={municipality.name}
-      geographyTitle={'Geografia'}
-      formGeography={<FormGeography municipality={municipality} />}
-      contactsTitle={'Contactos Junta de Freguesia'}
-      formContacts={<FormContacts municipality={municipality} />}
-      usefullLinksTitle={'Links Úteis'}
-      formUsefullLinks={<FormUsefullLinks municipality={municipality} />}
-      elections={municipality.elections}
-    />
+  // filter elections that include the president
+  const elections = municipality?.elections?.filter((election) => {
+    return election?.president != null;
+  });
 
-    /*
+  console.log(municipality);
+
+  return (
     <GenericLayout
-    main={
-      <Grid container direction={'column'} sx={{ mb: 5 }}>
-      <Grid item xs={6}>
-      <h1>{municipality.name}</h1>
-      </Grid>
-      
-      <Grid item container direction={'row'} justifyContent={'space-between'}>
-      <Grid container item direction={'column'} size={6}>
-      <Form>
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Nome</InputGroup.Text>
-      <Form.Control
-      value={municipality?.name}
-      readOnly
-      />
-      </InputGroup>
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Concelho</InputGroup.Text>
-      <Form.Control
-      value={municipality?.city?.name}
-      readOnly
-      />
-      </InputGroup>
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Distrito</InputGroup.Text>
-      <Form.Control
-      value={municipality?.city?.district?.name}
-      readOnly
-      />
-      </InputGroup>
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Código Postal</InputGroup.Text>
-      <Form.Control
-      value={municipality?.zip_code?.split('-')[0]}
-      readOnly
-      />
-      </InputGroup>
-      
-      <Divider />
-      
-      <h3>Contactos Junta de Freguesia</h3>
-      
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Presidente da Junta Atual</InputGroup.Text>
-      <Form.Control
-      value={municipality?.president}
-      readOnly
-      />
-      </InputGroup>
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Morada da Junta de Freguesia</InputGroup.Text>
-      <Form.Control
-      value={municipality?.address}
-      readOnly
-      />
-      </InputGroup>
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Email da Junta de Freguesia</InputGroup.Text>
-      <Form.Control
-      value={municipality?.email}
-      readOnly
-      />
-      </InputGroup>
-      
-      <InputGroup className="mb-3">
-      <InputGroup.Text>Telefone da Junta de Freguesia</InputGroup.Text>
-      <Form.Control
-      value={municipality?.phone}
-      readOnly
-      />
-      </InputGroup>
-      
-      <Divider />
-      
-      <h3>Links Úteis</h3>
-      
-      <InputGroup className="mb-3">
-      <InputGroup.Text>URL Freguesias PT</InputGroup.Text>
-      <Form.Control
-      value={municipality?.freguesias_pt_url}
-      readOnly
-      />
-      </InputGroup>
-      </Form>
-      </Grid>
-      <Grid item size={6}>
-      <LocalMap />
-      </Grid>
-      </Grid>
-      <Divider />
-      <Grid item>
-      <h2>Eleições Autárquicas</h2>
-      </Grid>
-      <Grid container direction={'row'} justifyContent={'center'}>
-      <PlotElection elections={municipality?.elections} />
-      </Grid>
-      <Divider />
-      <Grid container direction={'row'} justifyContent={'center'}>
-      {municipality?.elections?.map((election, index) => <CardElection key={index} election={election} />)}
-      </Grid>
-      </Grid>
-    }
-    />
-    */
+      alert={
+        <>
+          {municipality?.new_municipality ? <Alert variant="warning" style={{ margin: "10px" }} >
+            <Alert.Heading>Freguesia Extinta na Reorganização administrativa do território (Lei n.º 22/2012, de 30 de maio)</Alert.Heading>
+          </Alert > : null}
+        </>
+      }
+      main={
+        < Grid container direction="column" >
+          <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
+            <Grid item>
+              <span>
+                <NorthWestIcon sx={{ fontSize: 20 }} />
+                <Link to={`/cidade/${municipality?.city?.name}`}>
+                  Voltar para a Página da Cidade{municipality?.city?.name}
+                </Link>
+              </span>
+            </Grid>
+          </Grid>
+          <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
+            <Grid item container direction="column" size={{ xs: 7 }}>
+              <Grid item>
+                <CardWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
+              </Grid>
+              <hr />
+              <Grid item>
+                <h3>Eleitores:</h3>
+              </Grid>
+              <Grid item sx={{ alignItems: "center" }}>
+                <PlotVoters name={municipality?.name} elections={municipality?.elections} />
+              </Grid>
+            </Grid>
+            <Grid item size={{ xs: 4 }} >
+              <LocalMap />
+            </Grid>
+          </Grid>
+          <hr />
+          <Grid item>
+            <h3>Histórico na Junta de Freguesia</h3>
+          </Grid>
+          <Grid container item direction="row" sx={{ alignItems: "center" }}>
+            <Grid item size={{ xs: 7 }}>
+              <TableCityHistoric name={municipality?.name} elections={municipality?.elections} />
+            </Grid>
+            <Grid item size={{ xs: 5 }}>
+              <PlotElection />
+            </Grid>
+          </Grid>
+          <hr />
+          <Grid item sx={{ mt: 3 }}>
+            <h3>Os Presidentes de Junta:</h3>
+          </Grid>
+          <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
+            {elections?.map((election, index) => {
+              return (
+                <Grid item size={{ xs: 2 }} key={index} >
+                  <CardPresident election={election} />
+                </Grid>
+              )
+            })}
+          </Grid>
+        </Grid >
+      } />
   )
+
+
+
 }
 
 export default Municipality

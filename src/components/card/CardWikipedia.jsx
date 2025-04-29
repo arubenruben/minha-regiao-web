@@ -5,7 +5,7 @@ const CardWikipedia = (props) => {
 
     return (
         <Card className="card-wikipedia">
-            <Card.Header>{props.wikipedia?.title}</Card.Header>
+            <Card.Header>{props.name ?? props.wikipedia?.title}</Card.Header>
             <Card.Body>
                 <Card.Text>
                     {props.wikipedia?.summary}

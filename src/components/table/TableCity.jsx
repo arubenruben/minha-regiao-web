@@ -11,17 +11,36 @@ const TableCity = (props) => {
     const [elections, setElections] = useState([]);
 
     useEffect(() => {
-        if (!props.municipalities || !props.selectedElectionYear) return;
+        if (!props.municipalities || !props.selectedElectionYear)
+            return;
 
-        // Filter the elections based on the selected election year
-        const filteredElections = props.municipalities?.map((city) => {
-            return city.elections.filter((election) => election.year === props.selectedElectionYear);
-        }).flat();
+        const filteredElections = []
+
+        for (let i = 0; i < props.municipalities.length; i++) {
+            const municipality = props.municipalities[i];
+            const election = municipality.elections.find((election) => election.year === props.selectedElectionYear);
+
+            if (!election)
+                continue;
+
+
+            // TODO: Hotfix to mask bug in the Database that old_municipalities are being taking into consideration            
+            if (props.selectedElectionYear < 2012 && municipality.new_municipality === null)
+                continue;
+
+            if (props.selectedElectionYear >= 2012 && municipality.new_municipality !== null)
+                continue;
+
+            filteredElections.push({
+                municipality: municipality,
+                election: election,
+            });
+        }
 
         // Process elections data using map and reduce instead of for loops
-        const newElections = filteredElections.map((election, i) => {
+        const newElections = filteredElections.map((elem, i) => {
             // Use reduce to find both totalVotes and winner in a single pass
-            const { totalVotes, winner } = election.election_results.reduce(
+            const { totalVotes, winner } = elem.election.election_results.reduce(
                 (acc, result) => {
                     const newTotal = acc.totalVotes + result.number_votes;
                     const newWinner = !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner;
@@ -30,10 +49,9 @@ const TableCity = (props) => {
                 { totalVotes: 0, winner: null }
             );
 
-
             return {
-                municipality: props.municipalities[i],
-                election,
+                municipality: elem.municipality,
+                election: elem.election,
                 winner: winner,
                 totalVotes,
             };
@@ -60,9 +78,9 @@ const TableCity = (props) => {
                         <TableCell component="th" scope="row">
                             {election.municipality.name}
                         </TableCell>
-                        <TableCell align="right">{election.winner.party}</TableCell>
+                        <TableCell align="right">{election.winner?.party}</TableCell>
                         <TableCell align="center">{election.election.president?.name ?? '-'}</TableCell>
-                        <TableCell align="center">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
+                        <TableCell align="center">{(election.winner?.number_votes / (election.totalVotes + election.number_blank_votes + election.number_null_votes) * 100).toFixed(2)}</TableCell>
                         <TableCell align="center">
                             <Link to={`/freguesia/${election.municipality.name}`}>
                                 <OpenInNewIcon />

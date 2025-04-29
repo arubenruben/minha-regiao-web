@@ -15,12 +15,13 @@ const TableCityHistoric = (props) => {
 
         const results = []
 
+
         // For each election. Identify the winner        
         for (let i = 0; i < props.elections?.length; i++) {
             // Find the winner of this election
             let winner = null;
 
-            let totalVotes = 0;
+            let totalVotes = 0
 
             for (let j = 0; j < props.elections[i].election_results.length; j++) {
                 const result = props.elections[i].election_results[j];
@@ -33,7 +34,6 @@ const TableCityHistoric = (props) => {
 
             results.push(
                 {
-                    year: props.elections[i].year,
                     election: props.elections[i],
                     winner: winner,
                     totalVotes: totalVotes,
@@ -55,16 +55,16 @@ const TableCityHistoric = (props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {elections?.map((election, index) => (
+                {elections?.map((elem, index) => (
                     <TableRow key={index}>
                         <TableCell component="th" scope="row">
-                            {election.year}
+                            {elem.election.year}
                         </TableCell>
-                        <TableCell align="right">{election.winner.party}</TableCell>
-                        <TableCell align="right">{election.election.president?.name ?? "-"}</TableCell>
-                        <TableCell align="right">{((election.winner.number_votes / election.totalVotes) * 100).toFixed(2)}%</TableCell>
+                        <TableCell align="right">{elem.winner.party}</TableCell>
+                        <TableCell align="right">{elem.election.president?.name ?? "-"}</TableCell>
+                        <TableCell align="right">{((elem.winner.number_votes / (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes)) * 100).toFixed(2)}%</TableCell>
                         <TableCell align="right">
-                            <Link to={`/eleicao/cidade/${props.name}/${election.year}`}>
+                            <Link to={`/eleicao/cidade/${props.name}/${elem.election.year}`}>
                                 <OpenInNewIcon />
                             </Link>
                         </TableCell>

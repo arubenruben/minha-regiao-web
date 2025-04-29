@@ -8,12 +8,12 @@ import CardWikipedia from '../components/card/CardWikipedia';
 import PlotVoters from '../components/plot/PlotVoters';
 import TableCity from '../components/table/TableCity';
 import TableCityHistoric from '../components/table/TableCityHistoric';
-import CarouselPresidents from '../components/carousel/CarouselPresidents';
 import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
 import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
+import PlotElection from '../components/plot/PlotElection';
 
 
 const City = (props) => {
@@ -87,8 +87,13 @@ const City = (props) => {
                 <Grid item>
                     <h3>Histórico na Câmara Municipal</h3>
                 </Grid>
-                <Grid item>
-                    <TableCityHistoric name={city?.name} elections={city?.elections} />
+                <Grid container item direction="row" sx={{ alignItems: "center" }}>
+                    <Grid item size={{ xs: 7 }}>
+                        <TableCityHistoric name={city?.name} elections={city?.elections} />
+                    </Grid>
+                    <Grid item size={{ xs: 5 }}>
+                        <PlotElection />
+                    </Grid>
                 </Grid>
                 <Grid item sx={{ mt: 3 }}>
                     <h3>Os Presidentes de Câmara:</h3>
