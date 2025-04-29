@@ -13,8 +13,7 @@ const Election = (props) => {
     const [electionYears, setElectionYears] = useState([]);
     const [yearToCompare, setyearToCompare] = useState(null);
     const [otherElection, setOtherElection] = useState(null);
-
-    const nullOption = Math.max(...electionYears) + 4
+    const [nullOption, setNullOption] = useState(null);
 
     const fetchElection = async (type, name, year) => {
         let endpoint = null;
@@ -27,11 +26,11 @@ const Election = (props) => {
             endpoint = `${process.env.REACT_APP_ENDPOINT}/elections/city/${name}/${year}`;
         }
 
-        const response = await sendRequest(
+        return await sendRequest(
             endpoint,
             "GET"
         );
-        setElection(response);
+
     }
 
     const fetchElectionYears = async () => {
@@ -41,50 +40,44 @@ const Election = (props) => {
         );
 
         // Remove year from the list of years
-        const filteredYears = response.filter((year) => year !== election?.year);
+        const filteredYears = response.filter((elem) => elem != year);
 
         // Sort years in descending order
         filteredYears.sort((a, b) => b - a);
 
         setElectionYears(filteredYears);
+
+        setNullOption(Math.max(...filteredYears) + 4);
+
     }
 
     useEffect(() => {
-        fetchElection(type, name, year);
-        fetchElectionYears(name);
+        setElection(fetchElection(type, name, year));
+        fetchElectionYears();
     }, []);
 
-    const handleChange = (event, value) => {
-        console.log(value);
 
-        if (value === null)
-            return;
+    const handleElectionChange = async (value) => {
 
-        if (value === nullOption) {
-            setyearToCompare(null);
+        if (!value)
             return;
-        }
 
         setyearToCompare(value);
-    }
 
-    const handleElectionChange = async () => {
-        if (yearToCompare === null) {
+
+        if (value === nullOption) {
             setOtherElection(null);
             return;
         }
 
-        setOtherElection(fetchElection(
+        setOtherElection(await fetchElection(
             type,
             name,
-            yearToCompare
+            value
         ));
     }
 
-    // Call handleElectionChange whenever yearToCompare changes
-    useEffect(() => {
-        handleElectionChange();
-    }, [yearToCompare]);
+    console.log(otherElection);
 
 
     return (
@@ -133,12 +126,20 @@ const Election = (props) => {
                                     min={Math.min(...electionYears)}
                                     max={Math.max(...electionYears) + 4}
                                     valueLabelDisplay="auto"
-                                    onChange={handleChange}
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            handleElectionChange(value);
+                                        }
+                                    }}
                                     sx={{ height: "400px" }}
                                 />
                             )}
                         </Grid>
                     </Grid>
+                </Grid>
+                <hr />
+                <Grid item>
+                    <h3>As notícias locais sobre a Eleição de {year}</h3>
                 </Grid>
             </Grid>
         } />

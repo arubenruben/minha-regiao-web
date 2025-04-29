@@ -21,6 +21,7 @@ const City = (props) => {
 
     const [electionYears, setElectionYears] = useState([]);
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
+    const [electionsWithPresident, setElectionsWithPresident] = useState([]);
 
     const { name } = useParams();
 
@@ -47,6 +48,12 @@ const City = (props) => {
         fetchCity(name);
         fetchElectionYears(name);
     }, []);
+
+    useEffect(() => {
+        if (city) {
+            setElectionsWithPresident(city?.elections.filter(election => election.president));
+        }
+    }, [city]);
 
     return (
         <GenericLayout main={
@@ -84,7 +91,7 @@ const City = (props) => {
                 </Grid>
                 <Grid container item direction="row" sx={{ alignItems: "center" }}>
                     <Grid item size={{ xs: 7 }}>
-                        <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"city"} />
+                        <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"cidade"} />
                     </Grid>
                     <Grid item size={{ xs: 5 }}>
                         <PlotElection />
@@ -94,7 +101,7 @@ const City = (props) => {
                     <h3>Os Presidentes de Câmara:</h3>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
-                    {city.elections?.map((election, index) => {
+                    {electionsWithPresident.map((election, index) => {
                         return (
                             <Grid item size={{ xs: 2 }} key={index} >
                                 <CardPresident election={election} />

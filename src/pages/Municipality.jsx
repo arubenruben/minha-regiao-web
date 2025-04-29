@@ -111,7 +111,7 @@ const Municipality = (props) => {
           </Grid>
           <Grid container item direction="row" sx={{ alignItems: "center" }}>
             <Grid item size={{ xs: 7 }}>
-              <TableCityHistoric name={municipality?.name} elections={filteredElections} endpoint={"municipality"} />
+              <TableCityHistoric name={municipality?.name} elections={filteredElections} endpoint={"freguesia"} />
             </Grid>
             <Grid item size={{ xs: 5 }}>
               <PlotElection />
