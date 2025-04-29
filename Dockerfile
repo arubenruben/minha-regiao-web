@@ -6,9 +6,9 @@ COPY package*.json .
 
 RUN npm install
 
-RUN npm install react-bootstrap bootstrap
+RUN npm install react-bootstrap bootstrap --save-prod
 
-RUN npm install react-plotly.js plotly.js
+RUN npm install @mui/x-charts --save-prod
 
 COPY . .
 

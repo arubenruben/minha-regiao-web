@@ -13,7 +13,9 @@ RUN npm install
 
 RUN npm install react-bootstrap bootstrap
 
-RUN npm install react-plotly.js plotly.js
+RUN npm install @mui/x-charts@next
+
+RUN npm install @mui/material @emotion/react @emotion/styled
 
 COPY . .
 
