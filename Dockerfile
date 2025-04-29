@@ -6,6 +6,10 @@ COPY package*.json .
 
 RUN npm install
 
+RUN npm install react-bootstrap bootstrap
+
+RUN npm install react-plotly.js plotly.js
+
 COPY . .
 
 RUN npm run build
