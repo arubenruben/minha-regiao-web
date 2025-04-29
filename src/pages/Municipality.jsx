@@ -11,8 +11,8 @@ import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
 import PlotElection from '../components/plot/PlotHistory';
-import WarningIcon from '@mui/icons-material/Warning';
 import Alert from 'react-bootstrap/Alert';
+import Fab from '@mui/material/Fab';
 
 const Municipality = (props) => {
   const { name } = useParams();

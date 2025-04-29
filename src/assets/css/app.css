@@ -8,8 +8,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
+    position: relative;
 }
-
 
 header {
     background-color: var(--blue-at);
@@ -101,7 +101,7 @@ html a {
     min-width: 300px;
 }
 
-.president-image-election{
+.president-image-election {
     height: 90px;
     min-height: 90px;
     object-fit: cover;
@@ -109,4 +109,10 @@ html a {
 
 #title {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#fab-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
 }

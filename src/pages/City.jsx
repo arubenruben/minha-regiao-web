@@ -14,7 +14,7 @@ import CardPresident from '../components/card/CardPresident';
 import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotElection from '../components/plot/PlotHistory';
-
+import Fab from '@mui/material/Fab';
 
 const City = (props) => {
     const [city, setCity] = useState(null);

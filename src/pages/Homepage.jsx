@@ -9,6 +9,9 @@ import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepag
 import HomepageMap from '../components/maps/HomepageMap';
 import TableHomepage from '../components/table/TableHomepage';
 import GenericFooter from '../components/footer/GenericFooter';
+import FabChat from '../components/fab/FabChat';
+import HomepageLayout from '../layouts/HomepageLayout';
+
 
 const Homepage = (props) => {
 
@@ -105,56 +108,57 @@ const Homepage = (props) => {
     }, []);
 
     return (
-        <Grid direction="column">
-            <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
-                <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", pb: 3 }}>
-                    <Grid container direction="column" size={{ xs: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
-                        <Grid item size={{ xs: 12 }}><h1 id="title">A Minha Região</h1></Grid>
-                        <Grid item size={{ xs: 12 }}><SubTitleCarousel /></Grid>
+        <HomepageLayout main={
+            <Grid direction="column">
+                <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
+                    <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", pb: 3 }}>
+                        <Grid container direction="column" size={{ xs: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
+                            <Grid item size={{ xs: 12 }}><h1 id="title">A Minha Região</h1></Grid>
+                            <Grid item size={{ xs: 12 }}><SubTitleCarousel /></Grid>
+                        </Grid>
+                        <Grid item>
+                            <Image id="homepage-logo" src={logo} roundedCircle />
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <Image id="homepage-logo" src={logo} roundedCircle />
+                    <Grid item size={6}>
+                        <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
                     </Grid>
                 </Grid>
-                <Grid item size={6}>
-                    <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
+                <hr />
+                <Grid item container direction="column" sx={{ mx: 3 }}>
+                    <Grid item>
+                        <h2>Panorama Autárquico {selectedYear}</h2>
+                    </Grid>
+                    <Grid item container direction="row">
+                        <Grid item size={{ xs: 6 }}>
+                            <TableHomepage electionSummary={electionSummary} parties={parties} />
+                        </Grid>
+                        <Grid item>
+                            <Slider
+                                defaultValue={electionYears[0]}
+                                step={null}
+                                marks={electionYears.map(year => ({ value: year, label: year }))}
+                                orientation="vertical"
+                                min={Math.min(...electionYears)}
+                                max={Math.max(...electionYears)}
+                                valueLabelDisplay="auto"
+                                onChange={(event, value) => {
+                                    if (value) {
+                                        setSelectedYear(value);
+                                        fetchCountryElections(value).catch((error) => {
+                                            console.error('Error fetching country elections:', error);
+                                        });
+                                    }
+                                }}
+                            />
+                        </Grid>
+                        <Grid item size={{ xs: 4 }} sx={{ mx: "auto" }}>
+                            <HomepageMap />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
-            <hr />
-            <Grid item container direction="column" sx={{ mx: 3 }}>
-                <Grid item>
-                    <h2>Panorama Autárquico {selectedYear}</h2>
-                </Grid>
-                <Grid item container direction="row">
-                    <Grid item size={{ xs: 6 }}>
-                        <TableHomepage electionSummary={electionSummary} parties={parties} />
-                    </Grid>
-                    <Grid item>
-                        <Slider
-                            defaultValue={electionYears[0]}
-                            step={null}
-                            marks={electionYears.map(year => ({ value: year, label: year }))}
-                            orientation="vertical"
-                            min={Math.min(...electionYears)}
-                            max={Math.max(...electionYears)}
-                            valueLabelDisplay="auto"
-                            onChange={(event, value) => {
-                                if (value) {
-                                    setSelectedYear(value);
-                                    fetchCountryElections(value).catch((error) => {
-                                        console.error('Error fetching country elections:', error);
-                                    });
-                                }
-                            }}
-                        />
-                    </Grid>
-                    <Grid item size={{ xs: 4 }} sx={{ mx: "auto" }}>
-                        <HomepageMap />
-                    </Grid>
-                </Grid>
-            </Grid>
-            <GenericFooter />
-        </Grid>
+        } />
     )
 }
 

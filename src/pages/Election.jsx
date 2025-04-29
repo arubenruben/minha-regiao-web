@@ -10,6 +10,7 @@ import TableElectionMetadata from '../components/table/TableElectionMetadata';
 import CardNews from '../components/card/CardNews';
 import CarouselElectionPage from '../components/carousel/CarouselElectionPage';
 import Button from 'react-bootstrap/Button';
+import Fab from '@mui/material/Fab';
 
 const Election = (props) => {
     const { type, name, year } = useParams();
