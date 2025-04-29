@@ -10,6 +10,8 @@ RUN npm install react-bootstrap bootstrap --save-prod
 
 RUN npm install @mui/x-charts --save-prod
 
+COPY .env.production .env
+
 COPY . .
 
 RUN npm run build
