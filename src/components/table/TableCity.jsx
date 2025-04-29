@@ -73,16 +73,16 @@ const TableCity = (props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {elections.map((election, index) => (
+                {elections.map((elem, index) => (
                     <TableRow key={index}>
                         <TableCell component="th" scope="row">
-                            {election.municipality.name}
+                            {elem.municipality.name}
                         </TableCell>
-                        <TableCell align="right">{election.winner?.party}</TableCell>
-                        <TableCell align="center">{election.election.president?.name ?? '-'}</TableCell>
-                        <TableCell align="center">{(election.winner?.number_votes / (election.totalVotes + election.number_blank_votes + election.number_null_votes) * 100).toFixed(2)}</TableCell>
+                        <TableCell align="right">{elem.winner?.party}</TableCell>
+                        <TableCell align="center">{elem.election.president?.name ?? '-'}</TableCell>
+                        <TableCell align="center">{(elem.winner?.number_votes / (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes) * 100).toFixed(2)}</TableCell>
                         <TableCell align="center">
-                            <Link to={`/freguesia/${election.municipality.name}`}>
+                            <Link to={`/freguesia/${elem.municipality.name}`}>
                                 <OpenInNewIcon />
                             </Link>
                         </TableCell>
