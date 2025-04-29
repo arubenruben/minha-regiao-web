@@ -31,6 +31,12 @@ main {
     max-height: 150px;
 }
 
+#list-election-years{
+    text-align: right;
+    font-weight: 700;
+    background-color: whitesmoke;
+}
+
 
 footer {
     background-color: var(--blue-at);

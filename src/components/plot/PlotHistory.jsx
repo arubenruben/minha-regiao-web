@@ -1,7 +1,8 @@
 import React from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
 
-const PlotElection = (props) => {
+
+const PlotHistory = (props) => {
     return (
         <LineChart
             xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
@@ -15,4 +16,4 @@ const PlotElection = (props) => {
     )
 }
 
-export default PlotElection
+export default PlotHistory

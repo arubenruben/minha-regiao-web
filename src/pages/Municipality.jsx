@@ -10,7 +10,7 @@ import TableCityHistoric from '../components/table/TableCityHistoric';
 import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
-import PlotElection from '../components/plot/PlotElection';
+import PlotElection from '../components/plot/PlotHistory';
 import WarningIcon from '@mui/icons-material/Warning';
 import Alert from 'react-bootstrap/Alert';
 
@@ -59,14 +59,14 @@ const Municipality = (props) => {
   return (
     <GenericLayout
       alert={
-      <>
+        <>
           {municipality?.new_municipality ? <Alert variant="warning" style={{ margin: "10px" }} >
             <Alert.Heading>Freguesia Extinta na Reorganização administrativa do território (Lei n.º 22/2012, de 30 de maio)</Alert.Heading>
             <p>Nova Designação: <Link to={`/freguesia/${municipality.new_municipality.name}`}> {municipality.new_municipality.name}</Link></p>
           </Alert > : null}
           {municipality?.old_municipalities?.length > 0 ? <Alert variant="warning" style={{ margin: "10px" }} >
             <Alert.Heading>Freguesia resultante da fusão de freguesias</Alert.Heading>
-            <p>Freguesia resultante da fusão de freguesias: 
+            <p>Freguesia resultante da fusão de freguesias:
               {municipality?.old_municipalities?.map((old_municipality, index) => {
                 return (
                   <Link key={index} to={`/freguesia/${old_municipality.name}`}> {old_municipality.name}</Link>
@@ -111,7 +111,7 @@ const Municipality = (props) => {
           </Grid>
           <Grid container item direction="row" sx={{ alignItems: "center" }}>
             <Grid item size={{ xs: 7 }}>
-              <TableCityHistoric name={municipality?.name} elections={filteredElections} />
+              <TableCityHistoric name={municipality?.name} elections={filteredElections} endpoint={"municipality"} />
             </Grid>
             <Grid item size={{ xs: 5 }}>
               <PlotElection />

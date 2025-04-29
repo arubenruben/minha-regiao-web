@@ -13,7 +13,7 @@ import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
 import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
-import PlotElection from '../components/plot/PlotElection';
+import PlotElection from '../components/plot/PlotHistory';
 
 
 const City = (props) => {
@@ -84,7 +84,7 @@ const City = (props) => {
                 </Grid>
                 <Grid container item direction="row" sx={{ alignItems: "center" }}>
                     <Grid item size={{ xs: 7 }}>
-                        <TableCityHistoric name={city?.name} elections={city?.elections} />
+                        <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"city"} />
                     </Grid>
                     <Grid item size={{ xs: 5 }}>
                         <PlotElection />
