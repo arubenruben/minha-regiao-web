@@ -74,6 +74,18 @@ html a {
     max-width: 150px;
 }
 
+.card-news .card-body {
+    height: 400px !important;
+    overflow-y: hidden;
+}
+
+.card-news .card-header {
+    background-color: var(--blue-at);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 .card-wikipedia .card-header {
     background-color: var(--blue-at);
     color: white;
@@ -87,6 +99,12 @@ html a {
     object-fit: cover;
     width: 300px;
     min-width: 300px;
+}
+
+.president-image-election{
+    height: 90px;
+    min-height: 90px;
+    object-fit: cover;
 }
 
 #title {

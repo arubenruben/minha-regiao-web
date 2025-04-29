@@ -7,8 +7,9 @@ import TableElection from '../components/table/TableElection';
 import PlotElection from '../components/plot/PlotElection';
 import { Slider } from '@mui/material';
 import TableElectionMetadata from '../components/table/TableElectionMetadata';
-import LocalMap from '../components/maps/LocalMap';
-import ElectionMap from '../components/maps/ElectionMap';
+import CardNews from '../components/card/CardNews';
+import CarouselElectionPage from '../components/carousel/CarouselElectionPage';
+import Button from 'react-bootstrap/Button';
 
 const Election = (props) => {
     const { type, name, year } = useParams();
@@ -118,22 +119,25 @@ const Election = (props) => {
 
     console.log(election);
 
-    console.log(totalNumberVotes);
-    
-
     return (
         <GenericLayout main={
             <Grid container direction="column">
                 <Grid item>
                     <h1>Eleição de {year} em {name}</h1>
                 </Grid>
-                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems:"center", mt: 3, }}>
-                    <Grid item sx={{ alignItems: "center" }} size={{ xs: 12, md: 7 }}>
+                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3, }}>
+                    <Grid item sx={{ alignItems: "center" }} size={{ xs: 12, md: 6 }}>
                         <TableElection election={election} totalNumberVotes={totalNumberVotes} />
                     </Grid>
-                    <Grid item container direction="column" sx={{ justifyContent: "center", alignItems: "center" }} size={{ xs: 12, md: 4 }}>
-                        <Grid item size={{ xs: 12 }}>
-                            <ElectionMap />
+                    <Grid item container direction="column" sx={{ justifyContent: "center", }} size={{ xs: 12, md: 4 }}>
+                        <h3>Presidente Eleito</h3>
+                        <Grid item container direction="row" size={{ xs: 12 }} sx={{ "alignItems": "center" }}>
+                            <Grid item size={{ xs: 12, md: 3 }} >
+                                <CarouselElectionPage election={election} />
+                            </Grid>
+                            <Grid item size={{ xs: 12, md: 8 }}>
+                                <h6>{election?.president?.name} | {election?.president?.party}</h6>
+                            </Grid>
                         </Grid>
                         <Grid item>
                             <TableElectionMetadata election={election} totalNumberVotes={totalNumberVotes} />
@@ -164,7 +168,7 @@ const Election = (props) => {
                             <PlotElection />
                         </Grid>}
                     </Grid>
-                    <Grid item size={{ xs: 2 }}>                        
+                    <Grid item size={{ xs: 2 }}>
                         <Grid item sx={{ mt: 3, justifyContent: "center" }} size={{ xs: 12 }}>
                             {electionYears.length > 0 && (
                                 <Slider
@@ -192,6 +196,17 @@ const Election = (props) => {
                 <hr />
                 <Grid item>
                     <h3>As notícias locais sobre a Eleição de {year}</h3>
+                </Grid>
+                <Grid item container direction="row" sx={{ mt: 5, justifyContent: "center", height: "100%" }} spacing={4}>
+                    {election?.news.map((news, index) => {
+                        return (
+                            <Grid item key={index} size={{ xs: 12, md: 5 }} sx={{ height: "1" }}>
+                                <Button href={news.url_arquivo} variant="" style={{ textAlign: "justify"}}>
+                                    <CardNews news={news} />
+                                </Button>
+                            </Grid>
+                        )
+                    })}
                 </Grid>
             </Grid>
         } />
