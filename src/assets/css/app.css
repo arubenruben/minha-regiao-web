@@ -31,7 +31,7 @@ main {
     max-height: 150px;
 }
 
-#list-election-years{
+#list-election-years {
     text-align: right;
     font-weight: 700;
     background-color: whitesmoke;
@@ -65,6 +65,11 @@ html a {
     min-height: 600px;
 }
 
+#election-map {
+    height: 200px !important;
+    min-height: 200px !important;
+}
+
 .party-card-img {
     max-width: 150px;
 }
@@ -76,7 +81,7 @@ html a {
     font-weight: 600;
 }
 
-.card-president .president-image{
+.card-president .president-image {
     height: 200px;
     min-height: 200px;
     object-fit: cover;

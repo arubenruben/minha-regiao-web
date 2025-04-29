@@ -6,6 +6,9 @@ import { Grid } from '@mui/material';
 import TableElection from '../components/table/TableElection';
 import PlotElection from '../components/plot/PlotElection';
 import { Slider } from '@mui/material';
+import TableElectionMetadata from '../components/table/TableElectionMetadata';
+import LocalMap from '../components/maps/LocalMap';
+import ElectionMap from '../components/maps/ElectionMap';
 
 const Election = (props) => {
     const { type, name, year } = useParams();
@@ -14,6 +17,7 @@ const Election = (props) => {
     const [yearToCompare, setyearToCompare] = useState(null);
     const [otherElection, setOtherElection] = useState(null);
     const [nullOption, setNullOption] = useState(null);
+    const [totalNumberVotes, setTotalNumberVotes] = useState(0);
 
     const fetchElection = async (type, name, year) => {
         let endpoint = null;
@@ -26,11 +30,12 @@ const Election = (props) => {
             endpoint = `${process.env.REACT_APP_ENDPOINT}/elections/city/${name}/${year}`;
         }
 
-        return await sendRequest(
+        const response = await sendRequest(
             endpoint,
             "GET"
         );
 
+        setElection(response);
     }
 
     const fetchElectionYears = async () => {
@@ -51,10 +56,48 @@ const Election = (props) => {
 
     }
 
+    const fetchOtherElection = async (type, name, year) => {
+        let endpoint = null;
+
+        if (type === "freguesia") {
+            endpoint = `${process.env.REACT_APP_ENDPOINT}/elections/municipality/${name}/${year}`;
+        }
+
+        else if (type === "cidade") {
+            endpoint = `${process.env.REACT_APP_ENDPOINT}/elections/city/${name}/${year}`;
+        }
+
+        const response = await sendRequest(
+            endpoint,
+            "GET"
+        );
+
+        setOtherElection(response);
+    }
+
+    const setTotalVotes = (election) => {
+        if (!election || !election.election_results) {
+            return 0;
+        }
+
+        const totalVotes = election.election_results.reduce((acc, result) => {
+            return acc + result.number_votes;
+        }, 0);
+
+        setTotalNumberVotes(totalVotes + election.number_blank_votes + election.number_null_votes);
+
+    }
+
     useEffect(() => {
-        setElection(fetchElection(type, name, year));
+        fetchElection(type, name, year);
         fetchElectionYears();
     }, []);
+
+    useEffect(() => {
+        if (election) {
+            setTotalVotes(election);
+        }
+    }, [election]);
 
 
     const handleElectionChange = async (value) => {
@@ -70,15 +113,13 @@ const Election = (props) => {
             return;
         }
 
-        setOtherElection(await fetchElection(
-            type,
-            name,
-            value
-        ));
+        fetchOtherElection(type, name, value)
     }
 
-    console.log(otherElection);
+    console.log(election);
 
+    console.log(totalNumberVotes);
+    
 
     return (
         <GenericLayout main={
@@ -86,13 +127,27 @@ const Election = (props) => {
                 <Grid item>
                     <h1>Eleição de {year} em {name}</h1>
                 </Grid>
+                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems:"center", mt: 3, }}>
+                    <Grid item sx={{ alignItems: "center" }} size={{ xs: 12, md: 7 }}>
+                        <TableElection election={election} totalNumberVotes={totalNumberVotes} />
+                    </Grid>
+                    <Grid item container direction="column" sx={{ justifyContent: "center", alignItems: "center" }} size={{ xs: 12, md: 4 }}>
+                        <Grid item size={{ xs: 12 }}>
+                            <ElectionMap />
+                        </Grid>
+                        <Grid item>
+                            <TableElectionMetadata election={election} totalNumberVotes={totalNumberVotes} />
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <hr />
                 <Grid item>
-                    <TableElection />
+                    <h3>Comparador de Resultados</h3>
                 </Grid>
                 <Grid item container direction="row" sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 8 }}>
                         <Grid item>
-                            <h6>{year}</h6>
+                            <h4>{year}</h4>
                         </Grid>
                         <Grid item size={{ xs: 12, md: "auto" }}>
                             <PlotElection />
@@ -101,7 +156,7 @@ const Election = (props) => {
                             <>
                                 <hr />
                                 <Grid item>
-                                    <h6>{yearToCompare}</h6>
+                                    <h4>{yearToCompare}</h4>
                                 </Grid>
                             </>
                         }
@@ -109,10 +164,7 @@ const Election = (props) => {
                             <PlotElection />
                         </Grid>}
                     </Grid>
-                    <Grid item container direction="column" size={{ xs: 2 }}>
-                        <Grid item>
-                            <h5>Comparar com Eleição de:</h5>
-                        </Grid>
+                    <Grid item size={{ xs: 2 }}>                        
                         <Grid item sx={{ mt: 3, justifyContent: "center" }} size={{ xs: 12 }}>
                             {electionYears.length > 0 && (
                                 <Slider
