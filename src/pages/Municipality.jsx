@@ -44,19 +44,35 @@ const Municipality = (props) => {
     fetchElectionYears(name);
   }, []);
 
-  // filter elections that include the president
-  const elections = municipality?.elections?.filter((election) => {
-    return election?.president != null;
-  });
-
-  console.log(municipality);
+  // Filter elections based on existence of new_municipality and old_municipalities
+  const filteredElections = municipality.elections?.filter((election) => {
+    // if municipality has a new_municipality, filter out elections after 2012
+    if (municipality.new_municipality) {
+      return election.year <= 2012;
+    }
+    // if municipality has old_municipalities, filter out elections before 2012
+    if (municipality.old_municipalities?.length > 0) {
+      return election.year >= 2012;
+    }
+  }) || [];
 
   return (
     <GenericLayout
       alert={
-        <>
+      <>
           {municipality?.new_municipality ? <Alert variant="warning" style={{ margin: "10px" }} >
             <Alert.Heading>Freguesia Extinta na Reorganização administrativa do território (Lei n.º 22/2012, de 30 de maio)</Alert.Heading>
+            <p>Nova Designação: <Link to={`/freguesia/${municipality.new_municipality.name}`}> {municipality.new_municipality.name}</Link></p>
+          </Alert > : null}
+          {municipality?.old_municipalities?.length > 0 ? <Alert variant="warning" style={{ margin: "10px" }} >
+            <Alert.Heading>Freguesia resultante da fusão de freguesias</Alert.Heading>
+            <p>Freguesia resultante da fusão de freguesias: 
+              {municipality?.old_municipalities?.map((old_municipality, index) => {
+                return (
+                  <Link key={index} to={`/freguesia/${old_municipality.name}`}> {old_municipality.name}</Link>
+                )
+              })}
+            </p>
           </Alert > : null}
         </>
       }
@@ -95,7 +111,7 @@ const Municipality = (props) => {
           </Grid>
           <Grid container item direction="row" sx={{ alignItems: "center" }}>
             <Grid item size={{ xs: 7 }}>
-              <TableCityHistoric name={municipality?.name} elections={municipality?.elections} />
+              <TableCityHistoric name={municipality?.name} elections={filteredElections} />
             </Grid>
             <Grid item size={{ xs: 5 }}>
               <PlotElection />
@@ -106,12 +122,12 @@ const Municipality = (props) => {
             <h3>Os Presidentes de Junta:</h3>
           </Grid>
           <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
-            {elections?.map((election, index) => {
+            {municipality.elections?.map((election, index) => {
               return (
                 <Grid item size={{ xs: 2 }} key={index} >
                   <CardPresident election={election} />
                 </Grid>
-              )
+              ) ? election.president?.name !== null : null
             })}
           </Grid>
         </Grid >

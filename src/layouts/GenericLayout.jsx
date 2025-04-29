@@ -6,7 +6,7 @@ const GenericLayout = (props) => {
     return (
         <>
             {props.header ?? <GenericHeader />}
-            {props.alert ?? null}
+            {props.alert ?? <></>}
             {props.main ?? <main>{props.main}</main>}
             {props.footer ?? <GenericFooter />}
         </>

@@ -48,11 +48,6 @@ const City = (props) => {
         fetchElectionYears(name);
     }, []);
 
-    // filter elections that include the president
-    const elections = city?.elections?.filter((election) => {
-        return election?.president != null;
-    });
-
     return (
         <GenericLayout main={
             <Grid container direction="column">
@@ -99,7 +94,7 @@ const City = (props) => {
                     <h3>Os Presidentes de Câmara:</h3>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
-                    {elections?.map((election, index) => {
+                    {city.elections?.map((election, index) => {
                         return (
                             <Grid item size={{ xs: 2 }} key={index} >
                                 <CardPresident election={election} />
