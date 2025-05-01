@@ -24,7 +24,8 @@ const PlotNumberCities = (props) => {
 
     useEffect(() => {
         const partyCount = elections.reduce((acc, election) => {
-            const party = election.winner.party;
+            const party = election.winner?.party;
+            if (!party) return acc; // Skip if no party is found
             acc[party] = (acc[party] || 0) + 1;
             return acc;
         }, {});
@@ -49,7 +50,7 @@ const PlotNumberCities = (props) => {
                 { data: yLabels },
             ]}
             xAxis={[{ data: xLabels, label: 'Partidos' }]}
-            yAxis={[{ width: 50, label: 'Número de Câmaras Municipais' }]}
+            yAxis={[{ width: 50, label: props.yAxisLabel }]}
         />
     );
 }

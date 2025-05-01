@@ -85,7 +85,7 @@ const District = (props) => {
                                 <SliderDistrict electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
                             </Grid>
                             <Grid item size={{ xs: 12 }}>
-                                <PlotNumberCities title={"Número de Cidades por Concelho"} cities={district?.cities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
+                                <PlotNumberCities yAxisLabel={"Número de Câmaras Municipais"} cities={district?.cities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
                             </Grid>
                         </Grid>
                     </Grid>

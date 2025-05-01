@@ -134,7 +134,7 @@ const City = (props) => {
                             />
                         </Grid>
                         <Grid item size={{ xs: 12 }}>
-
+                            <PlotNumberCities yAxisLabel={"Número de Juntas de Freguesia"} cities={city?.municipalities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
                         </Grid>
                     </Grid>
                 </Grid>
