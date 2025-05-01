@@ -15,6 +15,7 @@ import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotElection from '../components/plot/PlotHistory';
 import Fab from '@mui/material/Fab';
+import PlotHistory from '../components/plot/PlotHistory';
 
 const City = (props) => {
     const [city, setCity] = useState(null);
@@ -94,7 +95,7 @@ const City = (props) => {
                         <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"cidade"} />
                     </Grid>
                     <Grid item size={{ xs: 5 }}>
-                        <PlotElection />
+                        <PlotHistory elections={city?.elections} />
                     </Grid>
                 </Grid>
                 <Grid item sx={{ mt: 3 }}>
