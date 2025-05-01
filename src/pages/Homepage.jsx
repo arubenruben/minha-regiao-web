@@ -11,6 +11,7 @@ import TableHomepage from '../components/table/TableHomepage';
 import GenericFooter from '../components/footer/GenericFooter';
 import FabChat from '../components/fab/FabChat';
 import HomepageLayout from '../layouts/HomepageLayout';
+import SliderHomepage from '../components/slider/SliderHomepage';
 
 
 const Homepage = (props) => {
@@ -95,15 +96,15 @@ const Homepage = (props) => {
             <Grid direction="column">
                 <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
                     <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", pb: 3 }}>
-                        <Grid container direction="column" size={{ xs: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
-                            <Grid item size={{ xs: 12 }}><h1 id="title">A Minha Região</h1></Grid>
-                            <Grid item size={{ xs: 12 }}><SubTitleCarousel /></Grid>
+                        <Grid container direction="column" size={{ xs: 8.5, md: 3 }} sx={{ alignItems: "center" }}>
+                            <Grid item size={12}><h1 id="title">A Minha Região</h1></Grid>
+                            <Grid item size={12}><SubTitleCarousel /></Grid>
                         </Grid>
-                        <Grid item>
+                        <Grid item size={{ xs: 2, md: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
                             <Image id="homepage-logo" src={logo} roundedCircle />
                         </Grid>
                     </Grid>
-                    <Grid item size={6}>
+                    <Grid item size={{ xs: 10, md: 6 }}>
                         <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
                     </Grid>
                 </Grid>
@@ -113,30 +114,15 @@ const Homepage = (props) => {
                         <h2>Panorama Autárquico {selectedYear}</h2>
                     </Grid>
                     <Grid item container direction="row">
-                        <Grid className="slider-container" item container direction="column" size={{ xs: 6 }}>
+                        <Grid className="slider-container" item container direction="column" size={{ xs: 12, md: 6 }}>
                             <Grid item>
                                 <TableHomepage electionSummary={electionSummary} />
                             </Grid>
                             <Grid item>
-                                <Slider
-                                    defaultValue={electionYears[0]}
-                                    step={null}
-                                    marks={electionYears.map(year => ({ value: year, label: year }))}
-                                    min={Math.min(...electionYears)}
-                                    max={Math.max(...electionYears)}
-                                    valueLabelDisplay="auto"
-                                    onChange={(event, value) => {
-                                        if (value) {
-                                            setSelectedYear(value);
-                                            fetchCountryElections(value).catch((error) => {
-                                                console.error('Error fetching country elections:', error);
-                                            });
-                                        }
-                                    }}
-                                />
+                                <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />
                             </Grid>
                         </Grid>
-                        <Grid item size={{ xs: 4 }} sx={{ mx: "auto" }}>
+                        <Grid item size={{ xs: 12, md: 4 }} sx={{ mx: "auto" }}>
                             <HomepageMap />
                         </Grid>
                     </Grid>

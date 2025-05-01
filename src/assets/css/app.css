@@ -29,6 +29,7 @@ main {
 
 #homepage-logo {
     max-height: 150px;
+    width: 100%;
 }
 
 #list-election-years {
