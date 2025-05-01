@@ -104,7 +104,7 @@ const City = (props) => {
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
                     {electionsWithPresident.map((election, index) => {
                         return (
-                            <Grid item size={{ xs: 2 }} key={index} >
+                            <Grid item size={{ xs:6, md: 2 }} key={index} >
                                 <CardPresident election={election} />
                             </Grid>
                         )
