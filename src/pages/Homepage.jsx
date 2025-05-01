@@ -4,15 +4,11 @@ import Image from 'react-bootstrap/Image';
 import logo from '../assets/images/logo.png'
 import SubTitleCarousel from '../components/carousel/SubTitleCarousel';
 import { sendRequest } from '../utils';
-import { Slider } from '@mui/material';
 import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepage';
 import HomepageMap from '../components/maps/HomepageMap';
 import TableHomepage from '../components/table/TableHomepage';
-import GenericFooter from '../components/footer/GenericFooter';
-import FabChat from '../components/fab/FabChat';
 import HomepageLayout from '../layouts/HomepageLayout';
 import SliderHomepage from '../components/slider/SliderHomepage';
-
 
 const Homepage = (props) => {
 
@@ -95,12 +91,12 @@ const Homepage = (props) => {
         <HomepageLayout main={
             <Grid direction="column">
                 <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
-                    <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", pb: 3 }}>
-                        <Grid container direction="column" size={{ xs: 8.5, md: 3 }} sx={{ alignItems: "center" }}>
+                    <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
+                        <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>
                             <Grid item size={12}><h1 id="title">A Minha Região</h1></Grid>
                             <Grid item size={12}><SubTitleCarousel /></Grid>
                         </Grid>
-                        <Grid item size={{ xs: 2, md: 3 }} sx={{ justifyContent: "center", alignItems: "center" }}>
+                        <Grid item size={{ xs: 2, md: 1 }} sx={{ justifyContent: "center" }}>
                             <Image id="homepage-logo" src={logo} roundedCircle />
                         </Grid>
                     </Grid>

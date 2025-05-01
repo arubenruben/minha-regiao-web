@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,41 +8,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Link } from 'react-router-dom';
 
 const TableDistrict = (props) => {
-    const [elections, setElections] = useState([]);
-
-    useEffect(() => {
-        if (!props.cities || !props.selectedElectionYear) return;
-
-        // Filter the elections based on the selected election year
-        const filteredElections = props.cities?.map((city) => {
-            return city.elections.filter((election) => election.year === props.selectedElectionYear);
-        }).flat();
-
-        // Process elections data using map and reduce instead of for loops
-        const newElections = filteredElections.map((election, i) => {
-            // Use reduce to find both totalVotes and winner in a single pass
-            const { totalVotes, winner } = election.election_results.reduce(
-                (acc, result) => {
-                    const newTotal = acc.totalVotes + result.number_votes;
-                    const newWinner = !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner;
-                    return { totalVotes: newTotal, winner: newWinner };
-                },
-                { totalVotes: 0, winner: null }
-            );
-
-
-            return {
-                city: props.cities[i],
-                election,
-                winner: winner,
-                totalVotes,
-            };
-        });
-
-
-        // Sort newElections by city name
-        setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));
-    }, [props.cities, props.selectedElectionYear]);
 
     return (
         <Table size="small" stickyHeader>
@@ -56,7 +21,7 @@ const TableDistrict = (props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {elections.map((election, index) => (
+                {props.elections.map((election, index) => (
                     <TableRow key={index}>
                         <TableCell component="th" scope="row">
                             {election.city.name}

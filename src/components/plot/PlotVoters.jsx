@@ -2,12 +2,25 @@ import React from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
 
 const PlotVoters = (props) => {
+    const xAxis = props.voters.map((voter) => voter.year);
+    const yAxis = props.voters.map((voter) => voter.voters);
+
+    console.log(xAxis);
+    console.log(yAxis);
+
+
     return (
-        <LineChart
-            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+        <LineChart         
+            xAxis={[{
+                data: xAxis,
+                label: 'Anos Eleitorais',
+                scaleType: 'point', // Ensure X-axis is numeric
+                //labelFormat: (value) => value.toString().replace(',', ''), // Remove commas
+            }]}
+            yAxis={[{ label: 'Eleitores', scaleType: 'log' }]} // Use the yAxis data from the voters state
             series={[
                 {
-                    data: [2, 5.5, 2, 8.5, 1.5, 5],
+                    data: yAxis,
                 },
             ]}
             height={300}
