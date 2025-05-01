@@ -1,6 +1,9 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card';
 import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Button from 'react-bootstrap/Button';
 
 const CardNews = (props) => {
     const decodeTopic = (topic) => {
@@ -18,17 +21,34 @@ const CardNews = (props) => {
         }
     }
 
-
     return (
         <Card className="card-news">
-            <Card.Header>{props.news.newspaper.name}</Card.Header>
+            <Card.Header>
+                <Grid container direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
+                    <Grid item>
+                        {props.news.title}
+                    </Grid>
+                    <Grid item size={1}>
+                        <Button variant="" href={props.news.url_arquivo} target="_blank" rel="noopener noreferrer" className="btn-open-in-new">
+                            <OpenInNewIcon />
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Card.Header>
             <Card.Body>
                 <Card.Text>
-                    {props.news.content}
+                    <iframe src={props.news.url_arquivo} style={{ height: "800px", width: "100%" }}></iframe>
                 </Card.Text>
             </Card.Body>
             <Card.Footer className="text-muted">
-                <Chip label={decodeTopic(props.news.topic)} variant="outlined" />
+                <Grid container direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
+                    <Grid item size={4}>
+                        <span>In: {props.news.newspaper.name}</span>
+                    </Grid>
+                    <Grid item>
+                        <Chip label={decodeTopic(props.news.topic)} variant="outlined"/>
+                    </Grid>
+                </Grid>
             </Card.Footer>
         </Card>
     )

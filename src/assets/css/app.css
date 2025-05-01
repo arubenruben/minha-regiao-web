@@ -76,7 +76,7 @@ html a {
 }
 
 .card-news .card-body {
-    height: 400px !important;
+    height: 600px !important;
     overflow-y: hidden;
 }
 
@@ -94,7 +94,7 @@ html a {
     font-weight: 600;
 }
 
-.card-president{
+.card-president {
     height: 370px !important;
 }
 
@@ -125,4 +125,8 @@ html a {
     position: fixed;
     bottom: 20px;
     right: 10px;
+}
+
+.btn-open-in-new {
+    color: white !important;
 }

@@ -55,13 +55,8 @@ const Municipality = (props) => {
           return election.year >= 2012;
         }) || []
       )
-
-
     }
   }, [municipality]);
-
-  console.log(municipality);
-  console.log(filteredElections);
 
   return (
     <GenericLayout

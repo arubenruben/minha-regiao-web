@@ -11,6 +11,7 @@ import CardNews from '../components/card/CardNews';
 import CarouselElectionPage from '../components/carousel/CarouselElectionPage';
 import Button from 'react-bootstrap/Button';
 import Fab from '@mui/material/Fab';
+import SliderElection from '../components/slider/SliderElection';
 
 const Election = (props) => {
     const { type, name, year } = useParams();
@@ -118,15 +119,13 @@ const Election = (props) => {
         fetchOtherElection(type, name, value)
     }
 
-    console.log(election);
-
     return (
         <GenericLayout main={
             <Grid container direction="column">
                 <Grid item>
-                    <h1>Eleição de {year} em {name}</h1>
+                    <h1>Eleição de {year} - {name}</h1>
                 </Grid>
-                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3, }}>
+                {/* <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3, }}>
                     <Grid item sx={{ alignItems: "center" }} size={{ xs: 12, md: 6 }}>
                         <TableElection election={election} totalNumberVotes={totalNumberVotes} />
                     </Grid>
@@ -144,10 +143,9 @@ const Election = (props) => {
                             <TableElectionMetadata election={election} totalNumberVotes={totalNumberVotes} />
                         </Grid>
                     </Grid>
-                </Grid>
-                <hr />
+                </Grid> */}                
                 <Grid item>
-                    <h3>Comparador de Resultados</h3>
+                    <h3>Comparador de Resultados Eleitorais</h3>
                 </Grid>
                 <Grid item container direction="row" sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 8 }}>
@@ -172,24 +170,7 @@ const Election = (props) => {
                     <Grid item size={{ xs: 2 }}>
                         <Grid item sx={{ mt: 3, justifyContent: "center" }} size={{ xs: 12 }}>
                             {electionYears.length > 0 && (
-                                <Slider
-                                    defaultValue={Math.max(...electionYears) + 4}
-                                    step={null}
-                                    marks={[
-                                        { value: Math.max(...electionYears) + 4, label: "Não Comparar" },
-                                        ...electionYears.map(year => ({ value: year, label: year }))
-                                    ]}
-                                    orientation="vertical"
-                                    min={Math.min(...electionYears)}
-                                    max={Math.max(...electionYears) + 4}
-                                    valueLabelDisplay="auto"
-                                    onChange={(event, value) => {
-                                        if (value) {
-                                            handleElectionChange(value);
-                                        }
-                                    }}
-                                    sx={{ height: "400px" }}
-                                />
+                                <SliderElection electionYears={electionYears} handleElectionChange={handleElectionChange} nullOption={nullOption} yearToCompare={yearToCompare} setyearToCompare={setyearToCompare} setOtherElection={setOtherElection} setNullOption={setNullOption} />
                             )}
                         </Grid>
                     </Grid>
@@ -201,10 +182,8 @@ const Election = (props) => {
                 <Grid item container direction="row" sx={{ mt: 5, justifyContent: "center", height: "100%" }} spacing={4}>
                     {election?.news.map((news, index) => {
                         return (
-                            <Grid item key={index} size={{ xs: 12, md: 5 }} sx={{ height: "1" }}>
-                                <Button href={news.url_arquivo} variant="" style={{ textAlign: "justify"}}>
-                                    <CardNews news={news} />
-                                </Button>
+                            <Grid item key={index} size={{ xs: 12, md: 5 }}>
+                                <CardNews news={news} />
                             </Grid>
                         )
                     })}
