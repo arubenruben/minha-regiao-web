@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { _constructElections } from '../../utils';
 
 const PlotNumberCities = (props) => {
 
     const [parties, setParties] = useState({});
+    const [elections, setElections] = useState([]);
 
     useEffect(() => {
-        const partyCount = props.elections.reduce((acc, election) => {
+        if (props.cities && props.selectedElectionYear) {
+            // Filter the elections based on the selected election year
+            const filteredElections = props.cities.map((city) => {
+                return city.elections.filter((election) => election.year === props.selectedElectionYear);
+            }).flat();
+
+            // Process elections data using map and reduce instead of for loops
+            const newElections = filteredElections.map((election, i) => _constructElections(props.cities[i], election));
+
+            // Sort newElections by city name
+            setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));
+        }
+    }, [props.cities, props.selectedElectionYear]);
+
+    useEffect(() => {
+        const partyCount = elections.reduce((acc, election) => {
             const party = election.winner.party;
             acc[party] = (acc[party] || 0) + 1;
             return acc;
         }, {});
 
         setParties(partyCount);
-    }, [props.elections]);
+    }, [elections]);
 
     // X labels are the keys of the parties object
     const xLabels = Object.keys(parties).map((party) => {
