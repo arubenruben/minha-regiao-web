@@ -5,7 +5,7 @@ import GenericLayout from '../layouts/GenericLayout';
 import { sendRequest } from '../utils';
 import LocalMap from '../components/maps/LocalMap';
 import CardWikipedia from '../components/card/CardWikipedia';
-import PlotVoters from '../components/plot/PlotVoters';
+import PlotVoters from '../components/plot/PlotVotersDistrict';
 import TableCityHistoric from '../components/table/TableCityHistoric';
 import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
@@ -42,7 +42,7 @@ const Municipality = (props) => {
   useEffect(() => {
     fetchMunicipality(name);
     fetchElectionYears(name);
-  }, []);
+  }, [name]);
 
   // Filter elections based on existence of new_municipality and old_municipalities
   const filteredElections = municipality.elections?.filter((election) => {

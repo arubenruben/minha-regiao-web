@@ -13,8 +13,6 @@ import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
 import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
-import PlotElection from '../components/plot/PlotHistory';
-import Fab from '@mui/material/Fab';
 import PlotHistory from '../components/plot/PlotHistory';
 
 const City = (props) => {
@@ -81,7 +79,7 @@ const City = (props) => {
                             <h4>Variação no Número de Eleitores em {city?.name} Desde 1974:</h4>
                         </Grid>
                         <Grid item sx={{ alignItems: "center" }}>
-                            <PlotVoters localities={city?.municipalities} electionYears={electionYears} />
+                            <PlotVoters elections={city?.elections} electionYears={electionYears} />
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 4 }} >

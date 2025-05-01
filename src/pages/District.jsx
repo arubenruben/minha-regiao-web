@@ -9,6 +9,7 @@ import PlotNumberCities from '../components/plot/PlotNumberCities';
 import TableDistrict from '../components/table/TableDistrict';
 import CardWikipedia from '../components/card/CardWikipedia';
 import SliderDistrict from '../components/slider/SliderDistrict';
+import PlotVotersDistrict from '../components/plot/PlotVotersDistrict';
 
 const District = (props) => {
 
@@ -64,7 +65,7 @@ const District = (props) => {
                                 <h4>Variação no Número de Eleitores em Aveiro Desde 1974:</h4>
                             </Grid>
                             <Grid item sx={{ alignItems: { md: "center" } }}>
-                                <PlotVoters localities={district?.cities} electionYears={electionYears} />
+                                <PlotVotersDistrict cities={district?.cities} electionYears={electionYears} />
                             </Grid>
                         </Grid>
                         {/* Map only for the smaller screens */}
