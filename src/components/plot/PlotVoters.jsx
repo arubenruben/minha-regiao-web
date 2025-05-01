@@ -5,17 +5,12 @@ const PlotVoters = (props) => {
     const xAxis = props.voters.map((voter) => voter.year);
     const yAxis = props.voters.map((voter) => voter.voters);
 
-    console.log(xAxis);
-    console.log(yAxis);
-
-
     return (
-        <LineChart         
+        <LineChart
             xAxis={[{
                 data: xAxis,
                 label: 'Anos Eleitorais',
-                scaleType: 'point', // Ensure X-axis is numeric
-                //labelFormat: (value) => value.toString().replace(',', ''), // Remove commas
+                scaleType: 'point', // Ensure X-axis is numeric                
             }]}
             yAxis={[{ label: 'Eleitores', scaleType: 'log' }]} // Use the yAxis data from the voters state
             series={[

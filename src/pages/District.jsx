@@ -139,22 +139,18 @@ const District = (props) => {
                     </Grid>
                     <hr />
                     <Grid item>
-                        <h2>Resumo Autárquico no Distrito:</h2>
+                        <h2>Resultados Autárquicos nas Concelhias de {district?.name}:</h2>
                     </Grid>
                     <Grid item container direction="row" sx={{ alignItems: "center", justifyContent: "space-around" }}>
                         <Grid item size={{ sx: 12, md: 7 }}>
-                            <TableDistrict elections={elections} selectedElectionYear={selectedElectionYear} />
+                            <TableDistrict elections={elections} />
                         </Grid>
                         <Grid item container direction="column" size={{ xs: 12, md: 5 }} sx={{ alignItems: "center", justifyContent: "center" }}>
                             <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
                                 <SliderDistrict electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
                             </Grid>
                             <Grid item size={{ xs: 12 }}>
-                                <PlotNumberCities
-                                    name={district?.name}
-                                    elections={district?.elections}
-                                    selectedElectionYear={selectedElectionYear}
-                                />
+                                <PlotNumberCities elections={elections} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -165,15 +161,3 @@ const District = (props) => {
 }
 
 export default District
-
-/*
-
-Mapa de Braga com os concelhos
-
-Var chart com timeline do número de cameras municipais por partido usar https://mui.com/material-ui/react-chip/
-
-Espetar com o Wikipedia
-
-Fazer um line chart com o numero de eleitores por ano
-
-*/
