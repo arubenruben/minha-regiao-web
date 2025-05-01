@@ -79,7 +79,7 @@ const City = (props) => {
                             <h4>Variação no Número de Eleitores em {city?.name} Desde 1974:</h4>
                         </Grid>
                         <Grid item sx={{ alignItems: "center" }}>
-                            <PlotVoters elections={city?.elections} electionYears={electionYears} />
+                            <PlotVoters elections={city?.elections} />
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 4 }} >

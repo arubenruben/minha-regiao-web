@@ -5,21 +5,21 @@ import GenericLayout from '../layouts/GenericLayout';
 import { sendRequest } from '../utils';
 import LocalMap from '../components/maps/LocalMap';
 import CardWikipedia from '../components/card/CardWikipedia';
-import PlotVoters from '../components/plot/PlotVotersDistrict';
+import PlotVoters from '../components/plot/PlotVoters';
 import TableCityHistoric from '../components/table/TableCityHistoric';
 import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
-import PlotElection from '../components/plot/PlotHistory';
 import Alert from 'react-bootstrap/Alert';
-import Fab from '@mui/material/Fab';
+import PlotHistory from '../components/plot/PlotHistory';
 
 const Municipality = (props) => {
   const { name } = useParams();
 
   const [municipality, setMunicipality] = useState({});
-  const [electionYears, setElectionYears] = useState([]);
-  const [selectedElectionYear, setSelectedElectionYear] = useState(null);
+  const [, setElectionYears] = useState([]);
+  const [, setSelectedElectionYear] = useState(null);
+  const [filteredElections, setFilteredElections] = useState([]);
 
   const fetchMunicipality = async (municipalityName) => {
     const response = await sendRequest(
@@ -44,17 +44,24 @@ const Municipality = (props) => {
     fetchElectionYears(name);
   }, [name]);
 
-  // Filter elections based on existence of new_municipality and old_municipalities
-  const filteredElections = municipality.elections?.filter((election) => {
-    // if municipality has a new_municipality, filter out elections after 2012
-    if (municipality.new_municipality) {
-      return election.year <= 2012;
+  useEffect(() => {
+    if (municipality) {
+      setFilteredElections(
+        municipality.elections?.filter((election) => {
+          // if municipality has a new_municipality, filter out elections after 2012
+          if (municipality.new_municipality) {
+            return election.year <= 2012;
+          }
+          return election.year >= 2012;
+        }) || []
+      )
+
+
     }
-    // if municipality has old_municipalities, filter out elections before 2012
-    if (municipality.old_municipalities?.length > 0) {
-      return election.year >= 2012;
-    }
-  }) || [];
+  }, [municipality]);
+
+  console.log(municipality);
+  console.log(filteredElections);
 
   return (
     <GenericLayout
@@ -94,11 +101,11 @@ const Municipality = (props) => {
                 <CardWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
               </Grid>
               <hr />
-              <Grid item>
-                <h3>Eleitores:</h3>
+              <Grid item sx={{ mt: 2 }}>
+                <h4>Variação no Número de Eleitores em {municipality?.name} Desde 1974:</h4>
               </Grid>
               <Grid item sx={{ alignItems: "center" }}>
-                <PlotVoters name={municipality?.name} elections={municipality?.elections} />
+                <PlotVoters elections={filteredElections} />
               </Grid>
             </Grid>
             <Grid item size={{ xs: 4 }} >
@@ -114,7 +121,7 @@ const Municipality = (props) => {
               <TableCityHistoric name={municipality?.name} elections={filteredElections} endpoint={"freguesia"} />
             </Grid>
             <Grid item size={{ xs: 5 }}>
-              <PlotElection />
+              <PlotHistory elections={municipality?.elections} />
             </Grid>
           </Grid>
           <hr />
@@ -133,9 +140,6 @@ const Municipality = (props) => {
         </Grid >
       } />
   )
-
-
-
 }
 
 export default Municipality
