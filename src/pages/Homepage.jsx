@@ -19,8 +19,6 @@ const Homepage = (props) => {
     const [selectedYear, setSelectedYear] = useState(null)
     const [electionYears, setElectionYears] = useState([]);
     const [electionSummary, setElectionSummary] = useState([]);
-    const [parties, setParties] = useState([]);
-
 
     // Fetch regions from the API
     const fetchRegions = async () => {
@@ -34,16 +32,6 @@ const Homepage = (props) => {
         );
         setRegions(response);
     };
-
-    const fetchParties = async () => {
-        const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/parties/`,
-            "GET"
-        );
-
-        setParties(response);
-    }
-
 
     const fetchRegionsById = async (id) => {
         return await sendRequest(
@@ -100,11 +88,6 @@ const Homepage = (props) => {
             console.error('Error fetching election years:', error);
         });
 
-        fetchParties().catch((error) => {
-            console.error('Error fetching parties:', error);
-        });
-
-
     }, []);
 
     return (
@@ -130,27 +113,28 @@ const Homepage = (props) => {
                         <h2>Panorama Autárquico {selectedYear}</h2>
                     </Grid>
                     <Grid item container direction="row">
-                        <Grid item size={{ xs: 6 }}>
-                            <TableHomepage electionSummary={electionSummary} parties={parties} />
-                        </Grid>
-                        <Grid item>
-                            <Slider
-                                defaultValue={electionYears[0]}
-                                step={null}
-                                marks={electionYears.map(year => ({ value: year, label: year }))}
-                                orientation="vertical"
-                                min={Math.min(...electionYears)}
-                                max={Math.max(...electionYears)}
-                                valueLabelDisplay="auto"
-                                onChange={(event, value) => {
-                                    if (value) {
-                                        setSelectedYear(value);
-                                        fetchCountryElections(value).catch((error) => {
-                                            console.error('Error fetching country elections:', error);
-                                        });
-                                    }
-                                }}
-                            />
+                        <Grid className="slider-container" item container direction="column" size={{ xs: 6 }}>
+                            <Grid item>
+                                <TableHomepage electionSummary={electionSummary} />
+                            </Grid>
+                            <Grid item>
+                                <Slider
+                                    defaultValue={electionYears[0]}
+                                    step={null}
+                                    marks={electionYears.map(year => ({ value: year, label: year }))}
+                                    min={Math.min(...electionYears)}
+                                    max={Math.max(...electionYears)}
+                                    valueLabelDisplay="auto"
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            setSelectedYear(value);
+                                            fetchCountryElections(value).catch((error) => {
+                                                console.error('Error fetching country elections:', error);
+                                            });
+                                        }
+                                    }}
+                                />
+                            </Grid>
                         </Grid>
                         <Grid item size={{ xs: 4 }} sx={{ mx: "auto" }}>
                             <HomepageMap />

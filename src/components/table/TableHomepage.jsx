@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,14 +6,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 const TableHomepage = (props) => {
+    const [parties, setParties] = useState([]);
 
-    const calculateElectionSummary = (parties, districts) => {
+    const calculateElectionSummary = (districts) => {
         // Create a list of dicts where each dict.party is a party from props.parties        
         const results = {}
-
-        for (let i = 0; i < parties.length; i++) {
-            results[parties[i]] = 0
-        }
 
         // Loop through each election summary and add the number of votes to the party in results
         for (let i = 0; i < districts.length; i++) {
@@ -21,7 +18,14 @@ const TableHomepage = (props) => {
 
             for (let j = 0; j < district.election_summaries.length; j++) {
                 const election_summary = district.election_summaries[j]
-                results[election_summary.winner_election_result.party] += 1
+
+                if (election_summary.winner_election_result.party in results) {
+                    results[election_summary.winner_election_result.party] += 1
+                }
+                else {
+                    results[election_summary.winner_election_result.party] = 1
+                }
+
             }
         }
         // Remove parties with 0 votes from results
@@ -42,7 +46,7 @@ const TableHomepage = (props) => {
         })
     }
 
-    const electionSummary = calculateElectionSummary(props.parties, props.electionSummary);
+    const electionSummary = calculateElectionSummary(props.electionSummary);
 
 
     return (
