@@ -90,3 +90,23 @@ export const averageLocalElections = (local) => {
 
     return results;
 }
+
+export const _constructElections = (city, election) => {
+    // Use reduce to find both totalVotes and winner in a single pass
+
+    const { totalVotes, winner } = election.election_results.reduce(
+        (acc, result) => {
+            const newTotal = acc.totalVotes + result.number_votes;
+            const newWinner = !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner;
+            return { totalVotes: newTotal, winner: newWinner };
+        },
+        { totalVotes: 0, winner: null }
+    );
+
+    return {
+        city: city,
+        election,
+        winner: winner,
+        totalVotes,
+    };
+}

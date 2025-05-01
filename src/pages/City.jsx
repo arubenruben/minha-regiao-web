@@ -78,7 +78,7 @@ const City = (props) => {
                             <h3>Eleitores:</h3>
                         </Grid>
                         <Grid item sx={{ alignItems: "center" }}>
-                            <PlotVoters name={city?.name} elections={city?.elections} />
+                            
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 4 }} >
@@ -134,11 +134,7 @@ const City = (props) => {
                             />
                         </Grid>
                         <Grid item size={{ xs: 12 }}>
-                            <PlotNumberCities
-                                name={city?.name}
-                                elections={city?.elections}
-                                selectedElectionYear={selectedElectionYear}
-                            />
+                           
                         </Grid>
                     </Grid>
                 </Grid>
