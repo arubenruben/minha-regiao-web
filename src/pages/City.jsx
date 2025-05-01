@@ -74,11 +74,11 @@ const City = (props) => {
                             <CardWikipedia wikipedia={city?.wikipedia} />
                         </Grid>
                         <hr />
-                        <Grid item>
-                            <h3>Eleitores:</h3>
+                        <Grid item sx={{ mt: 2 }}>
+                            <h4>Variação no Número de Eleitores em {city?.name} Desde 1974:</h4>
                         </Grid>
                         <Grid item sx={{ alignItems: "center" }}>
-                            
+                            <PlotVoters localities={city?.municipalities} electionYears={electionYears} />
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 4 }} >
@@ -134,7 +134,7 @@ const City = (props) => {
                             />
                         </Grid>
                         <Grid item size={{ xs: 12 }}>
-                           
+
                         </Grid>
                     </Grid>
                 </Grid>

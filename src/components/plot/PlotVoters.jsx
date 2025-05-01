@@ -5,12 +5,12 @@ import { _constructElections } from '../../utils';
 const PlotVoters = (props) => {
     const [voters, setVoters] = useState([]);
 
-    const constructVoters = (cities, electionYears) => {
+    const constructVoters = (localities, electionYears) => {
         const votersAccumulator = electionYears.map(year => {
-            const totalVoters = cities.reduce((total, city) => {
-                const election = city.elections.find(election => election.year === year);
+            const totalVoters = localities.reduce((total, local) => {
+                const election = local.elections.find(election => election.year === year);
                 if (election) {
-                    const results = _constructElections(city, election);
+                    const results = _constructElections(local, election);
                     return total + results.totalVotes;
                 }
                 return total;
@@ -23,10 +23,10 @@ const PlotVoters = (props) => {
     }
 
     useEffect(() => {
-        if (props.cities && props.electionYears) {
-            constructVoters(props.cities, props.electionYears);
+        if (props.localities && props.electionYears) {
+            constructVoters(props.localities, props.electionYears);
         }
-    }, [props.cities, props.electionYears]);
+    }, [props.localities, props.electionYears]);
 
     const xAxis = voters.map((voter) => voter.year);
     const yAxis = voters.map((voter) => voter.voters);

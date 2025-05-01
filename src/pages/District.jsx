@@ -64,7 +64,7 @@ const District = (props) => {
                                 <h4>Variação no Número de Eleitores em Aveiro Desde 1974:</h4>
                             </Grid>
                             <Grid item sx={{ alignItems: { md: "center" } }}>
-                                <PlotVoters title={"Variação no Número de Eleitores em Aveiro Desde 1974:"} cities={district?.cities} electionYears={electionYears} />
+                                <PlotVoters localities={district?.cities} electionYears={electionYears} />
                             </Grid>
                         </Grid>
                         {/* Map only for the smaller screens */}
