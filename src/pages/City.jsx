@@ -53,6 +53,8 @@ const City = (props) => {
     useEffect(() => {
         if (city) {
             setElectionsWithPresident(city?.elections.filter(election => election.president));
+            // Sort elections with president by year
+            setElectionsWithPresident(prevElections => prevElections.sort((a, b) => b.year - a.year));
         }
     }, [city]);
 
@@ -98,13 +100,14 @@ const City = (props) => {
                         <PlotHistory elections={city?.elections} />
                     </Grid>
                 </Grid>
-                <Grid item sx={{ mt: 3 }}>
+                <hr />
+                <Grid item>
                     <h3>Os Presidentes de Câmara:</h3>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
                     {electionsWithPresident.map((election, index) => {
                         return (
-                            <Grid item size={{ xs:6, md: 2 }} key={index} >
+                            <Grid item size={{ xs: 6, md: 2 }} key={index} >
                                 <CardPresident election={election} />
                             </Grid>
                         )
