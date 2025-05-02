@@ -20,7 +20,7 @@ const PlotVoters = (props) => {
         <LineChart
             xAxis={[{
                 data: xAxis,
-                label: 'Anos Eleitorais',
+                label: 'Eleições Autárquicas',
                 scaleType: 'point', // Ensure X-axis is numeric
             }]}
             yAxis={[{ label: 'Eleitores', scaleType: 'log' }]} // Use the yAxis data from the voters state
