@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Image from 'react-bootstrap/Image';
 import logo from '../assets/images/logo.png'
-import SubTitleCarousel from '../components/carousel/SubTitleCarousel';
 import { sendRequest } from '../utils';
 import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepage';
 import HomepageMap from '../components/maps/HomepageMap';
@@ -95,15 +94,15 @@ const Homepage = (props) => {
     }, [regions]);
 
     console.log(electionSummary);
-    
+
     return (
         <HomepageLayout main={
             <Grid direction="column">
-                <Grid container direction="column" sx={{ justifyContent: "center", alignItems: "center", height: "80vh" }} >
+                <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: 10 }} >
                     <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                         <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>
-                            <Grid item size={12}><h1 id="title">A Minha Região</h1></Grid>
-                            <Grid item size={12}><SubTitleCarousel /></Grid>
+                            <Grid item size={12}><h1 id="title" className="blue-at">A Minha Região</h1></Grid>
+                            <Grid item size={12}><h5 id="subtitle" className="blue-at">O teu Portal Autárquico</h5></Grid>
                         </Grid>
                         <Grid item size={{ xs: 2, md: 1 }} sx={{ justifyContent: "center" }}>
                             <Image id="homepage-logo" src={logo} roundedCircle />
@@ -112,25 +111,40 @@ const Homepage = (props) => {
                     <Grid item size={{ xs: 10, md: 6 }}>
                         <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
                     </Grid>
+                    <Grid item sx={{ mt: 3 }}>
+                        <ul>
+                            <li>
+
+                                <h6 className="className=" blue-at>Informa-te sobre o histórico eleitoral autárquico da tua região.</h6>
+                            </li>
+                        </ul>
+                    </Grid>
                 </Grid>
-                <hr />
-                <Grid item container direction="column" sx={{ mx: 3 }}>
+                <Grid item container direction="column" sx={{ mx: 3, mt: 5 }}>
                     <Grid item>
-                        <h2>Panorama Autárquico {selectedYear}</h2>
+                        <h2>Panorama Autárquico Nacional em: {selectedYear}</h2>
                     </Grid>
                     <Grid item container direction="row">
-                        <Grid className="slider-container" item container direction="column" size={{ xs: 12, md: 6 }}>
-                            <Grid item>
-                                <PlotNumberCities electionSummary={electionSummary} />                                
-                            </Grid>
+                        <Grid className="slider-container" item container direction="column" size={{ xs: 12, md: 7 }}>
                             <Grid item>
                                 <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />
                             </Grid>
+                            <Grid item>
+                                <PlotNumberCities electionSummary={electionSummary} />
+                            </Grid>
                         </Grid>
                         <Grid item size={{ xs: 12, md: 4 }} sx={{ mx: "auto" }}>
-                            <HomepageMap districts={districts}/>
+                            <HomepageMap districts={districts} />
                         </Grid>
                     </Grid>
+                </Grid>
+                <hr />
+                <Grid item>
+                    <h2>Quem Somos?</h2>
+                </Grid>
+                <hr />
+                <Grid item>
+                    <h2>O Prémio Arquivo PT 2025</h2>
                 </Grid>
             </Grid>
         } />

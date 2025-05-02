@@ -3,7 +3,6 @@ import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Image } from 'react-bootstrap';
 import logo from '../../assets/images/logo.png'
-import SubTitleCarousel from '../carousel/SubTitleCarousel';
 
 const GenericHeader = () => {
     return (
@@ -18,7 +17,7 @@ const GenericHeader = () => {
                             <h1>A minha Região</h1>
                         </Grid>
                         <Grid item>
-                            <SubTitleCarousel interval={process.env.REACT_APP_HEADER_SLIDING} />
+                            <h5 id="subtitle">O seu Portal Autárquico</h5>
                         </Grid>
                     </Grid>
                 </Grid>

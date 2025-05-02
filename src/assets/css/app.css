@@ -32,11 +32,25 @@ main {
     width: 100%;
 }
 
+#homepage-front {
+    background-color: var(--blue-at);
+    height: 60vh;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#homepage-front .MuiAutocomplete-root * {
+    color: white !important;
+    border-color: white !important;
+} 
+
 #list-election-years {
     text-align: right;
     font-weight: 700;
     background-color: whitesmoke;
 }
+
+
 
 
 footer {

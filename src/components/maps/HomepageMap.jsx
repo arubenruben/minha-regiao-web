@@ -8,7 +8,7 @@ const HomepageMap = ({ districts }) => {
     const [selectedDistrictId, setSelectedDistrictId] = useState(null);
 
     const center = [39.6496747, -8.2081579];
-    const zoom = 7;
+    const zoom = 6;
 
     const handlePolygonClick = useCallback((districtId, latlng) => {
         setSelectedDistrictId(districtId);
@@ -45,7 +45,7 @@ const HomepageMap = ({ districts }) => {
                 zoom={zoom}
                 scrollWheelZoom={true}
                 ref={setMap}
-                style={{ height: '100vh', width: '100%' }}
+                style={{ height: '400px', width: '100%' }}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

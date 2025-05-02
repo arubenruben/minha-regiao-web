@@ -1,11 +1,13 @@
-import React from 'react'
-import Autocomplete from '@mui/material/Autocomplete';
+import React, {useState} from 'react'
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-
 const AutoCompleteHomepage = (props) => {
     const navigate = useNavigate();
+    const defaultFilterOptions = createFilterOptions();
+
+    const [inputValue, setInputValue] = useState('');
 
     return (
         <Autocomplete
@@ -13,13 +15,14 @@ const AutoCompleteHomepage = (props) => {
             options={props.regions}
             getOptionLabel={(option) => option.name}
             renderOption={(props, option) => (
-                <li {...props} key={option.id}>
+                <li className="autocomplete-options" {...props} key={option.id}>
                     {option.name}
                 </li>
             )}
             groupBy={(option) => option.type}
             onChange={(event, value) => {
                 if (value) {
+                    setInputValue(value.name);
                     // Fetch the region by ID
                     props.fetchRegionsById(value.id).then((region) => {
                         // Check if the region has a parent
@@ -35,9 +38,15 @@ const AutoCompleteHomepage = (props) => {
                     });
                 }
             }}
-            label="Região"
+            filterOptions={(options, state) => {
+                // Return empty array if input is empty
+                return state.inputValue.trim() === '' ? [] : defaultFilterOptions(options, state);
+            }}
+            label="Região"            
             isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => <TextField {...params} placeholder="Insira o Nome da sua Região" />}
+            renderInput={(params) => <TextField {...params} placeholder="Insere o Nome da Tua Região" />}
+            freeSolo
+            //noOptionsText={'Introduza o Nome da sua Região' ? !inputValue : 'Sem resultados'}
         />
     )
 }
