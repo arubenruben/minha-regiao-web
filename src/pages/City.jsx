@@ -14,6 +14,7 @@ import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotHistory from '../components/plot/PlotHistory';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
+import SliderCity from '../components/slider/SliderCity';
 
 const City = (props) => {
     const [city, setCity] = useState(null);
@@ -72,6 +73,12 @@ const City = (props) => {
                     </Grid>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
+                    <Grid item size={{ xs: 4 }} >
+                        <LocalMap
+                            localities={city?.municipalities}
+                            polygon_centroid={city?.polygon_centroid}
+                            endpoint={"freguesia"} />
+                    </Grid>
                     <Grid item container direction="column" size={{ xs: 7 }}>
                         <Grid item>
                             <AccordionWikipedia wikipedia={city?.wikipedia} />
@@ -84,68 +91,36 @@ const City = (props) => {
                             <PlotVoters elections={city?.elections} />
                         </Grid>
                     </Grid>
-                    <Grid item size={{ xs: 4 }} >
-                        <LocalMap
-                            localities={city?.municipalities}
-                            polygon_centroid={city?.polygon_centroid}
-                            endpoint={"freguesia"} />
-                    </Grid>
                 </Grid>
                 <hr />
                 <Grid item>
                     <h3>Histórico na Câmara Municipal</h3>
                 </Grid>
-                <Grid container item direction="row" sx={{ alignItems: "center" }}>
-                    <Grid item size={{ xs: 7 }}>
-                        <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"cidade"} />
-                    </Grid>
-                    <Grid item size={{ xs: 5 }}>
+                <Grid container item direction="column" sx={{ alignItems: "center", mb: 3 }}>
+                    <Grid item size={{ xs: 10 }} sx={{ my: 3 }}>
                         <PlotHistory elections={city?.elections} />
                     </Grid>
-                </Grid>
-                <hr />
-                <Grid item>
-                    <h3>Os Presidentes de Câmara:</h3>
-                </Grid>
-                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
-                    {electionsWithPresident.map((election, index) => {
-                        return (
-                            <Grid item size={{ xs: 6, md: 2 }} key={index} >
-                                <CardPresident election={election} />
-                            </Grid>
-                        )
-                    })}
+                    <Grid item size={{ xs: 8 }}>
+                        <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"cidade"} />
+                    </Grid>
                 </Grid>
                 <hr />
                 <Grid item>
                     <h2>Resumo Autárquico na Concelhia:</h2>
                 </Grid>
-                <Grid item container direction="row" sx={{ alignItems: "center", justifyContent: "space-around" }}>
-                    <Grid item size={{ xs: 7 }}>
-                        <TableCity municipalities={city?.municipalities} selectedElectionYear={selectedElectionYear} />
-                    </Grid>
-                    <Grid item container direction="column" size={{ xs: 5 }} sx={{ alignItems: "center", justifyContent: "center" }}>
-                        <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
-                            <Slider
-                                defaultValue={electionYears[0]}
-                                step={null}
-                                marks={electionYears.map(year => ({ value: year, label: year }))}
-                                min={Math.min(...electionYears)}
-                                max={Math.max(...electionYears)}
-                                valueLabelDisplay="auto"
-                                onChange={(event, value) => {
-                                    if (value) {
-                                        setSelectedElectionYear(value);
-                                    }
-                                }}
-                            />
+                <Grid item container direction="row" sx={{ justifyContent: "space-around" }}>
+                    <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
+                        <Grid item size={{ xs: 10 }} sx={{ mx: "auto", mt: 3 }}>
+                            <SliderCity electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
                         </Grid>
-                        <Grid item size={{ xs: 12 }}>
+                        <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
                             <PlotNumberCities yAxisLabel={"Número de Juntas de Freguesia"} cities={city?.municipalities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
                         </Grid>
                     </Grid>
+                    <Grid item size={{ sx: 12, md: 7 }}>
+                        <TableCity municipalities={city?.municipalities} selectedElectionYear={selectedElectionYear} />
+                    </Grid>
                 </Grid>
-
             </Grid>
         } />
     )

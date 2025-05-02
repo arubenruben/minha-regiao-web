@@ -9,6 +9,8 @@ import TableDistrict from '../components/table/TableDistrict';
 import SliderDistrict from '../components/slider/SliderDistrict';
 import PlotVotersDistrict from '../components/plot/PlotVotersDistrict';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
+import { Link } from 'react-router-dom';
+import NorthWestIcon from '@mui/icons-material/NorthWest';
 
 const District = (props) => {
 
@@ -52,6 +54,17 @@ const District = (props) => {
         <GenericLayout
             main={
                 <Grid container direction="column" >
+                    <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
+                        <Grid item>
+                            <span>
+                                <NorthWestIcon sx={{ fontSize: 20 }} />
+                                <Link to={`/`}>
+                                    Voltar à Página Principal
+                                </Link>
+                            </span>
+                        </Grid>
+                    </Grid>
+
                     <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around" }}>
                         <Grid item size={{ xs: 0, md: 4 }} >
                             <LocalMap
