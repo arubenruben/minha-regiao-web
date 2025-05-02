@@ -44,7 +44,7 @@ const HomepageMap = ({ districts }) => {
         return (
             <Popup position={popupPosition} onClose={() => setPopupPosition(null)}>
                 <div>
-                    <a href={`/distrito/${selectedDistrictId}`}>
+                    <a href={`/distrito/${selectedDistrictId}`} rel="noopener noreferrer">
                         Obter mais informação sobre {selectedDistrictId}
                     </a>
                 </div>

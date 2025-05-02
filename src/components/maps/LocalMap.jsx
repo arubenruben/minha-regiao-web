@@ -6,24 +6,25 @@ import { Marker } from 'react-leaflet/Marker';
 import { invertCoordinates } from '../../utils';
 
 const LocalMap = (props) => {
-    const [geo_polygon, setGeoPolygon] = useState(null);
+    const [geoPolygons, setGeoPolygons] = useState(null);
     const [polygon_centroid, setPolygonCentroid] = useState(null);
 
     useEffect(() => {
-        if (props.geo_polygon) {
-            const a = invertCoordinates(props.geo_polygon.coordinates)
-            console.log(a);
+        const geo_polygon = [];
 
-            setGeoPolygon(a);
+        if (props.localities) {
+            for (const locality of props.localities) {
+                const coordinates = invertCoordinates(locality.geo_polygon.coordinates);
+                geo_polygon.push(coordinates);
+            }
+            setGeoPolygons(geo_polygon);
         }
+
         if (props.polygon_centroid) {
-            // Invert the coordinates to match the Leaflet format            
-            const b = invertCoordinates(props.polygon_centroid.coordinates)
-            console.log(b);
-            setPolygonCentroid(b);
+            setPolygonCentroid(invertCoordinates(props.polygon_centroid.coordinates));
         }
-    }, [props.geo_polygon, props.polygon_centroid])
 
+    }, [props.localities, props.polygon_centroid])
 
     return (
         <>
@@ -32,7 +33,9 @@ const LocalMap = (props) => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Polygon pathOptions={{ color: 'purple' }} positions={geo_polygon} />
+                {geoPolygons && geoPolygons.map((geo_polygon, index) => {
+                    return <Polygon key={index} pathOptions={{ color: 'purple' }} positions={geo_polygon} />
+                })}
             </MapContainer>
             }
         </>
