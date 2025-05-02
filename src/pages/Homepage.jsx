@@ -6,9 +6,9 @@ import SubTitleCarousel from '../components/carousel/SubTitleCarousel';
 import { sendRequest } from '../utils';
 import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepage';
 import HomepageMap from '../components/maps/HomepageMap';
-import TableHomepage from '../components/table/TableHomepage';
 import HomepageLayout from '../layouts/HomepageLayout';
 import SliderHomepage from '../components/slider/SliderHomepage';
+import PlotNumberCities from '../components/plot/PlotNumberCities';
 
 const Homepage = (props) => {
     const [districts, setDistricts] = useState([]);
@@ -94,6 +94,8 @@ const Homepage = (props) => {
         }
     }, [regions]);
 
+    console.log(electionSummary);
+    
     return (
         <HomepageLayout main={
             <Grid direction="column">
@@ -119,7 +121,7 @@ const Homepage = (props) => {
                     <Grid item container direction="row">
                         <Grid className="slider-container" item container direction="column" size={{ xs: 12, md: 6 }}>
                             <Grid item>
-                                <TableHomepage electionSummary={electionSummary} />
+                                <PlotNumberCities electionSummary={electionSummary} />                                
                             </Grid>
                             <Grid item>
                                 <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />

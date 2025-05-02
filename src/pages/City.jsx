@@ -57,7 +57,7 @@ const City = (props) => {
     }, [city]);
 
     console.log("City data:", city);
-    
+
     return (
         <GenericLayout main={
             <Grid container direction="column">
@@ -85,11 +85,10 @@ const City = (props) => {
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 4 }} >
-                        <LocalMap 
-                        localities={city?.municipalities} 
-                        polygon_centroid={city?.polygon_centroid}
-                        endpoint={"freguesia"}
-                        />
+                        <LocalMap
+                            localities={city?.municipalities}
+                            polygon_centroid={city?.polygon_centroid}
+                            endpoint={"freguesia"} />
                     </Grid>
                 </Grid>
                 <hr />
