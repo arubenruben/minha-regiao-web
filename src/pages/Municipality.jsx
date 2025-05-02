@@ -12,6 +12,7 @@ import NorthWestIcon from '@mui/icons-material/NorthWest';
 import CardPresident from '../components/card/CardPresident';
 import Alert from 'react-bootstrap/Alert';
 import PlotHistory from '../components/plot/PlotHistory';
+import MunicipalityMap from '../components/maps/MunicipalityMap';
 
 const Municipality = (props) => {
   const { name } = useParams();
@@ -104,7 +105,7 @@ const Municipality = (props) => {
               </Grid>
             </Grid>
             <Grid item size={{ xs: 4 }} >
-              <LocalMap />
+              <MunicipalityMap municipality={municipality} />
             </Grid>
           </Grid>
           <hr />
