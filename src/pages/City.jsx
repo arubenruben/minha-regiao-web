@@ -106,7 +106,7 @@ const City = (props) => {
                 </Grid>
                 <hr />
                 <Grid item>
-                    <h2>Resumo Autárquico na Concelhia:</h2>
+                    <h2>Resumo Autárquico na Concelhia {city?.name} em {selectedElectionYear}:</h2>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around" }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 5 }}>

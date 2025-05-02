@@ -4,62 +4,45 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Link } from 'react-router-dom';
 
-const TableCity = (props) => {
+const TableCity = ({ municipalities, selectedElectionYear }) => {
     const [elections, setElections] = useState([]);
 
     useEffect(() => {
-        if (!props.municipalities || !props.selectedElectionYear)
-            return;
+        if (!municipalities || !selectedElectionYear) return;
 
-        const filteredElections = []
+        const processedElections = municipalities
+            .filter(municipality => {
+                // Find matching election
+                const election = municipality.elections.find(e => e.year === selectedElectionYear);
+                if (!election) return false;
 
-        for (let i = 0; i < props.municipalities.length; i++) {
-            const municipality = props.municipalities[i];
-            const election = municipality.elections.find((election) => election.year === props.selectedElectionYear);
+                // Exclude based on municipality status and year
+                if (selectedElectionYear < 2012 && municipality.new_municipality === null) return false;
+                if (selectedElectionYear >= 2012 && municipality.new_municipality !== null) return false;
 
-            if (!election)
-                continue;
+                return true;
+            })
+            .map(municipality => {
+                const election = municipality.elections.find(e => e.year === selectedElectionYear);
+                const results = election.election_results;
 
+                // Calculate winner and total votes in one pass
+                const { totalVotes, winner } = results.reduce(
+                    (acc, result) => ({
+                        totalVotes: acc.totalVotes + result.number_votes,
+                        winner: !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner
+                    }),
+                    { totalVotes: 0, winner: null }
+                );
 
-            // TODO: Hotfix to mask bug in the Database that old_municipalities are being taking into consideration            
-            if (props.selectedElectionYear < 2012 && municipality.new_municipality === null)
-                continue;
+                return { municipality, election, winner, totalVotes };
+            })
+            .sort((a, b) => a.municipality.name.localeCompare(b.municipality.name));
 
-            if (props.selectedElectionYear >= 2012 && municipality.new_municipality !== null)
-                continue;
-
-            filteredElections.push({
-                municipality: municipality,
-                election: election,
-            });
-        }
-
-        // Process elections data using map and reduce instead of for loops
-        const newElections = filteredElections.map((elem, i) => {
-            // Use reduce to find both totalVotes and winner in a single pass
-            const { totalVotes, winner } = elem.election.election_results.reduce(
-                (acc, result) => {
-                    const newTotal = acc.totalVotes + result.number_votes;
-                    const newWinner = !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner;
-                    return { totalVotes: newTotal, winner: newWinner };
-                },
-                { totalVotes: 0, winner: null }
-            );
-
-            return {
-                municipality: elem.municipality,
-                election: elem.election,
-                winner: winner,
-                totalVotes,
-            };
-        });
-
-        // Sort newElections by city name
-        setElections(newElections.sort((a, b) => a.municipality.name.localeCompare(b.municipality.name)));
-    }, [props.municipalities, props.selectedElectionYear]);
+        setElections(processedElections);
+    }, [municipalities, selectedElectionYear]);
 
     return (
         <Table size="small" stickyHeader>
@@ -72,20 +55,26 @@ const TableCity = (props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {elections.map((elem, index) => (
-                    <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                            <Link to={`/freguesia/${elem.municipality.name}`} className="link-table">
-                                {elem.municipality.name}
-                            </Link>
-                        </TableCell>
-                        <TableCell align="right">{elem.winner?.party}</TableCell>
-                        <TableCell align="center">{elem.election.president?.name ?? '-'}</TableCell>
-                        <TableCell align="center">{(elem.winner?.number_votes / (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes) * 100).toFixed(2)}</TableCell>
-                    </TableRow>
-                ))}
+                {elections.map((elem, index) => {
+                    const votePercentage = (elem.winner?.number_votes /
+                        (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes) * 100).toFixed(2);
+
+                    return (
+                        <TableRow key={index}>
+                            <TableCell component="th" scope="row">
+                                <Link to={`/freguesia/${elem.municipality.name}`} className="link-table">
+                                    {elem.municipality.name}
+                                </Link>
+                            </TableCell>
+                            <TableCell align="right">{elem.winner?.party}</TableCell>
+                            <TableCell align="center">{elem.election.president?.name ?? '-'}</TableCell>
+                            <TableCell align="center">{votePercentage}</TableCell>
+                        </TableRow>
+                    );
+                })}
             </TableBody>
         </Table>
-    )
-}
-export default TableCity
+    );
+};
+
+export default TableCity;
