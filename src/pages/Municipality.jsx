@@ -91,46 +91,33 @@ const Municipality = (props) => {
             </Grid>
           </Grid>
           <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
+            <Grid item size={{ xs: 4 }} >
+              <MunicipalityMap municipality={municipality} />
+            </Grid>
             <Grid item container direction="column" size={{ xs: 7 }}>
               <Grid item>
                 <AccordionWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
               </Grid>
               <hr />
               <Grid item sx={{ mt: 2 }}>
-                <h4>Variação no Número de Eleitores em {municipality?.name} Desde 1974:</h4>
+                <h4>Número de Eleitores em {municipality?.name} Desde 1974:</h4>
               </Grid>
               <Grid item sx={{ alignItems: "center" }}>
                 <PlotVoters elections={filteredElections} />
               </Grid>
-            </Grid>
-            <Grid item size={{ xs: 4 }} >
-              <MunicipalityMap municipality={municipality} />
             </Grid>
           </Grid>
           <hr />
           <Grid item>
             <h3>Histórico na Junta de Freguesia</h3>
           </Grid>
-          <Grid container item direction="row" sx={{ alignItems: "center" }}>
-            <Grid item size={{ xs: 7 }}>
+          <Grid container item direction="column" sx={{ alignItems: "center" }}>
+            <Grid item size={{ xs: 10 }} sx={{ my: 3 }}>
+              <PlotHistory elections={filteredElections} />
+            </Grid>
+            <Grid item size={{ xs: 8 }}>
               <TableCityHistoric name={municipality?.name} elections={filteredElections} endpoint={"freguesia"} />
             </Grid>
-            <Grid item size={{ xs: 5 }}>
-              <PlotHistory elections={municipality?.elections} />
-            </Grid>
-          </Grid>
-          <hr />
-          <Grid item sx={{ mt: 3 }}>
-            <h3>Os Presidentes de Junta:</h3>
-          </Grid>
-          <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mt: 3 }}>
-            {municipality.elections?.map((election, index) => {
-              return (
-                <Grid item size={{ xs: 2 }} key={index} >
-                  <CardPresident election={election} />
-                </Grid>
-              ) ? election.president?.name !== null : null
-            })}
           </Grid>
         </Grid >
       } />
