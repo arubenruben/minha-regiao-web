@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import GenericLayout from '../layouts/GenericLayout';
 import { sendRequest } from '../utils';
 import LocalMap from '../components/maps/LocalMap';
-import CardWikipedia from '../components/card/CardWikipedia';
 import PlotVoters from '../components/plot/PlotVoters';
 import TableCity from '../components/table/TableCity';
 import TableCityHistoric from '../components/table/TableCityHistoric';
@@ -14,6 +13,7 @@ import CardPresident from '../components/card/CardPresident';
 import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotHistory from '../components/plot/PlotHistory';
+import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
 
 const City = (props) => {
     const [city, setCity] = useState(null);
@@ -74,7 +74,7 @@ const City = (props) => {
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
                     <Grid item container direction="column" size={{ xs: 7 }}>
                         <Grid item>
-                            <CardWikipedia wikipedia={city?.wikipedia} />
+                            <AccordionWikipedia wikipedia={city?.wikipedia} />
                         </Grid>
                         <hr />
                         <Grid item sx={{ mt: 2 }}>

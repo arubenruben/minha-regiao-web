@@ -33,23 +33,22 @@ const TableDistrict = (props) => {
                     <TableCell>Concelho</TableCell>
                     <TableCell align="right">Partido Vencedor</TableCell>
                     <TableCell align="right">Presidente Eleito</TableCell>
-                    <TableCell align="right">% Votos</TableCell>
-                    <TableCell align="right"></TableCell>
+                    <TableCell align="right">% Votos</TableCell>                    
                 </TableRow>
             </TableHead>
             <TableBody>
                 {elections.map((election, index) => (
                     <TableRow key={index}>
                         <TableCell component="th" scope="row">
-                            {election.city.name}
+                            <Link to={`/cidade/${election.city.name}`} className="link-table">
+                                {election.city.name}
+                            </Link>
                         </TableCell>
                         <TableCell align="right">{election.winner.party}</TableCell>
                         <TableCell align="right">{election.election.president?.name}</TableCell>
                         <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
                         <TableCell align="right">
-                            <Link to={`/cidade/${election.city.name}`}>
-                                <OpenInNewIcon />
-                            </Link>
+                                
                         </TableCell>
                     </TableRow>
                 ))}

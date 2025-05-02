@@ -37,8 +37,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
         });
     }, [localities, handlePolygonClick]);
 
-
-    const zoom = endpoint === "cidade" ? 9 : 11;
+    const zoom = endpoint === "cidade" ? 8 : 11;
 
     return (
         <div className="map-container">
@@ -47,7 +46,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
                 zoom={zoom}
                 scrollWheelZoom={true}
                 ref={setMap}
-                style={{ height: '100vh', width: '100%' }}
+                style={{ height: '400px', width: '100%' }}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

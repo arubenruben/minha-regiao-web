@@ -3,8 +3,6 @@ import { Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import GenericLayout from '../layouts/GenericLayout';
 import { sendRequest } from '../utils';
-import LocalMap from '../components/maps/LocalMap';
-import CardWikipedia from '../components/card/CardWikipedia';
 import PlotVoters from '../components/plot/PlotVoters';
 import TableCityHistoric from '../components/table/TableCityHistoric';
 import { Link } from 'react-router-dom';
@@ -13,6 +11,7 @@ import CardPresident from '../components/card/CardPresident';
 import Alert from 'react-bootstrap/Alert';
 import PlotHistory from '../components/plot/PlotHistory';
 import MunicipalityMap from '../components/maps/MunicipalityMap';
+import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
 
 const Municipality = (props) => {
   const { name } = useParams();
@@ -94,7 +93,7 @@ const Municipality = (props) => {
           <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
             <Grid item container direction="column" size={{ xs: 7 }}>
               <Grid item>
-                <CardWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
+                <AccordionWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
               </Grid>
               <hr />
               <Grid item sx={{ mt: 2 }}>
