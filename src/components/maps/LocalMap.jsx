@@ -12,7 +12,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
         setPopupPosition(latlng);
 
         if (map) {
-            map.flyTo(latlng, Math.max(map.getZoom(), 10));
+            map.flyTo(latlng, map.getZoom());
         }
     }, [map]);
 
@@ -50,13 +50,14 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
             </Popup>
         );
     };
-    console.log(polygon_centroid);
+
+    const zoom = endpoint === "cidade" ? 9 : 11;
 
     return (
         <div className="map-container">
             {polygon_centroid && <MapContainer
                 center={invertCoordinates(polygon_centroid.coordinates)}
-                zoom={10}
+                zoom={zoom}
                 scrollWheelZoom={true}
                 ref={setMap}
                 style={{ height: '100vh', width: '100%' }}

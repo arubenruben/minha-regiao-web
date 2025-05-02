@@ -15,7 +15,7 @@ const HomepageMap = ({ districts }) => {
         setPopupPosition(latlng);
 
         if (map) {
-            map.flyTo(latlng, Math.max(map.getZoom(), 10));
+            map.flyTo(latlng, map.getZoom());
         }
     }, [map]);
 
