@@ -4,7 +4,6 @@ import { _constructElections, sendRequest } from '../utils';
 import GenericLayout from '../layouts/GenericLayout';
 import Grid from '@mui/material/Grid';
 import LocalMap from '../components/maps/LocalMap';
-import PlotVoters from '../components/plot/PlotVoters';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import TableDistrict from '../components/table/TableDistrict';
 import CardWikipedia from '../components/card/CardWikipedia';
@@ -55,7 +54,7 @@ const District = (props) => {
                 <Grid container direction="column" >
                     <Grid item container direction="row" sx={{ my: { xs: 3, md: 5 }, justifyContent: "space-around" }}>
                         <Grid item size={{ xs: 0, md: 4 }} >
-                            <LocalMap />
+                            <LocalMap geo_polygon={district?.geo_polygon} polygon_centroid={district?.polygon_centroid} />
                         </Grid>
                         <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
                             <Grid item>
