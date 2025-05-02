@@ -12,7 +12,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
         setPopupPosition(latlng);
 
         if (map) {
-            map.flyTo(latlng, map.getZoom());
+            window.location.href = `/${endpoint}/${districtId}`;
         }
     }, [map]);
 
@@ -37,19 +37,6 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
         });
     }, [localities, handlePolygonClick]);
 
-    const renderPopup = () => {
-        if (!popupPosition || !selectedDistrictId) return null;
-
-        return (
-            <Popup position={popupPosition} onClose={() => setPopupPosition(null)}>
-                <div>
-                    <a href={`/${endpoint}/${selectedDistrictId}`} rel="noopener noreferrer">
-                        Obter mais informação sobre {selectedDistrictId}
-                    </a>
-                </div>
-            </Popup>
-        );
-    };
 
     const zoom = endpoint === "cidade" ? 9 : 11;
 
@@ -67,7 +54,6 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {renderPolygons}
-                {renderPopup()}
             </MapContainer>}
         </div>
     )

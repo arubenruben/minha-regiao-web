@@ -15,7 +15,7 @@ const HomepageMap = ({ districts }) => {
         setPopupPosition(latlng);
 
         if (map) {
-            map.flyTo(latlng, map.getZoom());
+            window.location.href = `/distrito/${districtId}`;
         }
     }, [map]);
 
@@ -38,20 +38,6 @@ const HomepageMap = ({ districts }) => {
         });
     }, [districts, handlePolygonClick]);
 
-    const renderPopup = () => {
-        if (!popupPosition || !selectedDistrictId) return null;
-
-        return (
-            <Popup position={popupPosition} onClose={() => setPopupPosition(null)}>
-                <div>
-                    <a href={`/distrito/${selectedDistrictId}`} rel="noopener noreferrer">
-                        Obter mais informação sobre {selectedDistrictId}
-                    </a>
-                </div>
-            </Popup>
-        );
-    };
-
     return (
         <div className="map-container">
             <MapContainer
@@ -66,7 +52,6 @@ const HomepageMap = ({ districts }) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {renderPolygons}
-                {renderPopup()}
             </MapContainer>
         </div>
     );
