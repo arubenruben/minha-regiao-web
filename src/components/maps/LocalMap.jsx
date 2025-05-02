@@ -1,44 +1,72 @@
-import React, { useState, useEffect } from 'react'
-import { MapContainer } from 'react-leaflet/MapContainer';
-import { TileLayer } from 'react-leaflet/TileLayer';
-import { Polygon } from 'react-leaflet/Polygon';
-import { Marker } from 'react-leaflet/Marker';
+import React, { useState, useCallback, useMemo } from 'react';
+import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
 import { invertCoordinates } from '../../utils';
 
-const LocalMap = (props) => {
-    const [geoPolygons, setGeoPolygons] = useState(null);
-    const [polygon_centroid, setPolygonCentroid] = useState(null);
+const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
+    const [map, setMap] = useState(null);
+    const [popupPosition, setPopupPosition] = useState(null);
+    const [selectedDistrictId, setSelectedDistrictId] = useState(null);
 
-    useEffect(() => {
-        const geo_polygon = [];
+    const handlePolygonClick = useCallback((districtId, latlng) => {
+        setSelectedDistrictId(districtId);
+        setPopupPosition(latlng);
 
-        if (props.localities) {
-            for (const locality of props.localities) {
-                const coordinates = invertCoordinates(locality.geo_polygon.coordinates);
-                geo_polygon.push(coordinates);
-            }
-            setGeoPolygons(geo_polygon);
+        if (map) {
+            map.flyTo(latlng, Math.max(map.getZoom(), 10));
         }
+    }, [map]);
 
-        if (props.polygon_centroid) {
-            setPolygonCentroid(invertCoordinates(props.polygon_centroid.coordinates));
-        }
+    const renderPolygons = useMemo(() => {
+        if (!localities || !localities.length) return null;
 
-    }, [props.localities, props.polygon_centroid])
+        return localities.map(local => {
+            const coordinates = invertCoordinates(local.geo_polygon.coordinates);
+
+            return (
+                <Polygon
+                    key={local.id}
+                    positions={coordinates}
+                    pathOptions={{ color: 'purple' }}
+                    eventHandlers={{
+                        click: (e) => handlePolygonClick(local.name, e.latlng)
+                    }}
+                />
+            );
+        });
+    }, [localities, handlePolygonClick]);
+
+    const renderPopup = () => {
+        if (!popupPosition || !selectedDistrictId) return null;
+
+        return (
+            <Popup position={popupPosition} onClose={() => setPopupPosition(null)}>
+                <div>
+                    <a href={`/${endpoint}/${selectedDistrictId}`} rel="noopener noreferrer">
+                        Obter mais informação sobre {selectedDistrictId}
+                    </a>
+                </div>
+            </Popup>
+        );
+    };
+    console.log(polygon_centroid);
 
     return (
-        <>
-            {polygon_centroid && <MapContainer className='map-container' center={polygon_centroid} zoom={9} scrollWheelZoom={true}>
+        <div className="map-container">
+            {polygon_centroid && <MapContainer
+                center={invertCoordinates(polygon_centroid.coordinates)}
+                zoom={10}
+                scrollWheelZoom={true}
+                ref={setMap}
+                style={{ height: '100vh', width: '100%' }}
+            >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {geoPolygons && geoPolygons.map((geo_polygon, index) => {
-                    return <Polygon key={index} pathOptions={{ color: 'purple' }} positions={geo_polygon} />
-                })}
-            </MapContainer>
-            }
-        </>
+                {renderPolygons}
+                {renderPopup()}
+            </MapContainer>}
+        </div>
     )
 }
 

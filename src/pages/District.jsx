@@ -54,7 +54,11 @@ const District = (props) => {
                 <Grid container direction="column" >
                     <Grid item container direction="row" sx={{ my: { xs: 3, md: 5 }, justifyContent: "space-around" }}>
                         <Grid item size={{ xs: 0, md: 4 }} >
-                            <LocalMap localities={district?.cities} polygon_centroid={district?.polygon_centroid} />
+                            <LocalMap
+                                localities={district?.cities}
+                                polygon_centroid={district?.polygon_centroid}
+                                endpoint={"cidade"}
+                            />
                         </Grid>
                         <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
                             <Grid item>
