@@ -11,7 +11,7 @@ import HomepageLayout from '../layouts/HomepageLayout';
 import SliderHomepage from '../components/slider/SliderHomepage';
 
 const Homepage = (props) => {
-
+    const [districts, setDistricts] = useState([]);
     const [regions, setRegions] = useState([]);
     const [selectedYear, setSelectedYear] = useState(null)
     const [electionYears, setElectionYears] = useState([]);
@@ -87,6 +87,13 @@ const Homepage = (props) => {
 
     }, []);
 
+    useEffect(() => {
+        // Filter districts by type "Distrito"
+        if (regions) {
+            setDistricts(regions.filter(region => region.type === "Distrito"));
+        }
+    }, [regions]);
+
     return (
         <HomepageLayout main={
             <Grid direction="column">
@@ -119,7 +126,7 @@ const Homepage = (props) => {
                             </Grid>
                         </Grid>
                         <Grid item size={{ xs: 12, md: 4 }} sx={{ mx: "auto" }}>
-                            <HomepageMap />
+                            <HomepageMap districts={districts}/>
                         </Grid>
                     </Grid>
                 </Grid>

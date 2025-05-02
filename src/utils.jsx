@@ -110,3 +110,20 @@ export const _constructElections = (city, election) => {
         totalVotes,
     };
 }
+
+export const _invertCoordinates = (coordinates) => {
+    if (Array.isArray(coordinates[0])) {
+        return coordinates.map(invertCoordinates);
+    } else {
+        return [coordinates[1], coordinates[0]];
+    }
+}
+
+
+export const invertCoordinates = (coordinates) => {
+    if (Array.isArray(coordinates[0])) {
+        return coordinates.map(invertCoordinates);
+    } else {
+        return [coordinates[1], coordinates[0]];
+    }
+}
