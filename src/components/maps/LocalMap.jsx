@@ -20,6 +20,8 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
         if (!localities || !localities.length) return null;
 
         return localities.map(local => {
+            if (!local.geo_polygon || !local.geo_polygon.coordinates) return null;
+
             const coordinates = invertCoordinates(local.geo_polygon.coordinates);
 
             return (
