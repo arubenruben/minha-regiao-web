@@ -10,7 +10,11 @@ body {
     position: relative;
 }
 
-h2, h3, h4, h5, h6 {
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
 }
@@ -183,9 +187,19 @@ html a {
 }
 
 .ssn-subtitle {
-    font-weight: 300;    
+    font-weight: 300;
 }
 
-#slogan{
-    font-weight: 500;    
+#slogan {
+    font-weight: 500;
+}
+
+.MuiSlider-root {
+    color: var(--blue-at) !important;
+}
+
+.MuiTableCell-head {
+    background-color: var(--blue-at) !important;
+    color: white !important;
+    border: none !important;
 }
