@@ -57,8 +57,6 @@ const City = (props) => {
         }
     }, [city]);
 
-    console.log("City data:", city);
-
     return (
         <GenericLayout main={
             <Grid container direction="column">

@@ -35,7 +35,7 @@ const PlotElection = ({ type, name, yearToCompare, election, year }) => {
             setSeries([
                 {
                     data: election.election_results.map(r => r.number_votes),
-                    label: `Votantes (${year})`,
+                    label: `Eleitores (${year})`,
                     id: 'voters',
                 },
             ]);

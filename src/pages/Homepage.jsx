@@ -113,7 +113,6 @@ const Homepage = (props) => {
                     <Grid item sx={{ mt: 3 }}>
                         <ul>
                             <li>
-
                                 <h6 className="className=" blue-at>Informa-te sobre o histórico eleitoral autárquico da tua região.</h6>
                             </li>
                         </ul>
@@ -121,15 +120,16 @@ const Homepage = (props) => {
                 </Grid>
                 <Grid item container direction="column" sx={{ mx: 3, mt: 3 }}>
                     <Grid item>
-                        <h2>Panorama Autárquico Nacional em: {selectedYear}</h2>
+                        <h2>Panorama Autárquico Nacional em {selectedYear}</h2>
+                        <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada um dos partidos?</p>
                     </Grid>
                     <Grid item container direction="row">
-                        <Grid className="slider-container" item container direction="column" size={{ xs: 12, md: 7 }}>
-                            <Grid item>
-                                <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />
+                        <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
+                            <Grid item sx={{ mb: 2 }}>
+                                <PlotHomepage electionSummary={electionSummary} />
                             </Grid>
                             <Grid item>
-                                <PlotHomepage electionSummary={electionSummary} />
+                                <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />
                             </Grid>
                         </Grid>
                         <Grid item size={{ xs: 12, md: 4 }} sx={{ mx: "auto" }}>

@@ -14,7 +14,7 @@ const Election = (props) => {
     const [electionYears, setElectionYears] = useState(null);
     const [yearToCompare, setYearToCompare] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("promises");
-    
+
     const fetchElection = async (type, name, year) => {
         let endpoint = null;
 
@@ -50,8 +50,6 @@ const Election = (props) => {
         fetchElectionYears();
     }, []);
 
-    console.log(election?.news, selectedFilter);
-
     return (
         <GenericLayout main={
             <Grid container direction="column">
@@ -76,7 +74,7 @@ const Election = (props) => {
                 <Grid item>
                     <h3>As notícias locais em {name} sobre a Eleição de {year}</h3>
                 </Grid>
-                <Grid item container direction="row" sx={{ mt: 5}} spacing={4}>
+                <Grid item container direction="row" sx={{ mt: 5 }} spacing={4}>
                     <Grid item size={{ md: 3 }}>
                         <ListElectionType setSelectedFilter={setSelectedFilter} />
                     </Grid>
