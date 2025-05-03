@@ -23,30 +23,16 @@ const CardNews = (props) => {
 
     return (
         <Card className="card-news">
-            <Card.Header>
-                <Grid container direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
-                    <Grid item>
-                        {props.news.title}
-                    </Grid>
-                    <Grid item size={1}>
-                        <Button variant="" href={props.news.url_arquivo} target="_blank" rel="noopener noreferrer" className="btn-open-in-new">
-                            <OpenInNewIcon />
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Card.Header>
             <Card.Body>
-                <Card.Text>
-                    <iframe src={props.news.url_arquivo} style={{ height: "800px", width: "100%" }}></iframe>
-                </Card.Text>
+                <iframe src={props.news.url_arquivo} style={{ height: "100%", width: "100%" }}></iframe>                
             </Card.Body>
             <Card.Footer className="text-muted">
                 <Grid container direction="row" sx={{ justifyContent: "space-between", alignItems: "center" }}>
                     <Grid item size={4}>
-                        <span>In: {props.news.newspaper.name}</span>
+                        <a href={props.news.url_arquivo}>In: {props.news.newspaper.name}</a>
                     </Grid>
                     <Grid item>
-                        <Chip label={decodeTopic(props.news.topic)} variant="outlined"/>
+                        <Chip label={decodeTopic(props.news.topic)} variant="outlined" />
                     </Grid>
                 </Grid>
             </Card.Footer>

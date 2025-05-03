@@ -89,7 +89,7 @@ html a {
 }
 
 .card-news .card-body {
-    height: 400px !important;
+    height: 600px;
     overflow-y: hidden;
 }
 

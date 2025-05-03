@@ -21,7 +21,7 @@ const ListElectionType = (props) => {
                     Promessas Eleitorais
                 </ListItemText>
             </ListItemButton>
-            <ListItemButton onClick={() => props.setSelectedFilter("election")}>
+            <ListItemButton onClick={() => props.setSelectedFilter("name")}>
                 <ListItemAvatar>
                     <Avatar>
                         <PlaceIcon />

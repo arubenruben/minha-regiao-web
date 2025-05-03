@@ -14,7 +14,7 @@ const Election = (props) => {
     const [electionYears, setElectionYears] = useState(null);
     const [yearToCompare, setYearToCompare] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("promises");
-
+    
     const fetchElection = async (type, name, year) => {
         let endpoint = null;
 
@@ -50,6 +50,8 @@ const Election = (props) => {
         fetchElectionYears();
     }, []);
 
+    console.log(election?.news, selectedFilter);
+
     return (
         <GenericLayout main={
             <Grid container direction="column">
@@ -74,23 +76,26 @@ const Election = (props) => {
                 <Grid item>
                     <h3>As notícias locais em {name} sobre a Eleição de {year}</h3>
                 </Grid>
-                <Grid item container direction="row" sx={{ mt: 5, height: "100%" }} spacing={4}>
+                <Grid item container direction="row" sx={{ mt: 5}} spacing={4}>
                     <Grid item size={{ md: 3 }}>
                         <ListElectionType setSelectedFilter={setSelectedFilter} />
                     </Grid>
-                    <Grid item container direction="row" size={{ md: 8 }}>
-                        <Grid item>
-                            {election?.news.map((news, index) => {
+                    <Grid item container direction="row" size={{ md: 9 }} sx={{ justifyContent: "center" }}>
+                        {election?.news?.map((news, index) => {
+                            if (news.topic === selectedFilter) {
                                 return (
-                                    <Grid item key={index} size={{ xs: 12, md: 5 }}>
-                                        <CardNews news={news} selectedFilter={selectedFilter} />
+                                    <Grid item key={index} size={{ xs: 12, md: 6 }} sx={{ mb: 2 }}>
+                                        <CardNews news={news} />
                                     </Grid>
                                 )
-                            })}
-                        </Grid>
+                            }
+                        })}
+                        {election?.news?.filter(news => news.topic === selectedFilter).length === 0 && <Grid item size={{ xs: 12 }} sx={{ textAlign: "center" }}>
+                            <h4>Não existem notícias disponíveis para o filtro selecionado.</h4>
+                        </Grid>}
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid >
         } />
     )
 }
