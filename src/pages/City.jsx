@@ -41,7 +41,6 @@ const City = (props) => {
         );
 
         setElectionYears(response);
-        setSelectedElectionYear(response[0]);
     }
 
     useEffect(() => {

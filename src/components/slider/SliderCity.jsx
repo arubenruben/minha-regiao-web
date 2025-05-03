@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Slider from '@mui/material/Slider';
 
 const SliderCity = (props) => {
+    useEffect(() => {
+        if (props.electionYears?.length) {
+            const mostRecentYear = Math.max(...props.electionYears);
+            props.setSelectedElectionYear(mostRecentYear);
+        }
+    }, [props.electionYears]);
+
     return (
         <Slider
             defaultValue={props.electionYears[0]}
