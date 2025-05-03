@@ -79,7 +79,7 @@ const City = (props) => {
                     </Grid>
                     <Grid item container direction="column" size={{ xs: 7 }}>
                         <Grid item>
-                            <AccordionWikipedia wikipedia={city?.wikipedia} />
+                            <AccordionWikipedia name={`Cidade ${city?.name}`} wikipedia={city?.wikipedia} />
                         </Grid>
                         <hr />
                         <Grid item sx={{ mt: 2 }}>

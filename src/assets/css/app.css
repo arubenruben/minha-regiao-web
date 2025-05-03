@@ -181,3 +181,11 @@ html a {
 #list-election-type .MuiAvatar-root {
     background-color: white !important;
 }
+
+.ssn-subtitle {
+    font-weight: 300;    
+}
+
+#slogan{
+    font-weight: 500;    
+}

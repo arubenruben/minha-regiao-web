@@ -111,38 +111,34 @@ const Homepage = (props) => {
                         <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
                     </Grid>
                     <Grid item sx={{ mt: 3 }}>
-                        <ul>
-                            <li>
-                                <h6 className="className=" blue-at>Informa-te sobre o histórico eleitoral autárquico da tua região.</h6>
-                            </li>
-                        </ul>
+                        <h6 id="slogan">Informa-te sobre o histórico eleitoral autárquico da tua região.</h6>
                     </Grid>
                 </Grid>
-                <Grid item container direction="column" sx={{ mx: 3, mt: 3 }}>
-                    <Grid item>
-                        <h2>Panorama Autárquico Nacional em {selectedYear}</h2>
-                        <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada um dos partidos?</p>
-                    </Grid>
-                    <Grid item container direction="row">
-                        <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
-                            <Grid item sx={{ mb: 2 }}>
+                <Grid item container direction="row" sx={{ mx: 3, mt: 3, alignItems: "center", justifyContent: "space-around" }}>
+                    <Grid container direction="column" size={{ xs: 12, md: 6 }} sx={{ mr: { md: 8 } }} >
+                        <Grid item>
+                            <h2>Panorama Autárquico Nacional em {selectedYear}</h2>
+                            <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>
+                        </Grid>
+                        <Grid item container direction="column">
+                            <Grid item>
                                 <PlotHomepage electionSummary={electionSummary} />
                             </Grid>
                             <Grid item>
                                 <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />
                             </Grid>
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 4 }} sx={{ mx: "auto" }}>
-                            <HomepageMap districts={districts} />
-                        </Grid>
+                    </Grid>
+                    <Grid item size={{ xs: 12, md: 4 }}>
+                        <HomepageMap districts={districts} />
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item>
+                <Grid item container direction="row" >
                     <h2>Quem Somos?</h2>
                 </Grid>
                 <hr />
-                <Grid item>
+                <Grid item container direction="row">
                     <h2>O Prémio Arquivo PT 2025</h2>
                 </Grid>
             </Grid>

@@ -75,7 +75,7 @@ const District = (props) => {
                         </Grid>
                         <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
                             <Grid item>
-                                <AccordionWikipedia wikipedia={district?.wikipedia} />
+                                <AccordionWikipedia name={`Distrito ${district?.name}`} wikipedia={district?.wikipedia} />
                             </Grid>
                             <hr />
                             <Grid item sx={{ mt: 2 }}>
