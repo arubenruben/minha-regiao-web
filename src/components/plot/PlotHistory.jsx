@@ -32,7 +32,7 @@ const PlotHistory = ({ elections }) => {
         }));
 
         setSeries(newSeries);
-        
+
     }, [elections]);
 
     return (

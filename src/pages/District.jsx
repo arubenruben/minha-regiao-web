@@ -26,7 +26,6 @@ const District = (props) => {
         );
 
         setElectionYears(response);
-        setSelectedElectionYear(response[0]);
     }
 
     // Fetch districts from the API
@@ -64,8 +63,7 @@ const District = (props) => {
                             </span>
                         </Grid>
                     </Grid>
-
-                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around" }}>
+                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: 3 }}>
                         <Grid item size={{ xs: 0, md: 4 }} >
                             <LocalMap
                                 localities={district?.cities}
@@ -79,7 +77,8 @@ const District = (props) => {
                             </Grid>
                             <hr />
                             <Grid item sx={{ mt: 2 }}>
-                                <h4>Número de Eleitores em {district?.name} Desde 1974:</h4>
+                                <h4>Número de Eleitores no Distrito</h4>
+                                <p className="ssn-subtitle">Como variou o número de eleitores desde 1974?</p>
                             </Grid>
                             <Grid item sx={{ alignItems: { md: "center" } }}>
                                 <PlotVotersDistrict cities={district?.cities} electionYears={electionYears} />
@@ -90,16 +89,18 @@ const District = (props) => {
                             <LocalMap />
                         </Grid>
                     </Grid>
-                    <Grid item>
-                        <h2>Resultados Autárquicos nas Concelhias de {district?.name}:</h2>
+                    <hr/>
+                    <Grid item sx={{ ml: 3 }}>
+                        <h3>Panorama Autárquico no Distrito {district?.name} em {selectedElectionYear}:</h3>
+                        <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>
                     </Grid>
-                    <Grid item container direction="row" sx={{ justifyContent: "space-around" }}>
+                    <Grid item container direction="row" sx={{ justifyContent: "space-around", mr: 1 }}>
                         <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
-                            <Grid item size={{ xs: 10 }} sx={{ mx: "auto", mt: 3 }}>
-                                <SliderDistrict electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
-                            </Grid>
                             <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
                                 <PlotNumberCities yAxisLabel={"Número de Câmaras Municipais"} cities={district?.cities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
+                            </Grid>
+                            <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
+                                <SliderDistrict electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
                             </Grid>
                         </Grid>
                         <Grid item size={{ sx: 12, md: 7 }}>

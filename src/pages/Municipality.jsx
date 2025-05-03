@@ -36,7 +36,6 @@ const Municipality = (props) => {
     );
 
     setElectionYears(response);
-    setSelectedElectionYear(response[0]);
   }
 
   useEffect(() => {

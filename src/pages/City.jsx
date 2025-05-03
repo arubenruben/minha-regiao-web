@@ -83,7 +83,8 @@ const City = (props) => {
                         </Grid>
                         <hr />
                         <Grid item sx={{ mt: 2 }}>
-                            <h4>Variação no Número de Eleitores em {city?.name} Desde 1974:</h4>
+                            <h4>Número de Eleitores no Concelho</h4>
+                            <p className="ssn-subtitle">Como variou o número de eleitores desde 1974?</p>
                         </Grid>
                         <Grid item sx={{ alignItems: "center" }}>
                             <PlotVoters elections={city?.elections} />
@@ -91,28 +92,30 @@ const City = (props) => {
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item>
-                    <h3>Histórico na Câmara Municipal</h3>
+                <Grid item sx={{ ml: 3 }}>
+                    <h3>Histórico Eleitoral na Câmara Municipal</h3>
+                    <p className="ssn-subtitle">Como variam as votações de cada partido desde 1974?</p>
                 </Grid>
                 <Grid container item direction="column" sx={{ alignItems: "center", mb: 3 }}>
-                    <Grid item size={{ xs: 10 }} sx={{ my: 3 }}>
-                        <PlotHistory elections={city?.elections} />
-                    </Grid>
-                    <Grid item size={{ xs: 8 }}>
+                    <Grid item size={{ xs: 8, mb: 3 }}>
                         <TableCityHistoric name={city?.name} elections={city?.elections} endpoint={"cidade"} />
+                    </Grid>
+                    <Grid item size={{ xs: 10 }} sx={{ mt: 5 }}>
+                        <PlotHistory elections={city?.elections} />
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item>
-                    <h2>Resumo Autárquico na Concelhia {city?.name} em {selectedElectionYear}:</h2>
+                <Grid item sx={{ ml: 3 }}>
+                    <h2>Panorama Autárquico no Concelho {city?.name} em {selectedElectionYear}:</h2>
+                    <p className="ssn-subtitle">Quantas Juntas de Freguesia lidera cada partido?</p>
                 </Grid>
-                <Grid item container direction="row" sx={{ justifyContent: "space-around" }}>
+                <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mr: 1 }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
-                        <Grid item size={{ xs: 10 }} sx={{ mx: "auto", mt: 3 }}>
-                            <SliderCity electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
-                        </Grid>
                         <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
                             <PlotNumberCities yAxisLabel={"Número de Juntas de Freguesia"} cities={city?.municipalities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
+                        </Grid>
+                        <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
+                            <SliderCity electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>

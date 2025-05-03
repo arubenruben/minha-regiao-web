@@ -4,6 +4,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TableContainer from '@mui/material/TableContainer';
 import { Link } from 'react-router-dom';
 
 const TableCity = ({ municipalities, selectedElectionYear }) => {
@@ -45,35 +46,37 @@ const TableCity = ({ municipalities, selectedElectionYear }) => {
     }, [municipalities, selectedElectionYear]);
 
     return (
-        <Table size="small" stickyHeader>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Freguesia</TableCell>
-                    <TableCell align="center">Partido Vencedor</TableCell>
-                    <TableCell align="center">Presidente Eleito</TableCell>
-                    <TableCell align="center">% Votos</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {elections.map((elem, index) => {
-                    const votePercentage = (elem.winner?.number_votes /
-                        (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes) * 100).toFixed(2);
+        <TableContainer sx={{ maxHeight: 350 }}>
+            <Table size="small" stickyHeader>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Freguesia</TableCell>
+                        <TableCell align="center">Partido Vencedor</TableCell>
+                        <TableCell align="center">Presidente Eleito</TableCell>
+                        <TableCell align="center">% Votos</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {elections.map((elem, index) => {
+                        const votePercentage = (elem.winner?.number_votes /
+                            (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes) * 100).toFixed(2);
 
-                    return (
-                        <TableRow key={index}>
-                            <TableCell component="th" scope="row">
-                                <Link to={`/freguesia/${elem.municipality.name}`} className="link-table">
-                                    {elem.municipality.name}
-                                </Link>
-                            </TableCell>
-                            <TableCell align="right">{elem.winner?.party}</TableCell>
-                            <TableCell align="center">{elem.election.president?.name ?? '-'}</TableCell>
-                            <TableCell align="center">{votePercentage}</TableCell>
-                        </TableRow>
-                    );
-                })}
-            </TableBody>
-        </Table>
+                        return (
+                            <TableRow key={index}>
+                                <TableCell component="th" scope="row">
+                                    <Link to={`/freguesia/${elem.municipality.name}`} className="link-table">
+                                        {elem.municipality.name}
+                                    </Link>
+                                </TableCell>
+                                <TableCell align="right">{elem.winner?.party}</TableCell>
+                                <TableCell align="center">{elem.election.president?.name ?? '-'}</TableCell>
+                                <TableCell align="center">{votePercentage}</TableCell>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 };
 
