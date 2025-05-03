@@ -10,7 +10,6 @@ const SliderElection = (props) => {
                 { value: Math.max(...props.electionYears) + 4, label: "Não Comparar" },
                 ...props.electionYears.map(year => ({ value: year, label: year }))
             ]}
-            orientation="vertical"
             min={Math.min(...props.electionYears)}
             max={Math.max(...props.electionYears) + 4}
             valueLabelDisplay="auto"
@@ -19,7 +18,6 @@ const SliderElection = (props) => {
                     props.handleElectionChange(value);
                 }
             }}
-            sx={{ height: "400px" }}
         />
     )
 }

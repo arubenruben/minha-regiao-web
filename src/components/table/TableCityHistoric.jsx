@@ -5,7 +5,6 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Link } from 'react-router-dom';
 
 const TableCityHistoric = ({ elections = [], endpoint, name }) => {
     const [processedElections, setProcessedElections] = useState([]);
@@ -17,7 +16,7 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
             // Find the winner and calculate total votes
             let winner = null;
             let totalVotes = 0;
-            
+
             election.election_results.forEach(result => {
                 totalVotes += result.number_votes;
                 if (!winner || result.number_votes > winner.number_votes) {
@@ -45,22 +44,30 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
             </TableHead>
             <TableBody>
                 {processedElections.map((elem, index) => {
-                    const totalWithBlankAndNull = elem.totalVotes + 
-                        elem.election.number_blank_votes + 
+                    const totalWithBlankAndNull = elem.totalVotes +
+                        elem.election.number_blank_votes +
                         elem.election.number_null_votes;
-                    
+
                     const votePercentage = ((elem.winner.number_votes / totalWithBlankAndNull) * 100).toFixed(2);
-                    
+
                     return (
-                        <TableRow key={index}>
-                            <TableCell>{elem.election.year}</TableCell>
+                        <TableRow
+                            key={index}
+                            hover
+                            sx={{
+                                cursor: 'pointer',
+                                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
+                            }}
+                            onClick={() => {
+                                window.location.href = `/eleicao/${endpoint}/${name}/${elem.election.year}`;
+                            }}
+                        >
+                            <TableCell className="link-table">{elem.election.year}</TableCell>
                             <TableCell align="right">{elem.winner.party}</TableCell>
                             <TableCell align="right">{elem.election.president?.name ?? "-"}</TableCell>
                             <TableCell align="right">{votePercentage}%</TableCell>
                             <TableCell align="center">
-                                <Link to={`/eleicao/${endpoint}/${name}/${elem.election.year}`}>
-                                    <OpenInNewIcon />
-                                </Link>
+                                <OpenInNewIcon />
                             </TableCell>
                         </TableRow>
                     );
