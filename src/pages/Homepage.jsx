@@ -8,6 +8,7 @@ import HomepageMap from '../components/maps/HomepageMap';
 import HomepageLayout from '../layouts/HomepageLayout';
 import SliderHomepage from '../components/slider/SliderHomepage';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
+import PlotHomepage from '../components/plot/PlotHomepage';
 
 const Homepage = (props) => {
     const [districts, setDistricts] = useState([]);
@@ -93,8 +94,6 @@ const Homepage = (props) => {
         }
     }, [regions]);
 
-    console.log(electionSummary);
-
     return (
         <HomepageLayout main={
             <Grid direction="column">
@@ -120,7 +119,7 @@ const Homepage = (props) => {
                         </ul>
                     </Grid>
                 </Grid>
-                <Grid item container direction="column" sx={{ mx: 3, mt: 5 }}>
+                <Grid item container direction="column" sx={{ mx: 3, mt: 3 }}>
                     <Grid item>
                         <h2>Panorama Autárquico Nacional em: {selectedYear}</h2>
                     </Grid>
@@ -130,7 +129,7 @@ const Homepage = (props) => {
                                 <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} fetchCountryElections={fetchCountryElections} />
                             </Grid>
                             <Grid item>
-                                <PlotNumberCities electionSummary={electionSummary} />
+                                <PlotHomepage electionSummary={electionSummary} />
                             </Grid>
                         </Grid>
                         <Grid item size={{ xs: 12, md: 4 }} sx={{ mx: "auto" }}>
