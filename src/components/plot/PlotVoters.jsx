@@ -23,7 +23,7 @@ const PlotVoters = (props) => {
                 label: 'Eleições Autárquicas',
                 scaleType: 'point', // Ensure X-axis is numeric
             }]}
-            yAxis={[{ label: 'Eleitores', scaleType: 'log' }]} // Use the yAxis data from the voters state
+            yAxis={[{ label: 'Eleitores', scaleType: 'linear' }]} // Use the yAxis data from the voters state
             series={[
                 {
                     data: yAxis,
