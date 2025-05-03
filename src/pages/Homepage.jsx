@@ -7,10 +7,16 @@ import AutoCompleteHomepage from '../components/autocomplete/AutoCompleteHomepag
 import HomepageMap from '../components/maps/HomepageMap';
 import HomepageLayout from '../layouts/HomepageLayout';
 import SliderHomepage from '../components/slider/SliderHomepage';
-import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotHomepage from '../components/plot/PlotHomepage';
+import FabChat from '../components/fab/FabChat';
+import Chat from '../components/chat/Chat';
+import { createChatBotMessage } from 'react-chatbot-kit';
+
 
 const Homepage = (props) => {
+    const [chatBot, setChatBot] = useState(false);
+    const [messagesChatBot, setMessagesChatBot] = useState([]);
+
     const [districts, setDistricts] = useState([]);
     const [regions, setRegions] = useState([]);
     const [selectedYear, setSelectedYear] = useState(null)
@@ -94,9 +100,20 @@ const Homepage = (props) => {
         }
     }, [regions]);
 
+
+    const config = {
+        initialMessages: [createChatBotMessage(`Olá! Como posso ajudar?`)], // Mensagem inicial do chatbot
+        botName: 'RegionalizaBot', // Nome do bot,
+        state: {
+            data: electionSummary,
+        }
+    };
+
     return (
         <HomepageLayout main={
             <Grid direction="column">
+                <FabChat chatBot={chatBot} setChatBot={setChatBot} />
+                {chatBot && <Chat config={config} chatBot={chatBot} setChatBot={setChatBot} messagesChatBot={messagesChatBot} setMessagesChatBot={setMessagesChatBot} />}
                 <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: 10 }} >
                     <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                         <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>

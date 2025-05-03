@@ -16,6 +16,7 @@ export const sendRequest = async (url, method, body) => {
 
 
 
+
 export const fetchCity = async (cityName = null, districtName = null) => {
     if (!cityName && !districtName) {
         throw new Error('At least one parameter (cityName or districtName) must be provided');

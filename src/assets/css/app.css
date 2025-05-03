@@ -32,6 +32,7 @@ header {
 }
 
 main {
+    position: relative;
     min-height: 100vh;
 }
 
@@ -202,4 +203,15 @@ html a {
     background-color: var(--blue-at) !important;
     color: white !important;
     border: none !important;
+}
+
+#chatbot {
+    position: fixed;
+    top: 10%;
+    left: 35%;
+    z-index: 1000;
+}
+
+#chatbot .react-chatbot-kit-chat-container {
+    width: 400px !important;
 }

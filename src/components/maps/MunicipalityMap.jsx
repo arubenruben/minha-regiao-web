@@ -13,6 +13,13 @@ const MunicipalityMap = ({ municipality }) => {
         if (municipality.geo_polygon) {
             setGeoPolygon(invertCoordinates(municipality.geo_polygon.coordinates))
         }
+
+        if (municipality.old_geo_polygon) {
+            setGeoPolygon(invertCoordinates(municipality.old_geo_polygon.coordinates))
+        }
+        if (municipality.old_polygon_centroid) {
+            setCenter(invertCoordinates(municipality.old_polygon_centroid.coordinates))
+        }
     }, [municipality])
 
     return (

@@ -19,7 +19,6 @@ const Municipality = (props) => {
   const [municipality, setMunicipality] = useState({});
   const [, setElectionYears] = useState([]);
   const [, setSelectedElectionYear] = useState(null);
-  const [filteredElections, setFilteredElections] = useState([]);
 
   const fetchMunicipality = async (municipalityName) => {
     const response = await sendRequest(
@@ -43,20 +42,8 @@ const Municipality = (props) => {
     fetchElectionYears(name);
   }, [name]);
 
-  useEffect(() => {
-    if (municipality) {
-      setFilteredElections(
-        municipality.elections?.filter((election) => {
-          // if municipality has a new_municipality, filter out elections after 2012
-          if (municipality.new_municipality) {
-            return election.year <= 2012;
-          }
-          return election.year >= 2012;
-        }) || []
-      )
-    }
-  }, [municipality]);
-
+  console.log(municipality);
+  
   return (
     <GenericLayout
       alert={
@@ -102,7 +89,7 @@ const Municipality = (props) => {
                 <h4>Número de Eleitores em {municipality?.name} Desde 1974:</h4>
               </Grid>
               <Grid item sx={{ alignItems: "center" }}>
-                <PlotVoters elections={filteredElections} />
+                <PlotVoters elections={municipality?.elections} />
               </Grid>
             </Grid>
           </Grid>
@@ -112,10 +99,10 @@ const Municipality = (props) => {
           </Grid>
           <Grid container item direction="column" sx={{ alignItems: "center" }}>
             <Grid item size={{ xs: 10 }} sx={{ my: 3 }}>
-              <PlotHistory elections={filteredElections} />
+              <PlotHistory elections={municipality?.elections} />
             </Grid>
             <Grid item size={{ xs: 8 }}>
-              <TableCityHistoric name={municipality?.name} elections={filteredElections} endpoint={"freguesia"} />
+              <TableCityHistoric name={municipality?.name} elections={municipality?.elections} endpoint={"freguesia"} />
             </Grid>
           </Grid>
         </Grid >

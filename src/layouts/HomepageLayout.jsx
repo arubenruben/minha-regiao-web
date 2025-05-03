@@ -7,7 +7,6 @@ const HomepageLayout = (props) => {
     return (
         <>
             {props.main ?? <main>{props.main}</main>}
-            <FabChat />
             {props.footer ?? <GenericFooter />}
         </>
     )
