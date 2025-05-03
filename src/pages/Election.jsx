@@ -11,11 +11,8 @@ import ListElectionType from '../components/list/ListElectionType';
 const Election = (props) => {
     const { type, name, year } = useParams();
     const [election, setElection] = useState(null);
-    const [electionYears, setElectionYears] = useState([]);
-    const [yearToCompare, setyearToCompare] = useState(null);
-    const [otherElection, setOtherElection] = useState(null);
-    const [nullOption, setNullOption] = useState(null);
-    const [totalNumberVotes, setTotalNumberVotes] = useState(0);
+    const [electionYears, setElectionYears] = useState(null);
+    const [yearToCompare, setYearToCompare] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("promises");
 
     const fetchElection = async (type, name, year) => {
@@ -43,77 +40,15 @@ const Election = (props) => {
             "GET"
         );
 
-        // Remove year from the list of years
-        const filteredYears = response.filter((elem) => elem != year);
-
         // Sort years in descending order
-        filteredYears.sort((a, b) => b - a);
 
-        setElectionYears(filteredYears);
-
-        setNullOption(Math.max(...filteredYears) + 4);
-
-    }
-
-    const fetchOtherElection = async (type, name, year) => {
-        let endpoint = null;
-
-        if (type === "freguesia") {
-            endpoint = `${process.env.REACT_APP_ENDPOINT}/elections/municipality/${name}/${year}`;
-        }
-
-        else if (type === "cidade") {
-            endpoint = `${process.env.REACT_APP_ENDPOINT}/elections/city/${name}/${year}`;
-        }
-
-        const response = await sendRequest(
-            endpoint,
-            "GET"
-        );
-
-        setOtherElection(response);
-    }
-
-    const setTotalVotes = (election) => {
-        if (!election || !election.election_results) {
-            return 0;
-        }
-
-        const totalVotes = election.election_results.reduce((acc, result) => {
-            return acc + result.number_votes;
-        }, 0);
-
-        setTotalNumberVotes(totalVotes + election.number_blank_votes + election.number_null_votes);
-
+        setElectionYears(response.filter(elem => elem !== parseInt(year)));
     }
 
     useEffect(() => {
         fetchElection(type, name, year);
         fetchElectionYears();
     }, []);
-
-    useEffect(() => {
-        if (election) {
-            setTotalVotes(election);
-        }
-    }, [election]);
-
-
-    const handleElectionChange = async (value) => {
-
-        if (!value)
-            return;
-
-        setyearToCompare(value);
-
-
-        if (value === nullOption) {
-            setOtherElection(null);
-            return;
-        }
-
-        fetchOtherElection(type, name, value)
-    }
 
     return (
         <GenericLayout main={
@@ -124,8 +59,14 @@ const Election = (props) => {
                 <Grid item container direction="row" sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 8 }}>
                         <Grid item size={{ xs: 12, md: "auto" }}>
-                            <PlotElection />
-                            <SliderElection electionYears={electionYears} handleElectionChange={handleElectionChange} nullOption={nullOption} yearToCompare={yearToCompare} setyearToCompare={setyearToCompare} setOtherElection={setOtherElection} setNullOption={setNullOption} />
+                            <PlotElection
+                                election={election}
+                                name={name}
+                                type={type}
+                                yearToCompare={yearToCompare}
+                                year={year}
+                            />
+                            {electionYears && <SliderElection electionYears={electionYears} setYearToCompare={setYearToCompare} />}
                         </Grid>
                     </Grid>
                 </Grid>

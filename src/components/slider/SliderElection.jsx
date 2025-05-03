@@ -15,7 +15,12 @@ const SliderElection = (props) => {
             valueLabelDisplay="auto"
             onChange={(_, value) => {
                 if (value) {
-                    props.handleElectionChange(value);
+                    if (value === Math.max(...props.electionYears) + 4) {
+                        props.setYearToCompare(null);
+                    }
+                    else {
+                        props.setYearToCompare(value);
+                    }
                 }
             }}
         />

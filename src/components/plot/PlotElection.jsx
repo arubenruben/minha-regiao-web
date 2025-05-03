@@ -1,32 +1,77 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { sendRequest } from '../../utils';
 
-const PlotElection = (props) => {
-    const [series, setSeries] = useState([])
+const PlotElection = ({ type, name, yearToCompare, election, year }) => {
+    const [electionToCompare, setElectionToCompare] = useState(null);
+    const [xAxis, setXAxis] = useState([]);
+    const [series, setSeries] = useState([]);
 
-    const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-    const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-    const xLabels = [
-        'Page A',
-        'Page B',
-        'Page C',
-        'Page D',
-        'Page E',
-        'Page F',
-        'Page G',
-    ];
+    // Fetch the comparison election when needed
+    useEffect(() => {
+        if (!yearToCompare) {
+            setElectionToCompare(null);
+            return;
+        }
+        const fetchElection = async () => {
+            const endpoint =
+                type === 'freguesia'
+                    ? `${process.env.REACT_APP_ENDPOINT}/elections/municipality/${name}/${yearToCompare}`
+                    : `${process.env.REACT_APP_ENDPOINT}/elections/city/${name}/${yearToCompare}`;
+            const resp = await sendRequest(endpoint, 'GET');
+            setElectionToCompare(resp);
+        };
+        fetchElection();
+    }, [type, name, yearToCompare]);
+
+    // Build chart data whenever either election changes
+    useEffect(() => {
+        if (!election) return;
+
+        // If no compare data, just one series
+        if (!electionToCompare) {
+            const parties = election.election_results.map(r => r.party);
+            setXAxis(parties);
+            setSeries([
+                {
+                    data: election.election_results.map(r => r.number_votes),
+                    label: `Votantes (${year})`,
+                    id: 'voters',
+                },
+            ]);
+            return;
+        }
+
+        // 1. Gather all party names
+        const partiesSet = new Set();
+        election.election_results.forEach(r => partiesSet.add(r.party));
+        electionToCompare.election_results.forEach(r => partiesSet.add(r.party));
+        const parties = Array.from(partiesSet);
+
+        // 2. Align data arrays
+        const currentData = parties.map(p =>
+            (election.election_results.find(r => r.party === p)?.number_votes) || 0
+        );
+        const comparedData = parties.map(p =>
+            (electionToCompare.election_results.find(r => r.party === p)?.number_votes) || 0
+        );
+
+        // 3. Update state
+        setXAxis(parties);
+        setSeries([
+            { data: currentData, label: `(${year})`, id: 'current' },
+            { data: comparedData, label: `(${yearToCompare})`, id: 'compare' },
+        ]);
+    }, [election, electionToCompare, year, yearToCompare]);
 
     return (
         <BarChart
             height={300}
-            series={[
-                { data: pData, label: 'pv', id: 'pvId' },
-                { data: uData, label: 'uv', id: 'uvId' },
-            ]}
-            xAxis={[{ data: xLabels }]}
+            xAxis={[{ data: xAxis }]}
+            series={series}
             yAxis={[{ width: 50 }]}
         />
     );
-}
+};
 
-export default PlotElection
+export default PlotElection;
