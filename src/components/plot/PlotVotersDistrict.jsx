@@ -27,8 +27,6 @@ const PlotVotersDistrict = (props) => {
         }
     }, [props.cities, props.electionYears]);
 
-    console.log(props.cities);
-
     const xAxis = voters.map((voter) => voter.year);
     const yAxis = voters.map((voter) => voter.voters);
 
