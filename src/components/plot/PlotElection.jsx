@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { sendRequest } from '../../utils';
 
-const PlotElection = ({ type, name, yearToCompare, election, year }) => {
-    const [electionToCompare, setElectionToCompare] = useState(null);
+const PlotElection = ({ type, name, yearToCompare, election, year, electionToCompare, setElectionToCompare }) => {
     const [xAxis, setXAxis] = useState([]);
     const [series, setSeries] = useState([]);
 
@@ -34,7 +33,7 @@ const PlotElection = ({ type, name, yearToCompare, election, year }) => {
             setXAxis(parties);
             setSeries([
                 {
-                    data: election.election_results.map(r => r.number_votes),
+                    data: election.election_results.map(r => r.percentage),
                     label: `Eleitores (${year})`,
                     id: 'voters',
                 },
@@ -50,10 +49,10 @@ const PlotElection = ({ type, name, yearToCompare, election, year }) => {
 
         // 2. Align data arrays
         const currentData = parties.map(p =>
-            (election.election_results.find(r => r.party === p)?.number_votes) || 0
+            (election.election_results.find(r => r.party === p)?.percentage) || 0
         );
         const comparedData = parties.map(p =>
-            (electionToCompare.election_results.find(r => r.party === p)?.number_votes) || 0
+            (electionToCompare.election_results.find(r => r.party === p)?.percentage) || 0
         );
 
         // 3. Update state
@@ -66,10 +65,10 @@ const PlotElection = ({ type, name, yearToCompare, election, year }) => {
 
     return (
         <BarChart
-            height={300}
-            xAxis={[{ data: xAxis }]}
+            height={400}
+            xAxis={[{ data: xAxis, label: 'Partidos' }]}
+            yAxis={[{ label: 'Votos (%)' }]}
             series={series}
-            yAxis={[{ width: 50 }]}
         />
     );
 };

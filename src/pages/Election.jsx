@@ -7,6 +7,7 @@ import PlotElection from '../components/plot/PlotElection';
 import CardNews from '../components/card/CardNews';
 import SliderElection from '../components/slider/SliderElection';
 import ListElectionType from '../components/list/ListElectionType';
+import TableElectionMetadata from '../components/table/TableElectionMetadata';
 
 const Election = (props) => {
     const { type, name, year } = useParams();
@@ -14,6 +15,7 @@ const Election = (props) => {
     const [electionYears, setElectionYears] = useState(null);
     const [yearToCompare, setYearToCompare] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("promises");
+    const [electionToCompare, setElectionToCompare] = useState(null);
 
     const fetchElection = async (type, name, year) => {
         let endpoint = null;
@@ -36,12 +38,11 @@ const Election = (props) => {
 
     const fetchElectionYears = async () => {
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+            `${process.env.REACT_APP_ENDPOINT}/elections/years?name=${name}`,
             "GET"
         );
 
         // Sort years in descending order
-
         setElectionYears(response.filter(elem => elem !== parseInt(year)));
     }
 
@@ -52,33 +53,40 @@ const Election = (props) => {
 
     return (
         <GenericLayout main={
-            <Grid container direction="column">
+            <Grid container direction="column" sx={{ mx: 5, mt: 3 }}>
                 <Grid item>
-                    <h1>Eleição de {year} em {name}</h1>
+                    <h2>Eleição de {year} em {name}</h2>
+                    <p className="ssn-subtitle">Compara os resultados dos partidos</p>
                 </Grid>
-                <Grid item container direction="row" sx={{ mt: 5, justifyContent: "center", alignItems: "center" }}>
-                    <Grid item container direction="column" size={{ xs: 12, md: 8 }}>
-                        <Grid item size={{ xs: 12, md: "auto" }}>
+                <Grid item container direction="row" sx={{ mt: 5, justifyContent: "space-around" }}>
+                    <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
+                        <Grid item>
                             <PlotElection
                                 election={election}
                                 name={name}
                                 type={type}
                                 yearToCompare={yearToCompare}
                                 year={year}
+                                electionToCompare={electionToCompare}
+                                setElectionToCompare={setElectionToCompare}
                             />
                             {electionYears && <SliderElection electionYears={electionYears} setYearToCompare={setYearToCompare} />}
                         </Grid>
+                    </Grid>
+                    <Grid item size={{ xs: 12, md: 4.5 }} >
+                        <TableElectionMetadata election={election} electionToCompare={electionToCompare} year={year} yearToCompare={yearToCompare} />
                     </Grid>
                 </Grid>
                 <hr />
                 <Grid item>
                     <h3>As notícias locais em {name} sobre a Eleição de {year}</h3>
+                    <p className="ssn-subtitle">Quais os temas falados nos jornais locais da região no período eleitoral?</p>
                 </Grid>
                 <Grid item container direction="row" sx={{ mt: 5 }} spacing={4}>
                     <Grid item size={{ md: 3 }}>
                         <ListElectionType setSelectedFilter={setSelectedFilter} />
                     </Grid>
-                    <Grid item container direction="row" size={{ md: 9 }} sx={{ justifyContent: "center" }}>
+                    <Grid item container direction="row" size={{ md: 9 }} sx={{ justifyContent: "center", alignItems: "center" }}>
                         {election?.news?.map((news, index) => {
                             if (news.topic === selectedFilter) {
                                 return (
