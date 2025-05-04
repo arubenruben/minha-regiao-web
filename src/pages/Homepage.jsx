@@ -16,7 +16,7 @@ import PlotHomepageAbstention from '../components/plot/PlotHomepageAbstention';
 
 const Homepage = (props) => {
     const [chatBot, setChatBot] = useState(false);
-    
+
     const [abstention, setAbstention] = useState(null);
     const [districts, setDistricts] = useState([]);
     const [regions, setRegions] = useState([]);

@@ -14,12 +14,17 @@ import MunicipalityMap from '../components/maps/MunicipalityMap';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
 import AccordionPlots from '../components/accordion/AccordionPlots';
 import PlotAbstentionCity from '../components/plot/PlotAbstentionCity';
+import FabChat from '../components/fab/FabChat';
+import Chat from '../components/chat/Chat';
+import { createChatBotMessage } from 'react-chatbot-kit';
+
+
 
 const Municipality = (props) => {
   const { name } = useParams();
-
+  const [chatBot, setChatBot] = useState(false);
   const [municipality, setMunicipality] = useState({});
-  const [, setElectionYears] = useState([]);
+  const [electionYears, setElectionYears] = useState([]);
   const [, setSelectedElectionYear] = useState(null);
 
   const fetchMunicipality = async (municipalityName) => {
@@ -44,6 +49,14 @@ const Municipality = (props) => {
     fetchElectionYears(name);
   }, [name]);
 
+  const config = {
+    initialMessages: [createChatBotMessage(`Olá! Como posso ajudar?`)], // Mensagem inicial do chatbot
+    botName: 'RegionalizaBot', // Nome do bot,
+    state: {
+      data: { municipality: municipality, electionYears: electionYears },
+    }
+  };
+
   return (
     <GenericLayout
       alert={
@@ -66,6 +79,8 @@ const Municipality = (props) => {
       }
       main={
         < Grid container direction="column" >
+          <FabChat chatBot={chatBot} setChatBot={setChatBot} />
+          {chatBot && <Chat config={config} />}
           <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
             <Grid item>
               <span>

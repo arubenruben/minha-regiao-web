@@ -16,11 +16,14 @@ import SliderCity from '../components/slider/SliderCity';
 import PlotAbstention from '../components/plot/PlotAbstention';
 import AccordionPlots from '../components/accordion/AccordionPlots';
 import PlotAbstentionCity from '../components/plot/PlotAbstentionCity';
+import FabChat from '../components/fab/FabChat';
+import Chat from '../components/chat/Chat';
+import { createChatBotMessage } from 'react-chatbot-kit';
 
 
 const City = (props) => {
     const [city, setCity] = useState(null);
-
+    const [chatBot, setChatBot] = useState(false);
     const [electionYears, setElectionYears] = useState([]);
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
     const [electionsWithPresident, setElectionsWithPresident] = useState([]);
@@ -58,9 +61,19 @@ const City = (props) => {
         }
     }, [city]);
 
+    const config = {
+        initialMessages: [createChatBotMessage(`Olá! Como posso ajudar?`)], // Mensagem inicial do chatbot
+        botName: 'RegionalizaBot', // Nome do bot,
+        state: {
+            data: { city: city, electionYears: electionYears },
+        }
+    };
+
     return (
         <GenericLayout main={
             <Grid container direction="column">
+                <FabChat chatBot={chatBot} setChatBot={setChatBot} />
+                {chatBot && <Chat config={config} />}
                 <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                     <Grid item>
                         <span>
