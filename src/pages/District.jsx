@@ -16,6 +16,8 @@ import PlotAbstention from '../components/plot/PlotAbstention';
 import FabChat from '../components/fab/FabChat';
 import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 const District = (props) => {
@@ -64,6 +66,16 @@ const District = (props) => {
         }
     };
 
+    const breadCrumbs = [
+        <Link key="1" to="/">
+            Ínicio
+        </Link>,
+        <span key="2">Distritos</span>,
+        <Link key="3" to={`/distrito/${district?.name}`}>
+            {district?.name}
+        </Link>
+    ]
+
     return (
         <GenericLayout
             main={
@@ -72,12 +84,9 @@ const District = (props) => {
                     {chatBot && <Chat config={config} />}
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                         <Grid item>
-                            <span>
-                                <NorthWestIcon sx={{ fontSize: 20 }} />
-                                <Link to={`/`}>
-                                    Voltar à Página Principal
-                                </Link>
-                            </span>
+                            <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                                {breadCrumbs}
+                            </Breadcrumbs>
                         </Grid>
                     </Grid>
                     <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: 3 }}>

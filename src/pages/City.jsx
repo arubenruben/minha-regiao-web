@@ -13,12 +13,12 @@ import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotHistory from '../components/plot/PlotHistory';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
 import SliderCity from '../components/slider/SliderCity';
-import PlotAbstention from '../components/plot/PlotAbstention';
 import AccordionPlots from '../components/accordion/AccordionPlots';
 import PlotAbstentionCity from '../components/plot/PlotAbstentionCity';
 import FabChat from '../components/fab/FabChat';
 import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 
 const City = (props) => {
@@ -69,6 +69,18 @@ const City = (props) => {
         }
     };
 
+    const breadCrumbs = [
+        <Link key="1" to="/">
+            Ínicio
+        </Link>,
+        <Link key="2" to={`/distrito/${city?.district_name}`}>
+            {city?.district_name}
+        </Link>,
+        <Link key="3" to={`/cidade/${city?.name}`}>
+            {city?.name}
+        </Link>
+    ]
+
     return (
         <GenericLayout main={
             <Grid container direction="column">
@@ -76,12 +88,9 @@ const City = (props) => {
                 {chatBot && <Chat config={config} />}
                 <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                     <Grid item>
-                        <span>
-                            <NorthWestIcon sx={{ fontSize: 20 }} />
-                            <Link to={`/district/${city?.district?.name}`}>
-                                Voltar para a Página do Distrito{city?.district?.name}
-                            </Link>
-                        </span>
+                        <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                            {breadCrumbs}
+                        </Breadcrumbs>
                     </Grid>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>

@@ -6,8 +6,6 @@ import { sendRequest } from '../utils';
 import PlotVoters from '../components/plot/PlotVoters';
 import TableCityHistoric from '../components/table/TableCityHistoric';
 import { Link } from 'react-router-dom';
-import NorthWestIcon from '@mui/icons-material/NorthWest';
-import CardPresident from '../components/card/CardPresident';
 import Alert from 'react-bootstrap/Alert';
 import PlotHistory from '../components/plot/PlotHistory';
 import MunicipalityMap from '../components/maps/MunicipalityMap';
@@ -17,6 +15,7 @@ import PlotAbstentionCity from '../components/plot/PlotAbstentionCity';
 import FabChat from '../components/fab/FabChat';
 import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 
 
@@ -57,6 +56,19 @@ const Municipality = (props) => {
     }
   };
 
+  const breadCrumbs = [
+    <Link key="1" to="/">
+      Ínicio
+    </Link>,
+    <Link key="2" to={`/distrito/${municipality?.district_name}`}>
+      {municipality?.district_name}
+    </Link>,
+    <Link key="3" to={`/cidade/${municipality?.city_name}`}>
+      {municipality?.city_name}
+    </Link>,
+    <span key="4">{municipality?.name}</span>
+  ]
+
   return (
     <GenericLayout
       alert={
@@ -83,12 +95,9 @@ const Municipality = (props) => {
           {chatBot && <Chat config={config} />}
           <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
             <Grid item>
-              <span>
-                <NorthWestIcon sx={{ fontSize: 20 }} />
-                <Link to={`/cidade/${municipality?.city?.name}`}>
-                  Voltar para a Página da Cidade{municipality?.city?.name}
-                </Link>
-              </span>
+              <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                {breadCrumbs}
+              </Breadcrumbs>
             </Grid>
           </Grid>
           <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>

@@ -44,12 +44,6 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
             </TableHead>
             <TableBody>
                 {processedElections.map((elem, index) => {
-                    const totalWithBlankAndNull = elem.totalVotes +
-                        elem.election.number_blank_votes +
-                        elem.election.number_null_votes;
-
-                    const votePercentage = ((elem.winner.number_votes / totalWithBlankAndNull) * 100).toFixed(2);
-
                     return (
                         <TableRow
                             key={index}
@@ -63,9 +57,9 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
                             }}
                         >
                             <TableCell className="link-table">{elem.election.year}</TableCell>
-                            <TableCell align="right">{elem.winner.party}</TableCell>
+                            <TableCell align="right">{elem.winner?.party}</TableCell>
                             <TableCell align="right">{elem.election.president?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{votePercentage}%</TableCell>
+                            <TableCell align="right">{elem.winner?.percentage.toFixed(2)}%</TableCell>
                             <TableCell align="center">
                                 <OpenInNewIcon />
                             </TableCell>
