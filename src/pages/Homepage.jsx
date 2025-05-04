@@ -16,9 +16,8 @@ import PlotHomepageAbstention from '../components/plot/PlotHomepageAbstention';
 
 const Homepage = (props) => {
     const [chatBot, setChatBot] = useState(false);
-    const [messagesChatBot, setMessagesChatBot] = useState([]);
+    
     const [abstention, setAbstention] = useState(null);
-
     const [districts, setDistricts] = useState([]);
     const [regions, setRegions] = useState([]);
     const [selectedYear, setSelectedYear] = useState(null)
@@ -123,13 +122,11 @@ const Homepage = (props) => {
         }
     };
 
-    console.log(abstention);
-
     return (
         <HomepageLayout main={
             <Grid direction="column">
                 <FabChat chatBot={chatBot} setChatBot={setChatBot} />
-                {chatBot && <Chat config={config} chatBot={chatBot} setChatBot={setChatBot} messagesChatBot={messagesChatBot} setMessagesChatBot={setMessagesChatBot} />}
+                {chatBot && <Chat config={config} />}
                 <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: 10 }} >
                     <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                         <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>

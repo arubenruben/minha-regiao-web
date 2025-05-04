@@ -13,8 +13,13 @@ import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
 import AccordionPlots from '../components/accordion/AccordionPlots';
 import PlotAbstention from '../components/plot/PlotAbstention';
+import FabChat from '../components/fab/FabChat';
+import Chat from '../components/chat/Chat';
+import { createChatBotMessage } from 'react-chatbot-kit';
+
 
 const District = (props) => {
+    const [chatBot, setChatBot] = useState(false);
 
     const { name } = useParams();
     const [district, setDistrict] = useState(null);
@@ -51,10 +56,20 @@ const District = (props) => {
         });
     }, []);
 
+    const config = {
+        initialMessages: [createChatBotMessage(`Olá! Como posso ajudar?`)], // Mensagem inicial do chatbot
+        botName: 'RegionalizaBot', // Nome do bot,
+        state: {
+            data: { district: district, electionYears: electionYears },
+        }
+    };
+
     return (
         <GenericLayout
             main={
                 <Grid container direction="column" >
+                    <FabChat chatBot={chatBot} setChatBot={setChatBot} />
+                    {chatBot && <Chat config={config} />}
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                         <Grid item>
                             <span>
