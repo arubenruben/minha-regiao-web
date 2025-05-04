@@ -10,7 +10,7 @@ const CardAbstencion = (props) => {
                     <Card.Header>Um Manifesto Contra a Abstenção</Card.Header>
                     <Card.Body>
                         <div>
-                            A abstenção nas últimas eleições autárquicas em Portugal sitou-se <span className="empathize-homepage">nos 47%</span>.
+                            A abstenção nas últimas eleições autárquicas em Portugal situou-se <span className="empathize-homepage">nos 47%</span>.
                             <br />
                             <br />
                             <span className="empathize-homepage"> Mais de 4 milhões de eleitores não foram às urnas.</span>
@@ -26,13 +26,13 @@ const CardAbstencion = (props) => {
                 <Card className="card-homepage">
                     <Card.Header>A Importância do Poder Local</Card.Header>
                     <Card.Body>
-                        Por vezes esquecido, <span className="empathize-homepage">o poder local é uma das maiores conquistas de abril.</span>
+                        Por vezes esquecido, o poder local <span className="empathize-homepage">é uma das maiores conquistas de abril.</span>
                         <br />
                         <br />
-                        A OCDE é clara, existe "...uma clara associação estatística entre desenvolvimento e descentralização, <span className="empathize-homepage"><a href="https://www.parlamento.pt/Documents/2019/julho/descentralizacao/Relatorio-Final-descentralizacao.pdf">países mais desenvolvidos são mais descentralizados que os países mais centralistas."</a></span>
+                        Existe "...uma clara associação estatística entre desenvolvimento e descentralização, <span className="empathize-homepage"><a href="https://www.parlamento.pt/Documents/2019/julho/descentralizacao/Relatorio-Final-descentralizacao.pdf">países mais desenvolvidos são mais descentralizados que os países mais centralistas."</a></span> - OCDE, 2019
                         <br />
                         <br />
-                        Com a crescente descentralização das competências do estado, os autarcas têm um papel ainda mais importante na vida dos cidadãos, assumindo cada vez mais funções estratégicas que requerem uma maior responsabilidade e escrutínio público.
+                        Com a crescente descentralização das competências do estado, os autarcas têm um papel fundamental na vida dos cidadãos, assumindo cada vez mais funções estratégicas que requerem uma maior responsabilidade e escrutínio público.
                     </Card.Body>
                 </Card>
             </Carousel.Item>
@@ -40,7 +40,8 @@ const CardAbstencion = (props) => {
                 <Card className="card-homepage">
                     <Card.Header>O Que Podemos Fazer?</Card.Header>
                     <Card.Body>
-                        Ao contrário das restantes eleições partidárias, onde nos últimos anos com o advento da IA Generativa <span className="empathize-homepage">tem surgido multiplas plataformas que permitem uma gamificação do processo eleitoral</span> apelando à participação dos cidadãos, sobretudo os mais jovens, as eleições autárquicas continuam a ser o parente pobre do processo eleitoral português.
+                        Ao contrário das restantes eleições partidárias, onde nos últimos anos o advento da IA Generativa <span className="empathize-homepage">permitiu o surgimento de multiplas plataformas para uma análise gamificada aos programas eleitorais</span>.
+                        As eleições autárquicas continuam, contudo, <span className="empathize-homepage">a ser o parente pobre do processo eleitoral português</span> no que concerne ao desenvolvimento de plataformas digitais que apelem à participação das massas na política.
                         <br />
                         <br />
                         Lançado a tempo das eleições autárquicas de 2025, esperamos que este portal seja um ponto de partida para uma maior participação dos cidadãos no processo eleitoral autárquico. Ao promover o conhecimento do poder local, esperamos combater a abstenção e aumentar a participação cívica.

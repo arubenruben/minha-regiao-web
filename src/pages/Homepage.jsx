@@ -15,6 +15,8 @@ import PlotHomepageAbstention from '../components/plot/PlotHomepageAbstention';
 import CardAbstencion from '../components/card/homepage/CardAbstencion';
 import CardTeacher from '../components/card/homepage/CardTeacher';
 import CardMe from '../components/card/homepage/CardMe';
+import CardArquivoPT from '../components/card/homepage/CardArquivoPT';
+import arquivo from '../assets/images/arquivo.jpg'
 
 
 const Homepage = (props) => {
@@ -169,9 +171,6 @@ const Homepage = (props) => {
                 </Grid>
                 <hr />
                 <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
-                    <Grid item>
-                        <h2>Abstenção em Eleições Autárquicas</h2>
-                    </Grid>
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 1 }}>
                         <Grid item size={{ xs: 12, md: 6 }}>
                             <CardAbstencion />
@@ -186,25 +185,28 @@ const Homepage = (props) => {
                     <Grid item>
                         <h2>Quem Somos?</h2>
                     </Grid>
-                    <Grid item container direction="row">
+                    <Grid item container direction="row" size={{ xs: 12, md: 10 }} sx={{ mx: "auto", mt: 2 }}>
                         <CardMe />
                     </Grid>
-                    <Grid item container direction="row">
-                        <CardTeacher name="rcc" />
-                        <CardTeacher name="ssn" />
+                    <Grid item container direction="row" sx={{ justifyContent: "center", mt: 4 }}>
+                        <Grid item sx={{ mr: 10 }}>
+                            <CardTeacher name="rcc" />
+                        </Grid>
+                        <Grid item>
+                            <CardTeacher name="ssn" />
+                        </Grid>
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
-                    <Grid item>
-                        <h2>O Prémio Arquivo PT 2025</h2>
-                    </Grid>
-                    <Grid item container direction="row" sx={{ alignItems: "center", mt: 1 }}>
+                <Grid item container direction="row" sx={{ mt: 3, mx: { md: 6 } }}>
+                    <Grid item container direction="row">
                         <Grid item size={{ xs: 12, md: 6 }}>
-                            <CardAbstencion />
+                            <CardArquivoPT />
                         </Grid>
-                        <Grid item size={{ xs: 12, md: 5 }} sx={{ ml: { md: 10 } }} >
-                            {abstention && <PlotHomepageAbstention abstention={abstention} />}
+                        <Grid item size={{ xs: 12, md: 4 }} sx={{ ml: { md: 15 } }} >
+                            <a href="https://sobre.arquivo.pt/pt/colabore/premios-arquivo-pt/premio-arquivo-pt-2025/" target="_blank" rel="noopener noreferrer">
+                                <Image id="image-arquivo" src={arquivo} />
+                            </a>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -242,9 +242,34 @@ html a {
 }
 
 #card-me {
-    border: 1px solid var(--blue-at) !important;
+    border-radius: 0.4rem !important;
+    box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.1) !important;
 }
 
 #card-me img {
-    height: 300px !important;
+    width: 100% !important;
+    min-height: 400px !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-top-left-radius: 0.4rem !important;
+    border-bottom-left-radius: 0.4rem !important;
+}
+
+#card-me {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+#name{
+    margin: 0;
+}
+
+.card-teacher img {
+    height: 200px !important;
+    width: 200px !important;
+}
+
+#image-arquivo{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: scale-down !important;
 }
