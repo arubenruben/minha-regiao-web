@@ -212,3 +212,31 @@ html a {
 #chatbot .react-chatbot-kit-chat-container {
     width: 400px !important;
 }
+
+.carousel-indicators button {
+    color: var(--blue-at) !important;
+    background-color: var(--blue-at) !important;
+}
+
+.card-homepage {
+    height: 380px !important;
+    font-size: 1.1rem !important;
+}
+
+.card-homepage .card-header {
+    background-color: var(--blue-at) !important;
+    color: white !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+.card-homepage .card-body {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.empathize-homepage {
+    color: var(--blue-at) !important;
+    font-weight: 700 !important;
+
+    text-decoration: underline !important;
+}

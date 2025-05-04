@@ -12,6 +12,7 @@ import FabChat from '../components/fab/FabChat';
 import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
 import PlotHomepageAbstention from '../components/plot/PlotHomepageAbstention';
+import CardAbstencion from '../components/card/homepage/CardAbstencion';
 
 
 const Homepage = (props) => {
@@ -165,18 +166,17 @@ const Homepage = (props) => {
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-between" }}>
-                    <Grid item container direction="column" size={{ xs: 12, md: 6 }} sx={{ mr: { md: 8 } }} >
-                        <Grid item>
-                            <h2>Abstenção em Eleições Autárquicas</h2>
-                            <p className="ssn-subtitle">Como variou a abstenção nas autárquicas desde 1974 ?</p>
-                        </Grid>
-                        <Grid item>
-                            <p>MinhaRegião.pt - Um Manifesto Contra a Abstenção</p>
-                        </Grid>
+                <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
+                    <Grid item>
+                        <h2>Abstenção em Eleições Autárquicas</h2>
                     </Grid>
-                    <Grid item size={{ xs: 12, md: 4 }}>
-                        {abstention && <PlotHomepageAbstention abstention={abstention} />}
+                    <Grid item container direction="row" sx={{ alignItems: "center", mt: 1 }}>
+                        <Grid item size={{ xs: 12, md: 6 }}>
+                            <CardAbstencion />
+                        </Grid>
+                        <Grid item size={{ xs: 12, md: 5 }} sx={{ ml: { md: 10 } }} >
+                            {abstention && <PlotHomepageAbstention abstention={abstention} />}
+                        </Grid>
                     </Grid>
                 </Grid>
                 <hr />
