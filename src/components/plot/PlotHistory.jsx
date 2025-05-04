@@ -25,7 +25,7 @@ const PlotHistory = ({ elections }) => {
         const newSeries = Array.from(parties).map(party => ({
             data: sortedElections.map(election => {
                 const result = election.election_results.find(r => r.party === party);
-                return result ? result.number_votes : null;
+                return result ? result.percentage : null;
             }),
             label: party,
             connectNulls: true,

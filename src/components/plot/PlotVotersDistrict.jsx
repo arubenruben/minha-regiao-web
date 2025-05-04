@@ -10,8 +10,7 @@ const PlotVotersDistrict = (props) => {
             const totalVoters = cities.reduce((total, city) => {
                 const election = city.elections.find(election => election.year === year);
                 if (election) {
-                    const results = _constructElections(city, election);
-                    return total + results.totalVotes;
+                    return total + election.number_registered_voters;
                 }
                 return total;
             }, 0);
@@ -27,6 +26,8 @@ const PlotVotersDistrict = (props) => {
             constructVoters(props.cities, props.electionYears);
         }
     }, [props.cities, props.electionYears]);
+
+    console.log(props.cities);
 
     const xAxis = voters.map((voter) => voter.year);
     const yAxis = voters.map((voter) => voter.voters);

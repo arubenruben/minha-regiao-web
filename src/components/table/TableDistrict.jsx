@@ -48,7 +48,7 @@ const TableDistrict = (props) => {
                             </TableCell>
                             <TableCell align="right">{election.winner.party}</TableCell>
                             <TableCell align="right">{election.election.president?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{(election.winner.number_votes / election.totalVotes * 100).toFixed(2)}</TableCell>
+                            <TableCell align="right">{election.winner.percentage.toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

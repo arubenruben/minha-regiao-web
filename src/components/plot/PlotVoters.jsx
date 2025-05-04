@@ -12,7 +12,7 @@ const PlotVoters = (props) => {
             const sortedElections = props.elections.sort((a, b) => a.year - b.year);
 
             setXAxis(sortedElections.map((locality) => locality.year));
-            setYAxis(sortedElections.map((locality) => locality.number_voters));
+            setYAxis(sortedElections.map((locality) => locality.number_registered_voters));
         }
     }, [props.elections, props.electionYears]);
 

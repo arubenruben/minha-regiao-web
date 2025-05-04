@@ -77,7 +77,7 @@ const District = (props) => {
                             </Grid>
                             <hr />
                             <Grid item sx={{ mt: 2 }}>
-                                <h4>Número de Eleitores no Distrito</h4>
+                                <h4>Número de Eleitores Registados no Distrito</h4>
                                 <p className="ssn-subtitle">Como variou o número de eleitores desde 1974?</p>
                             </Grid>
                             <Grid item sx={{ alignItems: { md: "center" } }}>
@@ -89,7 +89,7 @@ const District = (props) => {
                             <LocalMap />
                         </Grid>
                     </Grid>
-                    <hr/>
+                    <hr />
                     <Grid item sx={{ ml: 3 }}>
                         <h3>Panorama Autárquico no Distrito {district?.name} em {selectedElectionYear}:</h3>
                         <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>

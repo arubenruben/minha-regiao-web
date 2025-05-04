@@ -58,8 +58,6 @@ const TableCity = ({ municipalities, selectedElectionYear }) => {
                 </TableHead>
                 <TableBody>
                     {elections.map((elem, index) => {
-                        const votePercentage = (elem.winner?.number_votes /
-                            (elem.totalVotes + elem.election.number_blank_votes + elem.election.number_null_votes) * 100).toFixed(2);
 
                         return (
                             <TableRow key={index}>
@@ -70,7 +68,7 @@ const TableCity = ({ municipalities, selectedElectionYear }) => {
                                 </TableCell>
                                 <TableCell align="right">{elem.winner?.party}</TableCell>
                                 <TableCell align="center">{elem.election.president?.name ?? '-'}</TableCell>
-                                <TableCell align="center">{votePercentage}</TableCell>
+                                <TableCell align="center">{elem.winner.percentage.toFixed(2)}</TableCell>
                             </TableRow>
                         );
                     })}
