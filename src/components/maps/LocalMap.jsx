@@ -40,13 +40,13 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
     const zoom = endpoint === "cidade" ? 8 : 11;
 
     return (
-        <div>
+        <>
             {polygon_centroid && <MapContainer
                 center={invertCoordinates(polygon_centroid.coordinates)}
                 zoom={zoom}
                 scrollWheelZoom={true}
                 ref={setMap}
-                style={{ height: '400px', width: '100%' }}
+                style={{ height: "400px", width: "100%" }}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -54,7 +54,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
                 />
                 {renderPolygons}
             </MapContainer>}
-        </div>
+        </>
     )
 }
 

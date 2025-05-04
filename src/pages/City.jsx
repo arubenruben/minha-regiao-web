@@ -9,12 +9,14 @@ import TableCity from '../components/table/TableCity';
 import TableCityHistoric from '../components/table/TableCityHistoric';
 import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
-import CardPresident from '../components/card/CardPresident';
-import { Slider } from '@mui/material';
 import PlotNumberCities from '../components/plot/PlotNumberCities';
 import PlotHistory from '../components/plot/PlotHistory';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
 import SliderCity from '../components/slider/SliderCity';
+import PlotAbstention from '../components/plot/PlotAbstention';
+import AccordionPlots from '../components/accordion/AccordionPlots';
+import PlotAbstentionCity from '../components/plot/PlotAbstentionCity';
+
 
 const City = (props) => {
     const [city, setCity] = useState(null);
@@ -82,13 +84,10 @@ const City = (props) => {
                             <AccordionWikipedia name={`Cidade ${city?.name}`} wikipedia={city?.wikipedia} />
                         </Grid>
                         <hr />
-                        <Grid item sx={{ mt: 2 }}>
-                            <h4>Número de Eleitores no Concelho</h4>
-                            <p className="ssn-subtitle">Como variou o número de eleitores desde 1974?</p>
-                        </Grid>
-                        <Grid item sx={{ alignItems: "center" }}>
-                            <PlotVoters elections={city?.elections} />
-                        </Grid>
+                        <AccordionPlots
+                            plotVoters={<PlotVoters elections={city?.elections} electionYears={electionYears} />}
+                            plotAbstention={<PlotAbstentionCity elections={city?.elections} />}
+                        />
                     </Grid>
                 </Grid>
                 <hr />

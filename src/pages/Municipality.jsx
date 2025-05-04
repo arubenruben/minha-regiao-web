@@ -12,6 +12,8 @@ import Alert from 'react-bootstrap/Alert';
 import PlotHistory from '../components/plot/PlotHistory';
 import MunicipalityMap from '../components/maps/MunicipalityMap';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
+import AccordionPlots from '../components/accordion/AccordionPlots';
+import PlotAbstentionCity from '../components/plot/PlotAbstentionCity';
 
 const Municipality = (props) => {
   const { name } = useParams();
@@ -41,8 +43,6 @@ const Municipality = (props) => {
     fetchMunicipality(name);
     fetchElectionYears(name);
   }, [name]);
-
-  console.log(municipality);
 
   return (
     <GenericLayout
@@ -84,13 +84,11 @@ const Municipality = (props) => {
             <Grid item container direction="column" size={{ xs: 7 }}>
               <Grid item>
                 <AccordionWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
-              </Grid>
-              <hr />
-              <Grid item sx={{ mt: 2 }}>
-                <h4>Número de Eleitores em {municipality?.name} Desde 1974:</h4>
-              </Grid>
-              <Grid item sx={{ alignItems: "center" }}>
-                <PlotVoters elections={municipality?.elections} />
+                <hr />
+                <AccordionPlots
+                  plotVoters={<PlotVoters elections={municipality?.elections} />}
+                  plotAbstention={<PlotAbstentionCity elections={municipality?.elections} />}
+                />
               </Grid>
             </Grid>
           </Grid>

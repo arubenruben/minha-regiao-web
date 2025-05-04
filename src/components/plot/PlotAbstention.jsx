@@ -33,8 +33,6 @@ const PlotAbstention = (props) => {
             constructAbsenteeVoters(props.cities, props.electionYears);
         }
     }, [props.cities, props.electionYears]);
-
-    console.log(absenteeVoters);
     
     return (
         <LineChart
@@ -51,28 +49,3 @@ const PlotAbstention = (props) => {
 }
 
 export default PlotAbstention
-
-
-/*
-
-
-    const [absenteeVoters, setAbsenteeVoters] = useState([]);
-    const constructAbsenteeVoters = (cities, electionYears) => {
-        const votersAccumulator = electionYears.map(year => {
-            const totalVoters = cities.reduce((total, city) => {
-                const election = city.elections.find(election => election.year === year);
-                if (election) {
-                    return total + (election.number_absentee_voters / election.number_registered_voters) * 100;
-                }
-                return total;
-            }, 0);
-
-            return { year, voters: totalVoters };
-        });
-
-        setAbsenteeVoters(votersAccumulator.sort((a, b) => a.year - b.year));
-
-        //setVoters(votersAccumulator.sort((a, b) => a.year - b.year));
-    }
-
-*/

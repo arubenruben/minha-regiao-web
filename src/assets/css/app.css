@@ -84,9 +84,6 @@ html a {
     color: var(--blue-at);
 }
 
-.map-container {
-    height: 100%;
-}
 
 #election-map {
     height: 200px !important;

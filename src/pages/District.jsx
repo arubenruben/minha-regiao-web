@@ -11,7 +11,7 @@ import PlotVotersDistrict from '../components/plot/PlotVotersDistrict';
 import AccordionWikipedia from '../components/accordion/AccordionWikipedia';
 import { Link } from 'react-router-dom';
 import NorthWestIcon from '@mui/icons-material/NorthWest';
-import AcoordionPlots from '../components/accordion/AcoordionPlots';
+import AccordionPlots from '../components/accordion/AccordionPlots';
 import PlotAbstention from '../components/plot/PlotAbstention';
 
 const District = (props) => {
@@ -79,7 +79,7 @@ const District = (props) => {
                                 <AccordionWikipedia name={`Distrito ${district?.name}`} wikipedia={district?.wikipedia} />
                             </Grid>
                             <hr />
-                            <AcoordionPlots
+                            <AccordionPlots
                                 plotVoters={<PlotVotersDistrict cities={district?.cities} electionYears={electionYears} />}
                                 plotAbstention={<PlotAbstention cities={district?.cities} electionYears={electionYears} />}
                             />

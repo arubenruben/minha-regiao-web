@@ -1,7 +1,7 @@
 import React from 'react'
 import Accordion from 'react-bootstrap/Accordion';
 
-const AcoordionPlots = (props) => {
+const AccordionPlots = (props) => {
     return (
         <Accordion className="accordion-wikipedia" defaultActiveKey="0">
             <Accordion.Item eventKey="0">
@@ -26,4 +26,4 @@ const AcoordionPlots = (props) => {
     )
 }
 
-export default AcoordionPlots
+export default AccordionPlots
