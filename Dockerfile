@@ -10,6 +10,8 @@ RUN npm install react-bootstrap bootstrap --save-prod
 
 RUN npm install @mui/x-charts --save-prod
 
+RUN npm install react-chatbot-kit --save-prod
+
 COPY .env.production .env
 
 COPY . .
