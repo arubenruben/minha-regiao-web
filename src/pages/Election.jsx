@@ -8,6 +8,8 @@ import CardNews from '../components/card/CardNews';
 import SliderElection from '../components/slider/SliderElection';
 import ListElectionType from '../components/list/ListElectionType';
 import TableElectionMetadata from '../components/table/TableElectionMetadata';
+import { Link } from 'react-router-dom';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 const Election = (props) => {
     const { type, name, year } = useParams();
@@ -51,9 +53,25 @@ const Election = (props) => {
         fetchElectionYears();
     }, []);
 
+    const breadCrumbs = [
+        <Link key="1" to="/">
+            Ínicio
+        </Link>,
+        <Link key="2" to={`/${type}/${name}`}>{name}</Link>,
+        <span key="3">Eleições</span>,
+        <span key="4">{year}</span>
+    ]
+
     return (
         <GenericLayout main={
             <Grid container direction="column" sx={{ mx: 5, mt: 3 }}>
+                <Grid item container direction="row" sx={{ alignItems: "center", mt: 2 }}>
+                    <Grid item>
+                        <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                            {breadCrumbs}
+                        </Breadcrumbs>
+                    </Grid>
+                </Grid>
                 <Grid item>
                     <h2>Eleição de {year} em {name}</h2>
                     <p className="ssn-subtitle">Compara os resultados dos partidos</p>

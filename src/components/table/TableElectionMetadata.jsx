@@ -10,8 +10,8 @@ const TableElectionMetadata = (props) => {
 
     return (
         <Table stickyHeader>
-            {!props.electionToCompare && <caption>Detalhes da Eleição de {props.election.year}</caption>}
-            {props.electionToCompare && <caption>Comparação das Eleições de {props.election.year} e {props.electionToCompare.year}</caption>}
+            {!props.electionToCompare && <caption>Detalhes da Eleição de {props.election?.year}</caption>}
+            {props.electionToCompare && <caption>Comparação das Eleições de {props.election?.year} e {props.electionToCompare?.year}</caption>}
             <TableHead>
                 <TableRow>
                     <TableCell>Ano</TableCell>
