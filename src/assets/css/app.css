@@ -240,3 +240,11 @@ html a {
 
     text-decoration: underline !important;
 }
+
+#card-me {
+    border: 1px solid var(--blue-at) !important;
+}
+
+#card-me img {
+    height: 300px !important;
+}

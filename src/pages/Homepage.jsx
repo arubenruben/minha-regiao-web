@@ -13,6 +13,8 @@ import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
 import PlotHomepageAbstention from '../components/plot/PlotHomepageAbstention';
 import CardAbstencion from '../components/card/homepage/CardAbstencion';
+import CardTeacher from '../components/card/homepage/CardTeacher';
+import CardMe from '../components/card/homepage/CardMe';
 
 
 const Homepage = (props) => {
@@ -180,12 +182,31 @@ const Homepage = (props) => {
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item container direction="row" >
-                    <h2>Quem Somos?</h2>
+                <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
+                    <Grid item>
+                        <h2>Quem Somos?</h2>
+                    </Grid>
+                    <Grid item container direction="row">
+                        <CardMe />
+                    </Grid>
+                    <Grid item container direction="row">
+                        <CardTeacher name="rcc" />
+                        <CardTeacher name="ssn" />
+                    </Grid>
                 </Grid>
                 <hr />
-                <Grid item container direction="row">
-                    <h2>O Prémio Arquivo PT 2025</h2>
+                <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
+                    <Grid item>
+                        <h2>O Prémio Arquivo PT 2025</h2>
+                    </Grid>
+                    <Grid item container direction="row" sx={{ alignItems: "center", mt: 1 }}>
+                        <Grid item size={{ xs: 12, md: 6 }}>
+                            <CardAbstencion />
+                        </Grid>
+                        <Grid item size={{ xs: 12, md: 5 }} sx={{ ml: { md: 10 } }} >
+                            {abstention && <PlotHomepageAbstention abstention={abstention} />}
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
         } />
