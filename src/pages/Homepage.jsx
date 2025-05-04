@@ -11,11 +11,13 @@ import PlotHomepage from '../components/plot/PlotHomepage';
 import FabChat from '../components/fab/FabChat';
 import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
+import PlotHomepageAbstention from '../components/plot/PlotHomepageAbstention';
 
 
 const Homepage = (props) => {
     const [chatBot, setChatBot] = useState(false);
     const [messagesChatBot, setMessagesChatBot] = useState([]);
+    const [abstention, setAbstention] = useState(null);
 
     const [districts, setDistricts] = useState([]);
     const [regions, setRegions] = useState([]);
@@ -70,6 +72,14 @@ const Homepage = (props) => {
         setElectionSummary(response);
     }
 
+    const fetchAbstention = async () => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/elections/abstention`,
+            "GET"
+        );
+        setAbstention(response);
+    }
+
     useEffect(() => {
         fetchRegions().catch((error) => {
             console.error('Error fetching regions:', error);
@@ -91,6 +101,10 @@ const Homepage = (props) => {
             console.error('Error fetching election years:', error);
         });
 
+        fetchAbstention().catch((error) => {
+            console.error('Error fetching abstention:', error);
+        });
+
     }, []);
 
     useEffect(() => {
@@ -108,6 +122,8 @@ const Homepage = (props) => {
             data: electionSummary,
         }
     };
+
+    console.log(abstention);
 
     return (
         <HomepageLayout main={
@@ -148,6 +164,22 @@ const Homepage = (props) => {
                     </Grid>
                     <Grid item size={{ xs: 12, md: 4 }}>
                         <HomepageMap districts={districts} />
+                        <p className="ssn-subtitle">Navega pelo nosso mapa</p>
+                    </Grid>
+                </Grid>
+                <hr />
+                <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-between" }}>
+                    <Grid item container direction="column" size={{ xs: 12, md: 6 }} sx={{ mr: { md: 8 } }} >
+                        <Grid item>
+                            <h2>Abstenção em Eleições Autárquicas</h2>
+                            <p className="ssn-subtitle">Como variou a abstenção nas autárquicas desde 1974 ?</p>
+                        </Grid>
+                        <Grid item>
+                            <p>MinhaRegião.pt - Um Manifesto Contra a Abstenção</p>
+                        </Grid>
+                    </Grid>
+                    <Grid item size={{ xs: 12, md: 4 }}>
+                        {abstention && <PlotHomepageAbstention abstention={abstention} />}
                     </Grid>
                 </Grid>
                 <hr />

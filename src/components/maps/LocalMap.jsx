@@ -40,7 +40,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
     const zoom = endpoint === "cidade" ? 8 : 11;
 
     return (
-        <div className="map-container">
+        <div>
             {polygon_centroid && <MapContainer
                 center={invertCoordinates(polygon_centroid.coordinates)}
                 zoom={zoom}

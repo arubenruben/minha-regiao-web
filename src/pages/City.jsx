@@ -75,6 +75,7 @@ const City = (props) => {
                             localities={city?.municipalities}
                             polygon_centroid={city?.polygon_centroid}
                             endpoint={"freguesia"} />
+                        <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                     </Grid>
                     <Grid item container direction="column" size={{ xs: 7 }}>
                         <Grid item>

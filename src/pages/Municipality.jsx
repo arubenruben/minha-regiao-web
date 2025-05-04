@@ -43,7 +43,7 @@ const Municipality = (props) => {
   }, [name]);
 
   console.log(municipality);
-  
+
   return (
     <GenericLayout
       alert={
@@ -79,6 +79,7 @@ const Municipality = (props) => {
           <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
             <Grid item size={{ xs: 4 }} >
               <MunicipalityMap municipality={municipality} />
+              <p className="ssn-subtitle">Navega pelo nosso mapa</p>
             </Grid>
             <Grid item container direction="column" size={{ xs: 7 }}>
               <Grid item>
