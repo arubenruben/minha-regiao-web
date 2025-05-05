@@ -6,8 +6,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 const TableElectionMetadata = (props) => {
-    console.log(props);
-
     return (
         <Table stickyHeader>
             {!props.electionToCompare && <caption>Detalhes da Eleição de {props.election?.year}</caption>}

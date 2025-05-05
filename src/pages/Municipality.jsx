@@ -36,7 +36,7 @@ const Municipality = (props) => {
 
   const fetchElectionYears = async (name) => {
     const response = await sendRequest(
-      `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+      `${process.env.REACT_APP_ENDPOINT}/elections/years`,
       "GET"
     );
 

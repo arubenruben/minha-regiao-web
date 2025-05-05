@@ -36,7 +36,7 @@ const Homepage = (props) => {
         });
 
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/freguesias_pt_entries?${params.toString()}`,
+            `${process.env.REACT_APP_ENDPOINT}/freguesias_pt_entries/?${params.toString()}`,
             "GET"
         );
         setRegions(response);
@@ -51,7 +51,7 @@ const Homepage = (props) => {
 
     const fetchElectionYears = async (name) => {
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+            `${process.env.REACT_APP_ENDPOINT}/elections/years`,
             "GET"
         );
 
@@ -78,7 +78,7 @@ const Homepage = (props) => {
 
     const fetchAbstention = async () => {
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/elections/abstention`,
+            `${process.env.REACT_APP_ENDPOINT}/elections/abstention/`,
             "GET"
         );
         setAbstention(response);

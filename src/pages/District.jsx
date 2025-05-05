@@ -17,7 +17,6 @@ import FabChat from '../components/fab/FabChat';
 import Chat from '../components/chat/Chat';
 import { createChatBotMessage } from 'react-chatbot-kit';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import HomeIcon from '@mui/icons-material/Home';
 
 
 const District = (props) => {
@@ -30,7 +29,7 @@ const District = (props) => {
 
     const fetchElectionYears = async (name) => {
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/elections/years/`,
+            `${process.env.REACT_APP_ENDPOINT}/elections/years`,
             "GET"
         );
 
