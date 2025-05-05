@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
 import { invertCoordinates } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 const HomepageMap = ({ districts }) => {
     const [map, setMap] = useState(null);
@@ -9,15 +10,18 @@ const HomepageMap = ({ districts }) => {
 
     const center = [39.6496747, -8.2081579];
     const zoom = 6;
-
+    
+    // Add this hook inside your component
+    const navigate = useNavigate();
+    
     const handlePolygonClick = useCallback((districtId, latlng) => {
         setSelectedDistrictId(districtId);
         setPopupPosition(latlng);
 
         if (map) {
-            window.location.href = `/distrito/${districtId}`;
+            navigate(`/distrito/${districtId}`);
         }
-    }, [map]);
+    }, [map, navigate]);
 
     const renderPolygons = useMemo(() => {
         if (!districts || !districts.length) return null;

@@ -1,18 +1,22 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
 import { invertCoordinates } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
     const [map, setMap] = useState(null);
     const [popupPosition, setPopupPosition] = useState(null);
     const [selectedDistrictId, setSelectedDistrictId] = useState(null);
-
+    
+    // Add this hook inside your component
+    const navigate = useNavigate();
+    
     const handlePolygonClick = useCallback((districtId, latlng) => {
         setSelectedDistrictId(districtId);
         setPopupPosition(latlng);
 
         if (map) {
-            window.location.href = `/${endpoint}/${districtId}`;
+            navigate(`/distrito/${districtId}`);
         }
     }, [map]);
 
