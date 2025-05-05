@@ -4,7 +4,7 @@ import { sendRequest } from '../utils';
 const MessageParser = ({ children, actions }) => {
     const parse = (message) => {
 
-        sendRequest(`${process.env.REACT_APP_ENDPOINT}/llm`, "POST", {
+        sendRequest(`${process.env.REACT_APP_ENDPOINT}/llm/`, "POST", {
             'data': children.props.state.data,
             'query': message,
         }).then((response) => {
