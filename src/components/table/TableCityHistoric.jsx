@@ -5,6 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Link } from 'react-router-dom';
 
 const TableCityHistoric = ({ elections = [], endpoint, name }) => {
     const [processedElections, setProcessedElections] = useState([]);
@@ -52,16 +53,15 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
                                 cursor: 'pointer',
                                 '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
                             }}
-                            onClick={() => {
-                                window.location.href = `/eleicao/${endpoint}/${name}/${elem.election.year}`;
-                            }}
                         >
                             <TableCell className="link-table">{elem.election.year}</TableCell>
                             <TableCell align="right">{elem.winner?.party}</TableCell>
                             <TableCell align="right">{elem.election.president?.name ?? "-"}</TableCell>
                             <TableCell align="right">{elem.winner?.percentage.toFixed(2)}%</TableCell>
                             <TableCell align="center">
-                                <OpenInNewIcon />
+                                <Link to={`/eleicao/${endpoint}/${name}/${elem.election.year}`}>
+                                    <OpenInNewIcon />
+                                </Link>
                             </TableCell>
                         </TableRow>
                     );
