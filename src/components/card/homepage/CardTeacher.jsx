@@ -12,8 +12,8 @@ const CardTeacher = ({ name }) => {
         return (
             <Grid container direction="column" sx={{ textAlign: 'center' }}>
                 <p>Ricardo Campos <a href="mailto:ricardo.campos@ubi.pt"><EmailIcon /></a></p>
-                <p>Professor Associado</p>
-                <p>Universidade da Beira Interior</p>                
+                <p>Professor Auxiliar</p>
+                <p>Universidade da Beira Interior</p>
             </Grid>
         )
     }
@@ -23,7 +23,7 @@ const CardTeacher = ({ name }) => {
             <Grid container direction="column" sx={{ textAlign: 'center' }}>
                 <p>Sérgio Nunes <a href="mailto:sergio.nunes@inesctec.pt"><EmailIcon /></a></p>
                 <p>Professor Associado</p>
-                <p>FEUP-Universidade do Porto</p>                
+                <p>FEUP-Universidade do Porto</p>
             </Grid>
         )
     }
