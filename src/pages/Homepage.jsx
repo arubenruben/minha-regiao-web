@@ -84,6 +84,14 @@ const Homepage = (props) => {
         setAbstention(response);
     }
 
+    const fetchDistricts = async () => {
+        const response = await sendRequest(
+            `${process.env.REACT_APP_ENDPOINT}/freguesias_pt_entries/districts`,
+            "GET"
+        );
+        setDistricts(response);
+    }
+
     useEffect(() => {
         fetchRegions().catch((error) => {
             console.error('Error fetching regions:', error);
@@ -109,15 +117,11 @@ const Homepage = (props) => {
             console.error('Error fetching abstention:', error);
         });
 
+        fetchDistricts().catch((error) => {
+            console.error('Error fetching districts:', error);
+        });
+
     }, []);
-
-    useEffect(() => {
-        // Filter districts by type "Distrito"
-        if (regions) {
-            setDistricts(regions.filter(region => region.type === "Distrito"));
-        }
-    }, [regions]);
-
 
     const config = {
         initialMessages: [createChatBotMessage(`Olá! Como posso ajudar?`)], // Mensagem inicial do chatbot
