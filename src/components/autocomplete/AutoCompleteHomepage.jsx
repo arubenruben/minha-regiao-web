@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import { TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +31,7 @@ const AutoCompleteHomepage = (props) => {
                         } else if (region.type === "Concelho") {
                             navigate(`/cidade/${region.name}`);
                         } else if (region.type === "Freguesia") {
-                            navigate(`/freguesia/${region.name}`);
+                            navigate(`/freguesia/${region.municipality_id}`);
                         } else {
                             console.error("Unknown region type:", region.type);
                         }
@@ -42,11 +42,11 @@ const AutoCompleteHomepage = (props) => {
                 // Return empty array if input is empty
                 return state.inputValue.trim() === '' ? [] : defaultFilterOptions(options, state);
             }}
-            label="Região"            
+            label="Região"
             isOptionEqualToValue={(option, value) => option.id === value.id}
             renderInput={(params) => <TextField {...params} placeholder="Insere o Nome da Tua Região" />}
             freeSolo
-            //noOptionsText={'Introduza o Nome da sua Região' ? !inputValue : 'Sem resultados'}
+        //noOptionsText={'Introduza o Nome da sua Região' ? !inputValue : 'Sem resultados'}
         />
     )
 }

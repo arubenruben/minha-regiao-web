@@ -42,8 +42,7 @@ main {
 }
 
 #homepage-front {
-    background-color: var(--blue-at);
-    height: 60vh;
+    background-color: var(--blue-at);    
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -219,8 +218,20 @@ html a {
 }
 
 .card-homepage {
-    height: 380px !important;
+    height: 100% !important;
     font-size: 1.1rem !important;
+}
+
+.carousel-fade {
+    height: 100% !important;
+}
+
+.carousel-inner {
+    height: 100% !important;
+}
+
+.carousel-item{
+    height: 100% !important;
 }
 
 .card-homepage .card-header {

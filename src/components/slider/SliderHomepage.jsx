@@ -10,7 +10,7 @@ const SliderHomepage = (props) => {
             marks={props.electionYears.map(year => ({ value: year, label: year }))}
             min={Math.min(...props.electionYears)}
             max={Math.max(...props.electionYears)}
-            valueLabelDisplay="auto"
+            valueLabelDisplay="auto"            
             onChange={(_, value) => {
                 if (value) {
                     props.setSelectedYear(value);

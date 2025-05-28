@@ -136,7 +136,7 @@ const Homepage = (props) => {
             <Grid direction="column">
                 <FabChat chatBot={chatBot} setChatBot={setChatBot} />
                 {chatBot && <Chat config={config} />}
-                <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: 10 }} >
+                <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: { xs: 3, md: 10 }, height: { xs: "300px", lg: "60vh" } }} >
                     <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                         <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>
                             <Grid item size={12}><h1 id="title" className="blue-at">A Minha Região</h1></Grid>
@@ -149,7 +149,7 @@ const Homepage = (props) => {
                     <Grid item size={{ xs: 10, md: 6 }}>
                         <AutoCompleteHomepage regions={regions} fetchRegionsById={fetchRegionsById} />
                     </Grid>
-                    <Grid item sx={{ mt: 3 }}>
+                    <Grid item sx={{ mt: 3, display: { xs: "none", md: "block" } }}>
                         <h6 id="slogan">Informa-te sobre o histórico eleitoral autárquico da tua região.</h6>
                     </Grid>
                 </Grid>
@@ -176,7 +176,7 @@ const Homepage = (props) => {
                 <hr />
                 <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 1 }}>
-                        <Grid item size={{ xs: 12, md: 6 }}>
+                        <Grid item size={{ xs: 12, md: 6 }} sx={{ height: { md: "380px" }, mb: { xs: 5, md: 0 } }}>
                             <CardAbstencion />
                         </Grid>
                         <Grid item size={{ xs: 12, md: 5 }} sx={{ ml: { md: 10 } }} >
@@ -189,11 +189,14 @@ const Homepage = (props) => {
                     <Grid item>
                         <h2>Quem Somos?</h2>
                     </Grid>
-                    <Grid item container direction="row" size={{ xs: 12, md: 10 }} sx={{ mx: "auto", mt: 2 }}>
+                    <Grid item container direction="row" size={{ xs: 12, md: 10 }} sx={{ mx: "auto", mt: 2, display: { xs: "none", md: "block" } }}>
                         <CardMe />
                     </Grid>
                     <Grid item container direction="row" sx={{ justifyContent: "center", mt: 4 }}>
-                        <Grid item sx={{ mr: 10 }}>
+                        <Grid item>
+                            <CardTeacher name="rfa" />
+                        </Grid>
+                        <Grid item>
                             <CardTeacher name="rcc" />
                         </Grid>
                         <Grid item>
@@ -214,7 +217,7 @@ const Homepage = (props) => {
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid >
         } />
     )
 }

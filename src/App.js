@@ -12,7 +12,7 @@ import District from './pages/District';
 const App = () => {
   return (
     <Routes>
-      <Route path='/freguesia/:name' element={<Municipality />} />
+      <Route path='/freguesia/:id' element={<Municipality />} />
       <Route path='/distrito/:name' element={<District />} />
       <Route path='/cidade/:name' element={<City />} />
       <Route path="/eleicao/:type/:name/:year" element={<Election />} />

@@ -20,21 +20,21 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 
 const Municipality = (props) => {
-  const { name } = useParams();
+  const { id } = useParams();
   const [chatBot, setChatBot] = useState(false);
   const [municipality, setMunicipality] = useState({});
   const [electionYears, setElectionYears] = useState([]);
   const [, setSelectedElectionYear] = useState(null);
 
-  const fetchMunicipality = async (municipalityName) => {
+  const fetchMunicipality = async (id) => {
     const response = await sendRequest(
-      `${process.env.REACT_APP_ENDPOINT}/municipalities/${municipalityName}`,
+      `${process.env.REACT_APP_ENDPOINT}/municipalities/${id}`,
       'GET'
     );
     setMunicipality(response);
   }
 
-  const fetchElectionYears = async (name) => {
+  const fetchElectionYears = async (id) => {
     const response = await sendRequest(
       `${process.env.REACT_APP_ENDPOINT}/elections/years`,
       "GET"
@@ -44,9 +44,9 @@ const Municipality = (props) => {
   }
 
   useEffect(() => {
-    fetchMunicipality(name);
-    fetchElectionYears(name);
-  }, [name]);
+    fetchMunicipality(id);
+    fetchElectionYears(id);
+  }, [id]);
 
   const config = {
     initialMessages: [createChatBotMessage(`Olá! Como posso ajudar?`)], // Mensagem inicial do chatbot
@@ -75,14 +75,14 @@ const Municipality = (props) => {
         <>
           {municipality?.new_municipality ? <Alert variant="warning" style={{ margin: "10px" }} >
             <Alert.Heading>Freguesia Extinta na Reorganização administrativa do território (Lei n.º 22/2012, de 30 de maio)</Alert.Heading>
-            <p>Nova Designação: <Link to={`/freguesia/${municipality.new_municipality.name}`}> {municipality.new_municipality.name}</Link></p>
+            <p>Nova Designação: <Link to={`/freguesia/${municipality.new_municipality.id}`}> {municipality.new_municipality.name}</Link></p>
           </Alert > : null}
           {municipality?.old_municipalities?.length > 0 ? <Alert variant="warning" style={{ margin: "10px" }} >
             <Alert.Heading>Freguesia resultante da fusão de freguesias</Alert.Heading>
             <p>Freguesia resultante da fusão de freguesias:
               {municipality?.old_municipalities?.map((old_municipality, index) => {
                 return (
-                  <Link key={index} to={`/freguesia/${old_municipality.name}`}> {old_municipality.name}</Link>
+                  <Link key={index} to={`/freguesia/${old_municipality.id}`}> {old_municipality.name}</Link>
                 )
               })}
             </p>
@@ -101,19 +101,25 @@ const Municipality = (props) => {
             </Grid>
           </Grid>
           <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
-            <Grid item size={{ xs: 4 }} >
+            <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
               <MunicipalityMap municipality={municipality} />
               <p className="ssn-subtitle">Navega pelo nosso mapa</p>
             </Grid>
-            <Grid item container direction="column" size={{ xs: 7 }}>
+            <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
               <Grid item>
                 <AccordionWikipedia name={municipality?.name} wikipedia={municipality?.wikipedia} />
-                <hr />
-                <AccordionPlots
-                  plotVoters={<PlotVoters elections={municipality?.elections} />}
-                  plotAbstention={<PlotAbstentionCity elections={municipality?.elections} />}
-                />
               </Grid>
+              <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
+                <MunicipalityMap
+                  municipality={municipality}
+                />
+                <p className="ssn-subtitle">Navega pelo nosso mapa</p>
+              </Grid>
+              <hr />
+              <AccordionPlots
+                plotVoters={<PlotVoters elections={municipality?.elections} />}
+                plotAbstention={<PlotAbstentionCity elections={municipality?.elections} />}
+              />
             </Grid>
           </Grid>
           <hr />

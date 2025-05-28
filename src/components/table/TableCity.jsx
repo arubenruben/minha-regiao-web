@@ -11,39 +11,47 @@ const TableCity = ({ municipalities, selectedElectionYear }) => {
     const [elections, setElections] = useState([]);
 
     useEffect(() => {
-        if (!municipalities || !selectedElectionYear) return;
+        if (!municipalities || !selectedElectionYear)
+            return;
 
-        const processedElections = municipalities
-            .filter(municipality => {
-                // Find matching election
-                const election = municipality.elections.find(e => e.year === selectedElectionYear);
-                if (!election) return false;
+        let processedElections = municipalities.filter(municipality => {
+            // Find matching election
+            const election = municipality.elections.find(e => e.year === selectedElectionYear);
 
-                // Exclude based on municipality status and year
-                if (selectedElectionYear < 2012 && municipality.new_municipality === null) return false;
-                if (selectedElectionYear >= 2012 && municipality.new_municipality !== null) return false;
+            if (!election)
+                return false;
 
-                return true;
-            })
-            .map(municipality => {
-                const election = municipality.elections.find(e => e.year === selectedElectionYear);
-                const results = election.election_results;
+            // Exclude based on municipality status and year
+            if (selectedElectionYear < 2012 && municipality.old_municipalities.length > 0)
+                return false;
 
-                // Calculate winner and total votes in one pass
-                const { totalVotes, winner } = results.reduce(
-                    (acc, result) => ({
-                        totalVotes: acc.totalVotes + result.number_votes,
-                        winner: !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner
-                    }),
-                    { totalVotes: 0, winner: null }
-                );
+            if (selectedElectionYear >= 2012 && municipality.old_municipalities.length == 0)
+                return false;
 
-                return { municipality, election, winner, totalVotes };
-            })
+            return true;
+        })
+
+        processedElections = processedElections.map(municipality => {
+            const election = municipality.elections.find(e => e.year === selectedElectionYear);
+            const results = election.election_results;
+
+            // Calculate winner and total votes in one pass
+            const { totalVotes, winner } = results.reduce(
+                (acc, result) => ({
+                    totalVotes: acc.totalVotes + result.number_votes,
+                    winner: !acc.winner || result.number_votes > acc.winner.number_votes ? result : acc.winner
+                }),
+                { totalVotes: 0, winner: null }
+            );
+
+            return { municipality, election, winner, totalVotes };
+        })
             .sort((a, b) => a.municipality.name.localeCompare(b.municipality.name));
 
         setElections(processedElections);
     }, [municipalities, selectedElectionYear]);
+
+    console.log(elections);
 
     return (
         <TableContainer sx={{ maxHeight: 350 }}>
@@ -62,7 +70,7 @@ const TableCity = ({ municipalities, selectedElectionYear }) => {
                         return (
                             <TableRow key={index}>
                                 <TableCell component="th" scope="row">
-                                    <Link to={`/freguesia/${elem.municipality.name}`} className="link-table">
+                                    <Link to={`/freguesia/${elem.municipality.id}`} className="link-table">
                                         {elem.municipality.name}
                                     </Link>
                                 </TableCell>

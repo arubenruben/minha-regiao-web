@@ -94,16 +94,24 @@ const City = (props) => {
                     </Grid>
                 </Grid>
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
-                    <Grid item size={{ xs: 4 }} >
+                    <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
                         <LocalMap
                             localities={city?.municipalities}
                             polygon_centroid={city?.polygon_centroid}
                             endpoint={"freguesia"} />
                         <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                     </Grid>
-                    <Grid item container direction="column" size={{ xs: 7 }}>
+                    <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
                         <Grid item>
                             <AccordionWikipedia name={`Cidade ${city?.name}`} wikipedia={city?.wikipedia} />
+                        </Grid>
+                        <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
+                            <LocalMap
+                                localities={city?.municipalities}
+                                polygon_centroid={city?.polygon_centroid}
+                                endpoint={"freguesia"}
+                            />
+                            <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                         </Grid>
                         <hr />
                         <AccordionPlots

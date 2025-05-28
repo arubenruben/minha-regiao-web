@@ -45,7 +45,7 @@ const PlotHomepage = (props) => {
                 name: 'Partido',                
             }]}
             series={series}
-            height={300}            
+            height={300}
         />
     )
 }

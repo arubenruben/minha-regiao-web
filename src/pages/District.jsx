@@ -69,8 +69,7 @@ const District = (props) => {
         <Link key="1" to="/">
             Ínicio
         </Link>,
-        <span key="2">Distritos</span>,
-        <Link key="3" to={`/distrito/${district?.name}`}>
+        <Link key="2" to={`/distrito/${district?.name}`}>
             {district?.name}
         </Link>
     ]
@@ -88,8 +87,8 @@ const District = (props) => {
                             </Breadcrumbs>
                         </Grid>
                     </Grid>
-                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: 3 }}>
-                        <Grid item size={{ xs: 0, md: 4 }} >
+                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: { md: 3 } }}>
+                        <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
                             <LocalMap
                                 localities={district?.cities}
                                 polygon_centroid={district?.polygon_centroid}
@@ -100,6 +99,14 @@ const District = (props) => {
                         <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
                             <Grid item>
                                 <AccordionWikipedia name={`Distrito ${district?.name}`} wikipedia={district?.wikipedia} />
+                            </Grid>
+                            <Grid item sx={{ mt: {xs: 3}, display: { xs: "block", md: "none" } }}>
+                                <LocalMap
+                                    localities={district?.cities}
+                                    polygon_centroid={district?.polygon_centroid}
+                                    endpoint={"cidade"}
+                                />
+                                <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                             </Grid>
                             <hr />
                             <AccordionPlots

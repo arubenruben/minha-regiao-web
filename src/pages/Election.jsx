@@ -40,7 +40,7 @@ const Election = (props) => {
 
     const fetchElectionYears = async () => {
         const response = await sendRequest(
-            `${process.env.REACT_APP_ENDPOINT}/elections/years?name=${name}`,
+            `${process.env.REACT_APP_ENDPOINT}/elections/years?id=${name}`,
             "GET"
         );
 

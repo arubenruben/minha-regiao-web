@@ -37,7 +37,7 @@ const CardAbstencion = (props) => {
                 </Card>
             </Carousel.Item>
             <Carousel.Item>
-                <Card className="card-homepage">
+                <Card className="card-homepage" >
                     <Card.Header>O Que Podemos Fazer?</Card.Header>
                     <Card.Body>
                         Ao contrário das restantes eleições partidárias, onde nos últimos anos o advento da IA Generativa <span className="empathize-homepage">permitiu o surgimento de multiplas plataformas para uma análise gamificada aos programas eleitorais</span>.
