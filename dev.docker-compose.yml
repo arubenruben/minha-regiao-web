@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    networks:
+      - minha-regiao
+networks:
+  minha-regiao:
+    driver: bridge
