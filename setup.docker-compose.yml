@@ -7,3 +7,5 @@ services:
       dockerfile: setup.Dockerfile
     volumes:
       - .:/app
+      - /app/vendor
+      - /app/node_modules

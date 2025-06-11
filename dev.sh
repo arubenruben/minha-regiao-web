@@ -3,6 +3,8 @@
 # This script is used to set up the environment for a Laravel application.
 composer dump-autoload --optimize
 
+npm install
+
 # Run npm dev in the background
 npm run dev &
 
