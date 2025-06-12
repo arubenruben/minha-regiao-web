@@ -1,7 +1,17 @@
+FROM node:24-slim AS node
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+# Install Node.js dependencies (changes when package.json changes)
+RUN npm install --loglevel verbose
+
+
 FROM php:8.4-fpm
 
 WORKDIR /var/www/html
 
+# Install system dependencies (rarely changes)
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -12,47 +22,45 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libonig-dev \
     libcurl4-openssl-dev \
-    libssl-dev
+    libssl-dev \
+    libpq-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install common PHP extensions for Laravel.
+# Install PHP extensions (rarely changes)
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     bcmath \
     exif \
     pcntl \
-    pdo_mysql \
+    pdo_pgsql \
+    pgsql \
     gd \
     zip
 
-# Install npm and nodejs
+# Install Node.js and npm (rarely changes)
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y nodejs \
     && npm cache clean --force
 
-
-# Install Composer
+# Install Composer (rarely changes)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Clean up apt cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+COPY --from=node /app/node_modules /var/www/html/node_modules
 
-RUN chmod -R 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-RUN usermod -u 1000 www-data
+# Set up user and permissions (rarely changes)
+RUN usermod -u 1000 www-data \
+    && chmod -R 755 /var/www/html \
+    && chown -R www-data:www-data /var/www/html
 
+# Copy and setup dev script (changes occasionally)
 COPY dev.sh .
 RUN chmod +x dev.sh
 
-# Install PHP dependencies using Composer
+# Install PHP dependencies (changes when composer files change)
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --no-scripts --no-autoloader
 
-# Install npm dependencies
-COPY package.json ./
-RUN npm install --no-audit --no-fund --legacy-peer-deps
-
-RUN git config --global --add safe.directory /var/www/html
-
+# Copy application code (changes frequently - keep last)
 COPY --chown=www-data:www-data . .
 
 EXPOSE 8000
