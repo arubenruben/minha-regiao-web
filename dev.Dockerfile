@@ -1,24 +1,60 @@
-FROM node:latest
+FROM php:8.4-fpm
 
-WORKDIR /app
+WORKDIR /var/www/html
 
-# Update npm to the latest version
-RUN npm install -g npm@latest
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libxml2-dev \
+    libonig-dev \
+    libcurl4-openssl-dev \
+    libssl-dev
 
-RUN npm config set loglevel verbose
+# Install common PHP extensions for Laravel.
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+    bcmath \
+    exif \
+    pcntl \
+    pdo_mysql \
+    gd \
+    zip
 
-COPY package.json .
+# Install npm and nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+    && apt-get install -y nodejs \
+    && npm cache clean --force
 
-RUN npm install
 
-RUN npm install react-bootstrap bootstrap
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN npm install @mui/x-charts@next
+# Clean up apt cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN npm install @mui/material @emotion/react @emotion/styled
+RUN chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+RUN usermod -u 1000 www-data
 
-COPY . .
+COPY dev.sh .
+RUN chmod +x dev.sh
 
-EXPOSE 3000
+# Install PHP dependencies using Composer
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --no-scripts --no-autoloader
 
-ENTRYPOINT [ "npm", "start" ]
+# Install npm dependencies
+COPY package.json ./
+RUN npm install --no-audit --no-fund --legacy-peer-deps
+
+RUN git config --global --add safe.directory /var/www/html
+
+COPY --chown=www-data:www-data . .
+
+EXPOSE 8000
+
+ENTRYPOINT [ "./dev.sh" ]
