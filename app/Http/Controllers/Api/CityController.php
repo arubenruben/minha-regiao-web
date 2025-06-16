@@ -33,31 +33,23 @@ class CityController extends Controller
      */
     public function store(StoreCityRequest $request)
     {
-        DB::transaction(function () use ($request) {
+        try {
+            $city = DB::transaction(function () use ($request) {
+                $city = City::create($request->validated());
 
-            $city = City::create($request->all());
+                $city->freguesiaPtEntry()->create($request->validated() + [
+                    'entity_type' => 'App\Models\City',
+                    'entity_id' => $city->id,
+                ]);
 
-            $city->freguesiaPtEntry()->create([
-                'name' => $request->input('name'),
-                'freguesias_pt_url' => $request->input('freguesias_pt_url'),
-                'freguesias_pt_id' => $request->input('freguesias_pt_id'),
-                'address' => $request->input('address'),
-                'email' => $request->input('email'),
-                'phone' => $request->input('phone'),
-                'website' => $request->input('website'),
-                'geo_polygon' => $request->input('geo_polygon'),
-                'polygon_centroid' => $request->input('polygon_centroid'),
-            ]);
+                return $city;
+            });
 
-            return CityResource::make($city);
+            return new CityResource($city);
 
-        });
-
-        # Raise an exception if the transaction fails
-        throw_if(
-            DB::transactionLevel() > 0,
-            new \Exception('Failed to create city and freguesia.pt entry.')
-        );
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create city: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

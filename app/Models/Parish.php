@@ -17,4 +17,13 @@ class Parish extends Model
         'old_polygon_centroid'
     ];
 
+    public function freguesiaPtEntry()
+    {
+        return $this->morphOne(FreguesiaPTEntry::class, 'entity');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 }

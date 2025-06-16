@@ -16,10 +16,11 @@ class ParishResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            'name' => $this->relationLoaded('freguesiaPtEntry') ? $this->freguesiaPtEntry->name : null,
-            'address' => $this->relationLoaded('freguesiaPtEntry') ? $this->freguesiaPtEntry->address : null,
-            'email' => $this->relationLoaded('freguesiaPtEntry') ? $this->freguesiaPtEntry->email : null,
-            'city' => $this->relationLoaded('city') ? $this->city : null,
+            'name' => $this->freguesiaPtEntry->name,
+            'address' => $this->freguesiaPtEntry->address,
+            'email' => $this->freguesiaPtEntry->email,
+            'phone' => $this->freguesiaPtEntry->phone,
+            'website' => $this->freguesiaPtEntry->website,
         ];
     }
 }

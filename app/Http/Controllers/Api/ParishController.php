@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreParishRequest;
 use App\Models\Parish;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Resources\ParishResource;
 
@@ -15,8 +16,7 @@ class ParishController extends Controller
      */
     public function index()
     {
-        $parishes = Parish::all();
-        return ParishResource::collection($parishes);
+        return Parish::all()->toResourceCollection();
     }
 
     /**
@@ -32,8 +32,23 @@ class ParishController extends Controller
      */
     public function store(StoreParishRequest $request)
     {
-        $parish = Parish::create($request->all());
-        return response()->json($parish, 201);
+        try {
+            $parish = DB::transaction(function () use ($request) {
+                $parish = Parish::create($request->validated());
+
+                $parish->freguesiaPtEntry()->create($request->validated() + [
+                    'entity_type' => 'App\Models\Parish',
+                    'entity_id' => $parish->id,
+                ]);
+
+                return $parish;
+            });
+
+            return new ParishResource($parish);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to create parish: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

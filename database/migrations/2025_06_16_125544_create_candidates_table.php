@@ -10,10 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('parties', function (Blueprint $table) {
+        Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable()->comment('Name of the party');
-            $table->string('acronym')->comment('Acronym of the party');
+
+            $table->string('name')->comment('Name of the president');
+            
+            $table->foreignId('election_id')
+                ->constrained('elections')
+                ->onDelete('cascade')
+                ->comment('ID of the election in which the president is a candidate');
+
             $table->timestamps();
         });
     }
@@ -23,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('parties');
+        Schema::dropIfExists('candidates');
     }
 };

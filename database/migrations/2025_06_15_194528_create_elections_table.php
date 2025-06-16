@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,17 @@ return new class extends Migration
     {
         Schema::create('elections', function (Blueprint $table) {
             $table->id();
+            $table->integer('year')->unsigned();
+            $table->integer('number_participant_voters')->unsigned();
+            $table->integer('number_registered_voters')->unsigned();
+            $table->integer('number_blank_votes')->unsigned();
+            $table->integer('number_null_votes')->unsigned();
+            $table->integer('number_absentee_votes')->unsigned();
+
+            $table->foreignId('freguesia_pt_entry_id')
+                ->constrained('freguesia_pt_entries')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

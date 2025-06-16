@@ -16,8 +16,7 @@ class DistrictController extends Controller
      */
     public function index()
     {
-        $districts = District::all();
-        return DistrictResource::collection($districts);
+        return District::all()->toResourceCollection();
     }
 
     /**
@@ -37,18 +36,9 @@ class DistrictController extends Controller
             $district = DB::transaction(function () use ($request) {
                 $district = District::create();
 
-                $district->freguesiaPtEntry()->create([
-                    'name' => $request->input('name'),
-                    'freguesias_pt_url' => $request->input('freguesias_pt_url'),
-                    'freguesias_pt_id' => $request->input('freguesias_pt_id'),
-                    'address' => $request->input('address'),
-                    'email' => $request->input('email'),
-                    'phone' => $request->input('phone'),
-                    'website' => $request->input('website'),
-                    'geo_polygon' => $request->input('geo_polygon'),
+                $district->freguesiaPtEntry()->create($request->validated() + [
                     'entity_type' => 'App\Models\District',
                     'entity_id' => $district->id,
-                    'polygon_centroid' => $request->input('polygon_centroid'),
                 ]);
 
                 return $district;
@@ -57,8 +47,7 @@ class DistrictController extends Controller
             return new DistrictResource($district);
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['error' => 'Failed to create district and freguesia.pt entry: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Failed to create district: ' . $e->getMessage()], 500);
         }
     }
 
