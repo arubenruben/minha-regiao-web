@@ -14,8 +14,9 @@ services:
       - "5173:5173"
     networks:
       - minha-regiao
-  db:
+  postgis:
     image: postgis/postgis:17-3.5
+    container_name: postgis
     ports:
       - "9002:5432"
     networks:

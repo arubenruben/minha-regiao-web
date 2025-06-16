@@ -1,6 +1,6 @@
+import GenericFooter from '@/Components/Footers/GenericFooter'
+import GenericHeader from '@/Components/Headers/GenericHeader'
 import React from 'react'
-import GenericHeader from '../Components/Headers/GenericHeader'
-import GenericFooter from '../components/footer/GenericFooter'
 
 const GenericLayout = (props) => {
     return (

@@ -24,5 +24,6 @@ class District extends Model
     {
         return $this->hasManyThrough(Parish::class, City::class, 'district_id', 'city_id');
     }
+    
 
 }

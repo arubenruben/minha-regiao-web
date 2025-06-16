@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# This script is used to set up the environment for a Laravel application.
-composer dump-autoload --optimize
+composer install
 
 npm install
 

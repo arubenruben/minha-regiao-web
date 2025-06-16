@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title')->comment('Title of the Wikipedia entry');
             $table->string('url')->comment('URL of the Wikipedia entry');
-            $table->string('summary')->comment('Summary of the Wikipedia entry');
+            $table->text('summary')->comment('Summary of the Wikipedia entry');
             $table->foreignId('freguesia_pt_entry_id')
                 ->constrained('freguesia_pt_entries')
                 ->onDelete('cascade')

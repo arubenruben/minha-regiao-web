@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
-import GenericFooter from '@/Components/Footer/GenericFooter';
+import GenericFooter from '@/Components/Footers/GenericFooter';
 import { Image } from 'react-bootstrap';
 import logo from '../../images/logo.png';
 import arquivo from '../../images/arquivo.jpg';
 import AutoCompleteHomepage from '@/Components/AutoComplete/AutoCompleteHomepage';
-import PlotHomepage from '@/Components/Plot/PlotHomepage';
-import SliderHomepage from '@/Components/Slider/SliderHomepage';
-import HomepageMap from '@/Components/Map/HomepageMap';
-import CardAbstencion from '@/Components/Card/CardAbstencion';
-import PlotHomepageAbstention from '@/Components/Plot/PlotHomepageAbstention';
-import CardArquivoPT from '@/Components/Card/CardArquivoPT';
+import PlotHomepage from '@/Components/Plots/PlotHomepage';
+import SliderHomepage from '@/Components/Sliders/SliderHomepage';
+import HomepageMap from '@/Components/Maps/HomepageMap';
+import CardAbstencion from '@/Components/Cards/CardAbstencion';
+import PlotHomepageAbstention from '@/Components/Plots/PlotHomepageAbstention';
+import CardArquivoPT from '@/Components/Cards/CardArquivoPT';
 
 const Homepage = ({ regions, electionSummary, electionYears, districts, abstention }) => {
 

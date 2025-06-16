@@ -58,8 +58,6 @@ RUN chmod +x dev.sh
 
 # Install PHP dependencies (changes when composer files change)
 COPY composer.json composer.lock ./
-RUN composer install --no-interaction --no-scripts --no-autoloader
-
 # Copy application code (changes frequently - keep last)
 COPY --chown=www-data:www-data . .
 

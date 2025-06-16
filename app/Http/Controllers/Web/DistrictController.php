@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
 use App\Models\District;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 
 class DistrictController extends Controller
 {
@@ -34,9 +36,15 @@ class DistrictController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(District $district)
+    public function show(Request $request)
     {
-        //
+        $district = District::with('freguesiaPtEntry')->whereHas('freguesiaPtEntry', function ($query) use ($request) {
+            $query->where('name', $request->district);
+        })->firstOrFail();
+
+        return Inertia::render('District', [
+            'district' => $district->toResource(),
+        ]);
     }
 
     /**

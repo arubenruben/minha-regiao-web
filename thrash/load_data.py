@@ -10,8 +10,11 @@ class DataLoader:
     def __init__(self, base_dir: str = None):
         self.base_dir = base_dir or os.path.dirname(os.path.abspath(__file__))
         self.base_url = "http://localhost:8000/api"
-        self.headers = {"Content-Type": "application/json", "Accept": "application/json"}
-        
+        self.headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+
         # Load all CSV files
         self.df = self._load_csv("freguesias_pt_entry.csv")
         self.elections_df = self._load_csv("elections.csv")
@@ -28,9 +31,7 @@ class DataLoader:
     def _make_request(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
         """Make a POST request to the API"""
         response = requests.post(
-            f"{self.base_url}/{endpoint}/",
-            json=data,
-            headers=self.headers
+            f"{self.base_url}/{endpoint}/", json=data, headers=self.headers
         )
         response.raise_for_status()
         return response.json()
@@ -58,7 +59,9 @@ class DataLoader:
 
     def _get_unique_parties(self) -> List[str]:
         """Get unique parties from election results"""
-        self.election_results_df["party"] = self.election_results_df["party"].str.strip()
+        self.election_results_df["party"] = self.election_results_df[
+            "party"
+        ].str.strip()
         return self.election_results_df["party"].unique()
 
     def _create_wikipedia_entry(self, row: Any, freguesia_pt_entry_id: int) -> None:
@@ -69,12 +72,15 @@ class DataLoader:
             ]
             if not wikipedia_entry.empty:
                 entry = wikipedia_entry.iloc[0]
-                self._make_request("wikipedia", {
-                    "title": entry["title"],
-                    "url": entry["wikipedia_url"],
-                    "summary": entry["summary"],
-                    "freguesia_pt_entry_id": freguesia_pt_entry_id,
-                })
+                self._make_request(
+                    "wikipedia",
+                    {
+                        "title": entry["title"],
+                        "url": entry["wikipedia_url"],
+                        "summary": entry["summary"],
+                        "freguesia_pt_entry_id": freguesia_pt_entry_id,
+                    },
+                )
 
     def _build_location_data(self, row: Any) -> Dict[str, Any]:
         """Build common location data dictionary"""
@@ -88,14 +94,18 @@ class DataLoader:
             "website": row.website if pd.notna(row.website) else None,
         }
 
-    def _find_mapping_id(self, mapping: List[Dict], old_key: str, old_value: Any, new_key: str) -> int:
+    def _find_mapping_id(
+        self, mapping: List[Dict], old_key: str, old_value: Any, new_key: str
+    ) -> int:
         """Find new ID from mapping"""
         for item in mapping:
             if item[old_key] == old_value:
                 return item[new_key]
         raise ValueError(f"ID {old_value} not found in mapping")
 
-    def _create_election_data(self, election_row: Any, freguesia_pt_entry_id: int) -> Dict[str, Any]:
+    def _create_election_data(
+        self, election_row: Any, freguesia_pt_entry_id: int
+    ) -> Dict[str, Any]:
         """Build election data dictionary"""
         return {
             "year": election_row.year,
@@ -110,46 +120,62 @@ class DataLoader:
     def _get_president_for_election(self, election_row: Any) -> Optional[Dict]:
         """Get president data for a specific election"""
         president = self.presidents_df[
-            (self.presidents_df["election_id"] == election_row.id) &
-            (self.presidents_df["start_year"] == election_row.year)
+            (self.presidents_df["election_id"] == election_row.id)
+            & (self.presidents_df["start_year"] == election_row.year)
         ].to_dict(orient="records")
-        
+
         if len(president) > 1:
-            raise ValueError(f"Multiple presidents found for election ID {election_row.id}")
-        
+            raise ValueError(
+                f"Multiple presidents found for election ID {election_row.id}"
+            )
+
         return president[0] if president else None
 
-    def _process_election_results(self, election_row: Any, election_id: int, parties: List[Dict]) -> None:
+    def _process_election_results(
+        self, election_row: Any, election_id: int, parties: List[Dict]
+    ) -> None:
         """Process all election results for a given election"""
         president = self._get_president_for_election(election_row)
-        
+
         for result_row in self.election_results_df[
             self.election_results_df["election_id"] == election_row.id
         ].itertuples():
-            party_id = self._find_mapping_id(parties, "old_party_name", result_row.party, "new_party_id")
-            
-            result_data = self._make_request("election_results", {
-                "election_id": election_id,
-                "party_id": party_id,
-                "number_votes": result_row.votes,
-                "percentage_votes": result_row.percentage,
-            })
-            
-            if president and result_row.party == president["party"]:
-                self._make_request("candidates", {
-                    "name": president["name"],
-                    "election_result_id": result_data["id"],
-                })
+            party_id = self._find_mapping_id(
+                parties, "old_party_name", result_row.party, "new_party_id"
+            )
 
-    def _process_elections_for_entry(self, row: Any, freguesia_pt_entry_id: int, parties: List[Dict]) -> None:
+            result_data = self._make_request(
+                "election_results",
+                {
+                    "election_id": election_id,
+                    "party_id": party_id,
+                    "number_votes": result_row.votes,
+                    "percentage_votes": result_row.percentage,
+                },
+            )
+
+            if president and result_row.party == president["party"]:
+                self._make_request(
+                    "candidates",
+                    {
+                        "name": president["name"],
+                        "election_result_id": result_data["id"],
+                    },
+                )
+
+    def _process_elections_for_entry(
+        self, row: Any, freguesia_pt_entry_id: int, parties: List[Dict]
+    ) -> None:
         """Process all elections for a freguesia entry"""
         for election_row in self.elections_df[
             self.elections_df["freguesia_pt_entry_id"] == row.id
         ].itertuples():
-            election_data = self._create_election_data(election_row, freguesia_pt_entry_id)
+            election_data = self._create_election_data(
+                election_row, freguesia_pt_entry_id
+            )
             election_response = self._make_request("elections", election_data)
             election_id = election_response["id"]
-            
+
             self._process_election_results(election_row, election_id, parties)
 
     def load_parties(self) -> List[Dict]:
@@ -176,25 +202,31 @@ class DataLoader:
         df_districts = self.df[self.df["district_id"].notna()]
         mapping = []
 
-        for row in tqdm(df_districts.itertuples(), desc="Loading districts", total=len(df_districts)):
+        for row in tqdm(
+            df_districts.itertuples(), desc="Loading districts", total=len(df_districts)
+        ):
             location_data = self._build_location_data(row)
             response_data = self._make_request("districts", location_data)
-            new_district_id = response_data["data"]["id"]
-            
-            self._create_wikipedia_entry(row, response_data["data"]["freguesia_pt_entry_id"])
-            
-            mapping.append({
-                "old_district_id": row.district_id,
-                "new_district_id": new_district_id,
-            })
+            new_district_id = response_data["id"]
+
+            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
+
+            mapping.append(
+                {
+                    "old_district_id": row.district_id,
+                    "new_district_id": new_district_id,
+                }
+            )
 
         self._save_mapping("districts_mapping.json", mapping)
         return mapping
 
-    def load_cities(self, district_mapping: List[Dict], parties: List[Dict]) -> List[Dict]:
+    def load_cities(
+        self, district_mapping: List[Dict], parties: List[Dict]
+    ) -> List[Dict]:
         """Load all cities"""
         existing_mapping = self._load_mapping("city_mapping.json")
-        
+
         if existing_mapping:
             return existing_mapping
 
@@ -202,36 +234,44 @@ class DataLoader:
         df_city_raw = self._load_csv("city.csv")
         mapping = []
 
-        for row in tqdm(df_cities.itertuples(), desc="Loading cities", total=len(df_cities)):
+        for row in tqdm(
+            df_cities.itertuples(), desc="Loading cities", total=len(df_cities)
+        ):
             city_row = df_city_raw[df_city_raw["id"] == row.city_id]
             if city_row.empty:
                 raise ValueError(f"City ID {row.city_id} not found")
 
             district_id = self._find_mapping_id(
-                district_mapping, "old_district_id", 
-                city_row.iloc[0]["district_id"], "new_district_id"
+                district_mapping,
+                "old_district_id",
+                city_row.iloc[0]["district_id"],
+                "new_district_id",
             )
 
             location_data = self._build_location_data(row)
             location_data["district_id"] = district_id
-            
+
             response_data = self._make_request("cities", location_data)
-            new_city_id = response_data["data"]["id"]
-            
-            self._create_wikipedia_entry(row, response_data["data"]["freguesia_pt_entry_id"])
-            
-            mapping.append({
-                "old_city_id": row.city_id,
-                "new_city_id": new_city_id,
-            })
+            new_city_id = response_data["id"]
+
+            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
+
+            mapping.append(
+                {
+                    "old_city_id": row.city_id,
+                    "new_city_id": new_city_id,
+                }
+            )
 
             self._process_elections_for_entry(row, new_city_id, parties)
 
         self._save_mapping("city_mapping.json", mapping)
-        
+
         return mapping
 
-    def load_municipalities(self, city_mapping: List[Dict], parties: List[Dict]) -> None:
+    def load_municipalities(
+        self, city_mapping: List[Dict], parties: List[Dict]
+    ) -> None:
         """Load all municipalities"""
         df_municipalities = self.df[self.df["municipality_id"].notna()]
         df_raw_municipalities = self._load_csv("municipality.csv")
@@ -239,7 +279,11 @@ class DataLoader:
         if df_municipalities.empty:
             raise ValueError("No municipalities to load")
 
-        for row in tqdm(df_municipalities.itertuples(), desc="Loading municipalities", total=len(df_municipalities)):
+        for row in tqdm(
+            df_municipalities.itertuples(),
+            desc="Loading municipalities",
+            total=len(df_municipalities),
+        ):
             municipality_row = df_raw_municipalities[
                 df_raw_municipalities["id"] == row.municipality_id
             ]
@@ -247,18 +291,20 @@ class DataLoader:
                 raise ValueError(f"Municipality ID {row.municipality_id} not found")
 
             city_id = self._find_mapping_id(
-                city_mapping, "old_city_id", 
-                municipality_row.iloc[0]["city_id"], "new_city_id"
+                city_mapping,
+                "old_city_id",
+                municipality_row.iloc[0]["city_id"],
+                "new_city_id",
             )
 
             location_data = self._build_location_data(row)
             location_data["city_id"] = city_id
-            
+
             response_data = self._make_request("parishes", location_data)
-            new_municipality_id = response_data["data"]["id"]
-            
-            self._create_wikipedia_entry(row, response_data["data"]["freguesia_pt_entry_id"])
-            
+            new_municipality_id = response_data["id"]
+
+            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
+
             self._process_elections_for_entry(row, new_municipality_id, parties)
 
     def load_all_data(self) -> None:
