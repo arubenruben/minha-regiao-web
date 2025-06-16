@@ -14,7 +14,9 @@ class HomepageController extends Controller
     public function index()
     {
         return Inertia::render('Homepage', [
-            //'freguesias' => FreguesiaPTEntry::all(),
+            'regions' => [],
+            'electionSummary' => [],
+            'electionYears' => [],
         ]);
     }
 

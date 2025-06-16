@@ -3,332 +3,272 @@ import json
 import requests
 import pandas as pd
 from tqdm import tqdm
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-
-df = pd.read_csv(
-    os.path.join(CURRENT_DIR, "freguesias_pt_entry.csv"),
-    sep=";",
-)
-
-elections_df = pd.read_csv(
-    os.path.join(CURRENT_DIR, "elections.csv"),
-    sep=";",
-)
-
-election_results_df = pd.read_csv(
-    os.path.join(CURRENT_DIR, "election_results.csv"),
-    sep=";",
-)
-
-presidents_df = pd.read_csv(
-    os.path.join(CURRENT_DIR, "president.csv"),
-    sep=";",
-)
-
-wikipedia_df = pd.read_json(
-    os.path.join(CURRENT_DIR, "wikipedia_entries.json"),
-)
+from typing import List, Dict, Optional, Any
 
 
-def create_party(party):
-    """Helper function to create a single party via API"""
-    response = requests.post(
-        f"http://localhost:8000/api/parties/",
-        json={"acronym": party},
-        headers={"Content-Type": "application/json", "Accept": "application/json"},
-    )
-    response.raise_for_status()
-    return {
-        "old_party_name": party,
-        "new_party_id": response.json()["id"],
-    }
+class DataLoader:
+    def __init__(self, base_dir: str = None):
+        self.base_dir = base_dir or os.path.dirname(os.path.abspath(__file__))
+        self.base_url = "http://localhost:8000/api"
+        self.headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        
+        # Load all CSV files
+        self.df = self._load_csv("freguesias_pt_entry.csv")
+        self.elections_df = self._load_csv("elections.csv")
+        self.election_results_df = self._load_csv("election_results.csv")
+        self.presidents_df = self._load_csv("president.csv")
+        self.wikipedia_df = self._load_json("wikipedia_entries.json")
 
+    def _load_csv(self, filename: str) -> pd.DataFrame:
+        return pd.read_csv(os.path.join(self.base_dir, filename), sep=";")
 
-def load_parties():
+    def _load_json(self, filename: str) -> pd.DataFrame:
+        return pd.read_json(os.path.join(self.base_dir, filename))
 
-    if os.path.exists(os.path.join(CURRENT_DIR, "parties.json")):
-        with open(
-            os.path.join(CURRENT_DIR, "parties.json"),
-            "r",
-        ) as f:
-            return json.load(f)
-
-    # Strip whitespace from party names in election_results_df
-    election_results_df["party"] = election_results_df["party"].str.strip()
-
-    # Get unique list of parties from election_results_df
-    unique_parties = election_results_df["party"].unique()
-
-    # Create parties sequentially
-    parties = []
-
-    for party in tqdm(unique_parties, desc="Loading parties"):
-        parties.append(create_party(party))
-
-    with open(
-        os.path.join(CURRENT_DIR, "parties.json"),
-        "w",
-    ) as f:
-        json.dump(parties, f, indent=4, ensure_ascii=False)
-
-    return parties
-
-
-def load_districts(df):
-    # Filter out rows with NaN in 'district_id'
-    df_districts = df[df["district_id"].notna()]
-
-    mapping = []
-
-    for row in tqdm(
-        df_districts.itertuples(), desc="Loading districts", total=len(df_districts)
-    ):
+    def _make_request(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Make a POST request to the API"""
         response = requests.post(
-            f"http://localhost:8000/api/districts/",
-            json={
-                "name": row.name,
-                "freguesias_pt_url": row.freguesias_pt_url,
-                "freguesias_pt_id": row.freguesias_pt_id,
-                "address": row.address if pd.notna(row.address) else None,
-                "email": row.email if pd.notna(row.email) else None,
-                "phone": row.phone if pd.notna(row.phone) else None,
-                "website": row.website if pd.notna(row.website) else None,
-            },
+            f"{self.base_url}/{endpoint}/",
+            json=data,
+            headers=self.headers
         )
         response.raise_for_status()
+        return response.json()
 
-        new_district_id = response.json()["data"]["id"]
+    def _save_mapping(self, filename: str, data: List[Dict]) -> None:
+        """Save mapping data to JSON file"""
+        with open(os.path.join(self.base_dir, filename), "w") as f:
+            json.dump(data, f, indent=4, ensure_ascii=False)
 
-        # Find entry in wikipedia_df whose id matches the row.wikipedia_entry_id
+    def _load_mapping(self, filename: str) -> Optional[List[Dict]]:
+        """Load mapping data from JSON file if it exists"""
+        filepath = os.path.join(self.base_dir, filename)
+        if os.path.exists(filepath):
+            with open(filepath, "r") as f:
+                return json.load(f)
+        return None
+
+    def _create_party(self, party: str) -> Dict[str, Any]:
+        """Create a single party via API"""
+        response_data = self._make_request("parties", {"acronym": party})
+        return {
+            "old_party_name": party,
+            "new_party_id": response_data["id"],
+        }
+
+    def _get_unique_parties(self) -> List[str]:
+        """Get unique parties from election results"""
+        self.election_results_df["party"] = self.election_results_df["party"].str.strip()
+        return self.election_results_df["party"].unique()
+
+    def _create_wikipedia_entry(self, row: Any, freguesia_pt_entry_id: int) -> None:
+        """Create Wikipedia entry if it exists"""
         if pd.notna(row.wikipedia_entry_id):
-            wikipedia_entry = wikipedia_df[wikipedia_df["id"] == row.wikipedia_entry_id]
-
+            wikipedia_entry = self.wikipedia_df[
+                self.wikipedia_df["id"] == row.wikipedia_entry_id
+            ]
             if not wikipedia_entry.empty:
-                response = requests.post(
-                    f"http://localhost:8000/api/wikipedia/",
-                    json={
-                        "title": wikipedia_entry.iloc[0]["title"],
-                        "url": wikipedia_entry.iloc[0]["wikipedia_url"],
-                        "summary": wikipedia_entry.iloc[0]["summary"],
-                        "freguesia_pt_entry_id": response.json()["data"][
-                            "freguesia_pt_entry_id"
-                        ],
-                    },
-                    headers={
-                        "Content-Type": "application/json",
-                        "Accept": "application/json",
-                    },
-                )
-                response.raise_for_status()
+                entry = wikipedia_entry.iloc[0]
+                self._make_request("wikipedia", {
+                    "title": entry["title"],
+                    "url": entry["wikipedia_url"],
+                    "summary": entry["summary"],
+                    "freguesia_pt_entry_id": freguesia_pt_entry_id,
+                })
 
-        mapping.append(
-            {
+    def _build_location_data(self, row: Any) -> Dict[str, Any]:
+        """Build common location data dictionary"""
+        return {
+            "name": row.name,
+            "freguesias_pt_url": row.freguesias_pt_url,
+            "freguesias_pt_id": row.freguesias_pt_id,
+            "address": row.address if pd.notna(row.address) else None,
+            "email": row.email if pd.notna(row.email) else None,
+            "phone": row.phone if pd.notna(row.phone) else None,
+            "website": row.website if pd.notna(row.website) else None,
+        }
+
+    def _find_mapping_id(self, mapping: List[Dict], old_key: str, old_value: Any, new_key: str) -> int:
+        """Find new ID from mapping"""
+        for item in mapping:
+            if item[old_key] == old_value:
+                return item[new_key]
+        raise ValueError(f"ID {old_value} not found in mapping")
+
+    def _create_election_data(self, election_row: Any, freguesia_pt_entry_id: int) -> Dict[str, Any]:
+        """Build election data dictionary"""
+        return {
+            "year": election_row.year,
+            "number_participant_voters": election_row.number_participant_voters,
+            "number_registered_voters": election_row.number_registered_voters,
+            "number_blank_votes": election_row.number_blank_votes,
+            "number_null_votes": election_row.number_null_votes,
+            "number_absentee_votes": election_row.number_absentee_votes,
+            "freguesia_pt_entry_id": freguesia_pt_entry_id,
+        }
+
+    def _get_president_for_election(self, election_row: Any) -> Optional[Dict]:
+        """Get president data for a specific election"""
+        president = self.presidents_df[
+            (self.presidents_df["election_id"] == election_row.id) &
+            (self.presidents_df["start_year"] == election_row.year)
+        ].to_dict(orient="records")
+        
+        if len(president) > 1:
+            raise ValueError(f"Multiple presidents found for election ID {election_row.id}")
+        
+        return president[0] if president else None
+
+    def _process_election_results(self, election_row: Any, election_id: int, parties: List[Dict]) -> None:
+        """Process all election results for a given election"""
+        president = self._get_president_for_election(election_row)
+        
+        for result_row in self.election_results_df[
+            self.election_results_df["election_id"] == election_row.id
+        ].itertuples():
+            party_id = self._find_mapping_id(parties, "old_party_name", result_row.party, "new_party_id")
+            
+            result_data = self._make_request("election_results", {
+                "election_id": election_id,
+                "party_id": party_id,
+                "number_votes": result_row.votes,
+                "percentage_votes": result_row.percentage,
+            })
+            
+            if president and result_row.party == president["party"]:
+                self._make_request("candidates", {
+                    "name": president["name"],
+                    "election_result_id": result_data["id"],
+                })
+
+    def _process_elections_for_entry(self, row: Any, freguesia_pt_entry_id: int, parties: List[Dict]) -> None:
+        """Process all elections for a freguesia entry"""
+        for election_row in self.elections_df[
+            self.elections_df["freguesia_pt_entry_id"] == row.id
+        ].itertuples():
+            election_data = self._create_election_data(election_row, freguesia_pt_entry_id)
+            election_response = self._make_request("elections", election_data)
+            election_id = election_response["id"]
+            
+            self._process_election_results(election_row, election_id, parties)
+
+    def load_parties(self) -> List[Dict]:
+        """Load or create all parties"""
+        existing_parties = self._load_mapping("parties.json")
+        if existing_parties:
+            return existing_parties
+
+        unique_parties = self._get_unique_parties()
+        parties = []
+
+        for party in tqdm(unique_parties, desc="Loading parties"):
+            parties.append(self._create_party(party))
+
+        self._save_mapping("parties.json", parties)
+        return parties
+
+    def load_districts(self) -> List[Dict]:
+        """Load all districts"""
+        existing_mapping = self._load_mapping("districts_mapping.json")
+        if existing_mapping:
+            return existing_mapping
+
+        df_districts = self.df[self.df["district_id"].notna()]
+        mapping = []
+
+        for row in tqdm(df_districts.itertuples(), desc="Loading districts", total=len(df_districts)):
+            location_data = self._build_location_data(row)
+            response_data = self._make_request("districts", location_data)
+            new_district_id = response_data["data"]["id"]
+            
+            self._create_wikipedia_entry(row, response_data["data"]["freguesia_pt_entry_id"])
+            
+            mapping.append({
                 "old_district_id": row.district_id,
                 "new_district_id": new_district_id,
-            }
-        )
+            })
 
-    return mapping
+        self._save_mapping("districts_mapping.json", mapping)
+        return mapping
 
+    def load_cities(self, district_mapping: List[Dict], parties: List[Dict]) -> List[Dict]:
+        """Load all cities"""
+        existing_mapping = self._load_mapping("city_mapping.json")
+        
+        if existing_mapping:
+            return existing_mapping
 
-def load_cities(df, district_mapping, parties):
+        df_cities = self.df[self.df["city_id"].notna()]
+        df_city_raw = self._load_csv("city.csv")
+        mapping = []
 
-    if os.path.exists(os.path.join(CURRENT_DIR, "city_mapping.json")):
-        with open(
-            os.path.join(CURRENT_DIR, "city_mapping.json"),
-            "r",
-        ) as f:
-            return json.load(f)
+        for row in tqdm(df_cities.itertuples(), desc="Loading cities", total=len(df_cities)):
+            city_row = df_city_raw[df_city_raw["id"] == row.city_id]
+            if city_row.empty:
+                raise ValueError(f"City ID {row.city_id} not found")
 
-    # Filter out rows with NaN in 'city_id'
-    df = df[df["city_id"].notna()]
-
-    df_city_raw = pd.read_csv(
-        os.path.join(CURRENT_DIR, "city.csv"),
-        sep=";",
-    )
-
-    mapping = []
-
-    for row in tqdm(df.itertuples(), desc="Loading cities", total=len(df)):
-        # Find the new district ID from the mapping
-        city_row = df_city_raw[df_city_raw["id"] == row.city_id]
-
-        if city_row.empty:
-            raise ValueError(f"City ID {row.city_id} not found in city mapping.")
-
-        for district in district_mapping:
-            if district["old_district_id"] == city_row.iloc[0]["district_id"]:
-                district_id = district["new_district_id"]
-                break
-        else:
-            raise ValueError(
-                f"District ID {row.district_id} not found in district mapping."
+            district_id = self._find_mapping_id(
+                district_mapping, "old_district_id", 
+                city_row.iloc[0]["district_id"], "new_district_id"
             )
 
-        response = requests.post(
-            f"http://localhost:8000/api/cities/",
-            json={
-                "name": row.name,
-                "freguesias_pt_url": row.freguesias_pt_url,
-                "freguesias_pt_id": row.freguesias_pt_id,
-                "address": row.address if pd.notna(row.address) else None,
-                "email": row.email if pd.notna(row.email) else None,
-                "phone": row.phone if pd.notna(row.phone) else None,
-                "district_id": district_id,
-                "website": row.website if pd.notna(row.website) else None,
-            },
-            headers={"Content-Type": "application/json", "Accept": "application/json"},
-        )
-
-        response.raise_for_status()
-
-        mapping.append(
-            {
+            location_data = self._build_location_data(row)
+            location_data["district_id"] = district_id
+            
+            response_data = self._make_request("cities", location_data)
+            new_city_id = response_data["data"]["id"]
+            
+            self._create_wikipedia_entry(row, response_data["data"]["freguesia_pt_entry_id"])
+            
+            mapping.append({
                 "old_city_id": row.city_id,
-                "new_city_id": response.json()["data"]["id"],
-            }
-        )
+                "new_city_id": new_city_id,
+            })
 
-        freguesia_pt_entry_id = response.json()["data"]["id"]
+            self._process_elections_for_entry(row, new_city_id, parties)
 
-        for election_row in tqdm(
-            elections_df[elections_df["freguesia_pt_entry_id"] == row.id].itertuples(),
-            desc=f"Loading elections for {row.name}",
-        ):
-            response = requests.post(
-                f"http://localhost:8000/api/elections/",
-                json={
-                    "year": election_row.year,
-                    "number_participant_voters": election_row.number_participant_voters,
-                    "number_registered_voters": election_row.number_registered_voters,
-                    "number_blank_votes": election_row.number_blank_votes,
-                    "number_null_votes": election_row.number_null_votes,
-                    "number_absentee_votes": election_row.number_absentee_votes,
-                    "freguesia_pt_entry_id": freguesia_pt_entry_id,
-                },
+        self._save_mapping("city_mapping.json", mapping)
+        
+        return mapping
+
+    def load_municipalities(self, city_mapping: List[Dict], parties: List[Dict]) -> None:
+        """Load all municipalities"""
+        df_municipalities = self.df[self.df["municipality_id"].notna()]
+        df_raw_municipalities = self._load_csv("municipality.csv")
+
+        if df_municipalities.empty:
+            raise ValueError("No municipalities to load")
+
+        for row in tqdm(df_municipalities.itertuples(), desc="Loading municipalities", total=len(df_municipalities)):
+            municipality_row = df_raw_municipalities[
+                df_raw_municipalities["id"] == row.municipality_id
+            ]
+            if municipality_row.empty:
+                raise ValueError(f"Municipality ID {row.municipality_id} not found")
+
+            city_id = self._find_mapping_id(
+                city_mapping, "old_city_id", 
+                municipality_row.iloc[0]["city_id"], "new_city_id"
             )
 
-            response.raise_for_status()
+            location_data = self._build_location_data(row)
+            location_data["city_id"] = city_id
+            
+            response_data = self._make_request("parishes", location_data)
+            new_municipality_id = response_data["data"]["id"]
+            
+            self._create_wikipedia_entry(row, response_data["data"]["freguesia_pt_entry_id"])
+            
+            self._process_elections_for_entry(row, new_municipality_id, parties)
 
-            election_id = response.json()["id"]
-
-            president = presidents_df[
-                (presidents_df["election_id"] == election_row.id)
-                & (presidents_df["start_year"] == election_row.year)
-            ].to_dict(orient="records")
-
-            if len(president) > 1:
-                raise ValueError(
-                    f"Multiple presidents found for election ID {election_row.id} in year {election_row.year}."
-                )
-
-            if len(president) == 0:
-                president = None
-            else:
-                president = president[0]
-
-            for election_result_row in election_results_df[
-                election_results_df["election_id"] == election_row.id
-            ].itertuples():
-
-                # Find the party ID from the parties list
-                for party in parties:
-                    if party["old_party_name"] == election_result_row.party:
-                        party_id = party["new_party_id"]
-                        break
-                else:
-                    raise ValueError(
-                        f"Party '{election_result_row.party}' not found in parties list."
-                    )
-
-                response = requests.post(
-                    f"http://localhost:8000/api/election_results/",
-                    json={
-                        "election_id": election_id,
-                        "party_id": party_id,
-                        "number_votes": election_result_row.votes,
-                        "percentage_votes": election_result_row.percentage,
-                    },
-                )
-
-                response.raise_for_status()
-
-                election_result_id = response.json()["id"]
-
-                if president is None:
-                    continue
-
-                if election_result_row.party == president["party"]:
-                    response = requests.post(
-                        f"http://localhost:8000/api/candidates/",
-                        json={
-                            "name": president["name"],
-                            "election_result_id": election_result_id,
-                        },
-                    )
-                    response.raise_for_status()
-
-    with open(
-        os.path.join(CURRENT_DIR, "city_mapping.json"),
-        "w",
-    ) as f:
-        json.dump(mapping, f, indent=4, ensure_ascii=False)
-
-    return mapping
-
-
-def load_municipalities(df, city_mapping, parties):
-    df_raw_municipalities = pd.read_csv(
-        os.path.join(CURRENT_DIR, "municipality.csv"),
-        sep=";",
-    )
-
-    # Filter out rows with NaN in 'municipality_id'
-    df = df[df["municipality_id"].notna()]
-
-    if df.empty:
-        raise ValueError("No municipalities to load. Please check the input data.")
-
-    for row in tqdm(df.itertuples(), desc="Loading municipalities", total=len(df)):
-        # Find the municipality ID from the raw data
-        municipality_row = df_raw_municipalities[
-            df_raw_municipalities["id"] == row.municipality_id
-        ]
-
-        if municipality_row.empty:
-            raise ValueError(f"Municipality ID {row.municipality_id} not found.")
-
-        # Find the new city ID from the mapping
-        for city in city_mapping:
-            if city["old_city_id"] == municipality_row.iloc[0]["city_id"]:
-                city_id = city["new_city_id"]
-                break
-        else:
-            raise ValueError(f"City ID {row.city_id} not found in city mapping.")
-
-        response = requests.post(
-            f"http://localhost:8000/api/parishes/",
-            json={
-                "name": row.name,
-                "freguesias_pt_url": row.freguesias_pt_url,
-                "freguesias_pt_id": row.freguesias_pt_id,
-                "address": row.address if pd.notna(row.address) else None,
-                "email": row.email if pd.notna(row.email) else None,
-                "phone": row.phone if pd.notna(row.phone) else None,
-                "city_id": city_id,
-                "website": row.website if pd.notna(row.website) else None,
-            },
-        )
-        response.raise_for_status()
+    def load_all_data(self) -> None:
+        """Load all data in the correct order"""
+        parties = self.load_parties()
+        district_mapping = self.load_districts()
+        city_mapping = self.load_cities(district_mapping, parties)
+        self.load_municipalities(city_mapping, parties)
 
 
 if __name__ == "__main__":
-    parties = load_parties()
-
-    district_mapping = load_districts(df)
-
-    city_mapping = load_cities(df, district_mapping, parties)
-
-    load_municipalities(df, city_mapping, parties)
+    loader = DataLoader()
+    loader.load_all_data()

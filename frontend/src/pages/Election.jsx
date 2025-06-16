@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { sendRequest } from '../utils';
-import GenericLayout from '../layouts/GenericLayout';
+import GenericLayout from '../../../resources/js/Layouts/GenericLayout';
 import { Grid } from '@mui/material';
 import PlotElection from '../components/plot/PlotElection';
 import CardNews from '../components/card/CardNews';
