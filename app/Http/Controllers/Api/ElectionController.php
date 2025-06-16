@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Requests\StoreElectionRequest;
 use App\Models\Election;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ElectionController extends Controller
      */
     public function index()
     {
-        //
+        return Election::all()->toResourceCollection();
     }
 
     /**
@@ -28,9 +29,11 @@ class ElectionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreElectionRequest $request)
     {
-        //
+        $election = Election::create($request->validated());
+
+        return response()->json($election, 201);
     }
 
     /**
@@ -38,7 +41,7 @@ class ElectionController extends Controller
      */
     public function show(Election $election)
     {
-        //
+        return $election->toResource();
     }
 
     /**

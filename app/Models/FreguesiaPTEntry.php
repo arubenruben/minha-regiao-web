@@ -26,4 +26,9 @@ class FreguesiaPTEntry extends Model
         return $this->morphTo();
     }
 
+    public function wikipedia()
+    {
+        return $this->hasOne(Wikipedia::class, 'freguesia_pt_entry_id');
+    }
+
 }

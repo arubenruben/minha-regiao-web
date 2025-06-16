@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Party;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PartyController extends Controller
 {
@@ -12,7 +13,7 @@ class PartyController extends Controller
      */
     public function index()
     {
-        //
+        return Party::all();
     }
 
     /**
@@ -28,7 +29,9 @@ class PartyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $party = Party::create($request->all());
+
+        return response()->json($party, 201);
     }
 
     /**
@@ -36,7 +39,7 @@ class PartyController extends Controller
      */
     public function show(Party $party)
     {
-        //
+        return response()->json($party, 200);
     }
 
     /**

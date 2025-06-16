@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\StoreElectionResultRequest;
 use App\Models\ElectionResult;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ElectionResultController extends Controller
 {
@@ -12,7 +14,7 @@ class ElectionResultController extends Controller
      */
     public function index()
     {
-        //
+        return ElectionResult::all()->toResourceCollection();
     }
 
     /**
@@ -26,9 +28,10 @@ class ElectionResultController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreElectionResultRequest $request)
     {
-        //
+        $electionResult = ElectionResult::create($request->validated());
+        return response()->json($electionResult, 201);
     }
 
     /**
@@ -36,7 +39,7 @@ class ElectionResultController extends Controller
      */
     public function show(ElectionResult $electionResult)
     {
-        //
+        return $electionResult->toResource();
     }
 
     /**

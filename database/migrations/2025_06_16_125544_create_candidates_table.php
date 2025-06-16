@@ -14,11 +14,11 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name')->comment('Name of the president');
-            
-            $table->foreignId('election_id')
-                ->constrained('elections')
+
+            $table->foreignId('election_result_id')
+                ->constrained('election_results')
                 ->onDelete('cascade')
-                ->comment('ID of the election in which the president is a candidate');
+                ->comment('ID of the election result in which the candidate is participating');
 
             $table->timestamps();
         });

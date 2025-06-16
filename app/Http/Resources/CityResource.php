@@ -15,12 +15,13 @@ class CityResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
+            'id' => $this->id,
             'name' => $this->freguesiaPtEntry->name,
             'address' => $this->freguesiaPtEntry->address,
             'email' => $this->freguesiaPtEntry->email,
             'phone' => $this->freguesiaPtEntry->phone,
             'website' => $this->freguesiaPtEntry->website,
+            'freguesia_pt_entry_id' => $this->freguesiaPtEntry->id,
         ];
     }
 }

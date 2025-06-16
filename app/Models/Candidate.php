@@ -9,4 +9,15 @@ class Candidate extends Model
 {
     /** @use HasFactory<\Database\Factories\CandidateFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        "name",
+        "election_result_id",
+    ];
+
+    public function electionResult()
+    {
+        return $this->belongsTo(ElectionResult::class, "election_result_id");
+    }
+
 }

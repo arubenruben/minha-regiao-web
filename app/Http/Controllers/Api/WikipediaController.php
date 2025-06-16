@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\StoreWikipediaRequest;
 use App\Models\Wikipedia;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class WikipediaController extends Controller
 {
@@ -12,7 +14,7 @@ class WikipediaController extends Controller
      */
     public function index()
     {
-        //
+        return Wikipedia::all();
     }
 
     /**
@@ -26,9 +28,11 @@ class WikipediaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreWikipediaRequest $request)
     {
-        //
+        $wikipedia = Wikipedia::create($request->validated());
+
+        return response()->json($wikipedia, 201);
     }
 
     /**
@@ -44,7 +48,7 @@ class WikipediaController extends Controller
      */
     public function edit(Wikipedia $wikipedia)
     {
-        //
+        return response()->json($wikipedia);
     }
 
     /**

@@ -10,11 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('wikipedias', function (Blueprint $table) {
+        Schema::create('wikipedia', function (Blueprint $table) {
             $table->id();
             $table->string('title')->comment('Title of the Wikipedia entry');
             $table->string('url')->comment('URL of the Wikipedia entry');
             $table->string('summary')->comment('Summary of the Wikipedia entry');
+            $table->foreignId('freguesia_pt_entry_id')
+                ->constrained('freguesia_pt_entries')
+                ->onDelete('cascade')
+                ->onUpdate('cascade')
+                ->comment('Foreign key referencing the freguesia_pt_entries table');
             $table->timestamps();
         });
     }

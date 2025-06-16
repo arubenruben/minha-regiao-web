@@ -33,12 +33,6 @@ return new class extends Migration {
                 ->onDelete('cascade')
                 ->comment('ID of the election this news belongs to');
 
-            $table->foreignId('freguesia_pt_entry_id')
-                ->nullable()
-                ->constrained('freguesia_pt_entries')
-                ->onDelete('cascade')
-                ->comment('ID of the freguesia.pt entry this news belongs to');
-
             $table->foreignId('newspaper_id')
                 ->references('id')
                 ->on('newspapers')
