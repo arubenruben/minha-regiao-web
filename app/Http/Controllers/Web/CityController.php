@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Models\Parish;
+use App\Models\City;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 
-class ParishController extends Controller
+class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,19 +38,19 @@ class ParishController extends Controller
      */
     public function show(Request $request)
     {
-        $parish = Parish::with('freguesiaPtEntry')->whereHas('freguesiaPtEntry', function ($query) use ($request) {
-            $query->where('name', $request->parish);
+        $city = City::with('freguesiaPtEntry')->whereHas('freguesiaPtEntry', function ($query) use ($request) {
+            $query->where('name', $request->city);
         })->firstOrFail();
 
-        return Inertia::render('Parish', [
-            'parish' => $parish,
+        return Inertia::render('City', [
+            'city' => $city,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Parish $parish)
+    public function edit(City $city)
     {
         //
     }
@@ -58,7 +58,7 @@ class ParishController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Parish $parish)
+    public function update(Request $request, City $city)
     {
         //
     }
@@ -66,7 +66,7 @@ class ParishController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Parish $parish)
+    public function destroy(City $city)
     {
         //
     }

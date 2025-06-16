@@ -265,7 +265,9 @@ class DataLoader:
 
             self._process_elections_for_entry(row, new_city_id, parties)
 
-        self._save_mapping("city_mapping.json", mapping)
+            break
+
+        # self._save_mapping("city_mapping.json", mapping)
 
         return mapping
 
@@ -289,13 +291,16 @@ class DataLoader:
             ]
             if municipality_row.empty:
                 raise ValueError(f"Municipality ID {row.municipality_id} not found")
-
-            city_id = self._find_mapping_id(
-                city_mapping,
-                "old_city_id",
-                municipality_row.iloc[0]["city_id"],
-                "new_city_id",
-            )
+            try:
+                city_id = self._find_mapping_id(
+                    city_mapping,
+                    "old_city_id",
+                    municipality_row.iloc[0]["city_id"],
+                    "new_city_id",
+                )
+            except ValueError as e:
+                print(f"Skipping row {row.municipality_id}: {e}")
+                continue
 
             location_data = self._build_location_data(row)
             location_data["city_id"] = city_id

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { _constructElections } from '../../utils';
 
 const PlotNumberCities = (props) => {
 
@@ -15,7 +14,7 @@ const PlotNumberCities = (props) => {
             }).flat();
 
             // Process elections data using map and reduce instead of for loops
-            const newElections = filteredElections.map((election, i) => _constructElections(props.cities[i], election));
+            //const newElections = filteredElections.map((election, i) => _constructElections(props.cities[i], election));
 
             // Sort newElections by city name
             setElections(newElections.sort((a, b) => a.city.name.localeCompare(b.city.name)));

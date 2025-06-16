@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
-import { _constructElections } from '../../utils';
 
 const PlotVotersDistrict = (props) => {
     const [voters, setVoters] = useState([]);
