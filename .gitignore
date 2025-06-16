@@ -1,5 +1,4 @@
 .scribe
-thrash
 *.log
 .DS_Store
 .env
