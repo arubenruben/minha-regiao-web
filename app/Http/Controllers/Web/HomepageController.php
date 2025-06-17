@@ -17,9 +17,11 @@ class HomepageController extends Controller
     public function index()
     {
         $elections = Election::all();
+
         $results = $elections->groupBy('year')->sortKeys();
 
         $electionSummary = [];
+        $abstencionSummary = [];
 
         foreach ($results as $year => $elections) {
             $electionSummary[(string) $year] = $elections
@@ -27,12 +29,18 @@ class HomepageController extends Controller
                 ->filter()
                 ->countBy()
                 ->toArray();
+
+            # Abstencion is sum of election->number_participant_voters / election->number_registered_voters * 100
+            $abstencionSummary[(string) $year] = $elections
+                ->map(fn($election) => $election->number_registered_voters > 0 ? $election->number_participant_voters / $election->number_registered_voters * 100 : 0)
+                ->avg();
         }
 
         return Inertia::render('Homepage', [
             'regions' => FreguesiaPTEntry::all()->toResourceCollection(),
             'elections' => $electionSummary,
-            'districts' => FreguesiaPTEntry::where('entity_type', 'district')->get(),
+            'abstencion' => $abstencionSummary,
+            //'districts' => FreguesiaPTEntry::where('entity_type', 'district')->get(),
         ]);
     }
 

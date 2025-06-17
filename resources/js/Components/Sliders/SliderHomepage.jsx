@@ -5,7 +5,7 @@ import { Slider } from '@mui/material';
 const SliderHomepage = ({ selectedYear, electionYears, setSelectedYear }) => {
     return (
         <Slider
-            defaultValue={selectedYear}
+            value={selectedYear}
             step={null}
             marks={electionYears.map(year => ({ value: year, label: year }))}
             min={Math.min(...electionYears)}

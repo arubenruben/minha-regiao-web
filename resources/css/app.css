@@ -201,17 +201,6 @@ html a {
     border: none !important;
 }
 
-#chatbot {
-    position: fixed;
-    top: 10%;
-    left: 35%;
-    z-index: 1000;
-}
-
-#chatbot .react-chatbot-kit-chat-container {
-    width: 400px !important;
-}
-
 .carousel-indicators button {
     color: var(--blue-at) !important;
     background-color: var(--blue-at) !important;

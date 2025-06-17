@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
 
-const PlotHomepageAbstention = (props) => {
+const PlotHomepageAbstention = ({ abstencion }) => {
     const [xAxis, setXAxis] = useState([]);
     const [series, setSeries] = useState([]);
 
-
     useEffect(() => {
-        // Set the xAxis and yAxis data based on the abstention data
-        // Sort the abstention data by year in descending order
-        props.abstention.sort((a, b) => a.year - b.year);
+        // The xAxis are the keys of the abstencion object
+        // The series are the values of the abstencion object
+        if (!abstencion || abstencion.length === 0) {
+            setXAxis([]);
+            setSeries([]);
+            return;
+        }
 
-        const xAxisData = props.abstention.map((elem, index) => elem.year);
-        const seriesData = props.abstention.map((elem, index) => elem.abstention_rate);
-
-        setXAxis(xAxisData);
-        setSeries(seriesData);
-
-    }, [props.abstention]);
+        setXAxis(Object.keys(abstencion))
+        setSeries(Object.values(abstencion));
+    }, []);
 
     return (
         <LineChart
