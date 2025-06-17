@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
 import { invertCoordinates } from '../../utils';
+import { router } from '@inertiajs/react'
 
 const HomepageMap = ({ districts }) => {
     const [map, setMap] = useState(null);
@@ -16,12 +17,13 @@ const HomepageMap = ({ districts }) => {
         setPopupPosition(latlng);
 
         if (map) {
-            //navigate(`/distrito/${districtId}`);
+            router.visit(`/distrito/${districtId}`);
         }
     }, [map]);
 
     const renderPolygons = useMemo(() => {
-        if (!districts || !districts.length) return null;
+        if (!districts || !districts.length)
+            return null;
 
         return districts.map(district => {
             const coordinates = invertCoordinates(district.geo_polygon.coordinates);

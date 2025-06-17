@@ -14,24 +14,15 @@ class DistrictResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $cities = $this->freguesiaPtEntry->entity->cities()->get();
 
-        $cities = $this->freguesiaPtEntry->entity()->cities()->toResourceCollection();
-
-        # Remove 'geo_polygon' and 'polygon_centroid' from the cities
-        $cities->each(function ($city) {
-            if (isset($city['geo_polygon'])) {
-                unset($city['geo_polygon']);
-            }
-            if (isset($city['polygon_centroid'])) {
-                unset($city['polygon_centroid']);
-            }
-        });
-
-        # Remove refereces if exists to 'parishes'
-        $cities->each(function ($city) {
-            if (isset($city['parishes'])) {
-                unset($city['parishes']);
-            }
+        # Remove all attributes in cities that are not: name, geo_polygon
+        $cities = $cities->map(function ($city) {
+            return [
+                'name' => $city->freguesiaPtEntry->name,
+                'geo_polygon' => $city->freguesiaPtEntry->geo_polygon,
+                'elections' => $city->freguesiaPtEntry->elections()->get()->toResourceCollection()
+            ];
         });
 
         return [

@@ -14,6 +14,8 @@ class ElectionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        dump("Tou dentro de election resource");
+
         return [
             'id' => $this->id,
             'year' => $this->year,

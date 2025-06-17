@@ -12,7 +12,7 @@ import CardAbstencion from '@/Components/Cards/CardAbstencion';
 import PlotHomepageAbstention from '@/Components/Plots/PlotHomepageAbstention';
 import CardArquivoPT from '@/Components/Cards/CardArquivoPT';
 
-const Homepage = ({ regions, elections, abstencion }) => {
+const Homepage = ({ regions, elections, abstencion, districts }) => {
 
     const [selectedYear, setSelectedYear] = useState()
     const [electionYears, setElectionYears] = useState();
@@ -61,7 +61,7 @@ const Homepage = ({ regions, elections, abstencion }) => {
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 12, md: 4 }}>
-                        {false && <HomepageMap districts={null} />}
+                        <HomepageMap districts={districts} />
                         <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                     </Grid>
                 </Grid>
@@ -69,7 +69,7 @@ const Homepage = ({ regions, elections, abstencion }) => {
                 <Grid item container direction="column" sx={{ mt: 3, mx: { md: 6 } }}>
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 1 }}>
                         <Grid item size={{ xs: 12, md: 6 }} sx={{ height: { md: "380px" }, mb: { xs: 5, md: 0 } }}>
-                            {false && <CardAbstencion />}
+                            <CardAbstencion />
                         </Grid>
                         <Grid item size={{ xs: 12, md: 5 }} sx={{ ml: { md: 10 } }} >
                             <PlotHomepageAbstention abstencion={abstencion} />
