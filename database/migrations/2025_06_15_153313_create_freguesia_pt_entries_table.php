@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name')->comment('Name of the freguesia');
-            $table->string('freguesias_pt_url')->nullable()->comment('URL of the freguesia on freguesias.pt');
-            $table->string('freguesias_pt_id')->nullable()->comment('ID of the freguesia on freguesias.pt');
+            $table->string('freguesias_pt_url')->unique()->nullable()->comment('URL of the freguesia on freguesias.pt');
+            $table->string('freguesias_pt_id')->unique()->nullable()->comment('ID of the freguesia on freguesias.pt');
             $table->string('address')->nullable()->comment('Address of the freguesia');
             $table->string('email')->nullable()->comment('Email of the freguesia');
             $table->string('phone')->nullable()->comment('Phone number of the freguesia');

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import GenericFooter from '@/Components/Footers/GenericFooter';
 import { Image } from 'react-bootstrap';
@@ -12,9 +12,18 @@ import CardAbstencion from '@/Components/Cards/CardAbstencion';
 import PlotHomepageAbstention from '@/Components/Plots/PlotHomepageAbstention';
 import CardArquivoPT from '@/Components/Cards/CardArquivoPT';
 
-const Homepage = ({ regions, electionSummary, electionYears, districts, abstention }) => {
+const Homepage = ({ regions, elections }) => {
 
-    const [selectedYear, setSelectedYear] = useState(null)
+    const [selectedYear, setSelectedYear] = useState()
+    const [electionYears, setElectionYears] = useState();
+
+    useEffect(() => {
+        if (elections) {
+            const years = Object.keys(elections).sort((a, b) => b - a);
+            setElectionYears(years);
+            setSelectedYear(years[0]); // Set the first year as default
+        }
+    }, []);
 
     return (
         <Grid direction="column">
@@ -44,15 +53,15 @@ const Homepage = ({ regions, electionSummary, electionYears, districts, abstenti
                         </Grid>
                         <Grid item container direction="column">
                             <Grid item>
-                                <PlotHomepage electionSummary={electionSummary} />
+                                {elections && selectedYear && <PlotHomepage elections={elections} selectedYear={selectedYear} />}
                             </Grid>
                             <Grid item>
-                                <SliderHomepage electionYears={electionYears} setSelectedYear={setSelectedYear} />
+                                {electionYears && selectedYear && <SliderHomepage electionYears={electionYears} selectedYear={selectedYear} setSelectedYear={setSelectedYear} />}
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item size={{ xs: 12, md: 4 }}>
-                        <HomepageMap districts={districts} />
+                        <HomepageMap districts={null} />
                         <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                     </Grid>
                 </Grid>
@@ -63,7 +72,7 @@ const Homepage = ({ regions, electionSummary, electionYears, districts, abstenti
                             <CardAbstencion />
                         </Grid>
                         <Grid item size={{ xs: 12, md: 5 }} sx={{ ml: { md: 10 } }} >
-                            {abstention && <PlotHomepageAbstention abstention={abstention} />}
+                            {false && <PlotHomepageAbstention abstention={null} />}
                         </Grid>
                     </Grid>
                 </Grid>

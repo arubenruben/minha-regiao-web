@@ -20,8 +20,6 @@ const AutoCompleteHomepage = ({ regions }) => {
         return routeMap[option.type];
     };
 
-    console.log(regions);
-
     return (
         <Autocomplete
             disablePortal

@@ -38,4 +38,9 @@ class FreguesiaPTEntry extends Model
         return $this->hasOne(Wikipedia::class, 'freguesia_pt_entry_id');
     }
 
+    public function elections()
+    {
+        return $this->hasMany(Election::class, 'freguesia_pt_entry_id');
+    }
+
 }

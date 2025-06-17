@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Http\Resources\ElectionSummaryResource;
+use App\Models\Election;
 use App\Models\FreguesiaPTEntry;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -14,10 +16,23 @@ class HomepageController extends Controller
      */
     public function index()
     {
+        $elections = Election::all();
+        $results = $elections->groupBy('year')->sortKeys();
+
+        $electionSummary = [];
+
+        foreach ($results as $year => $elections) {
+            $electionSummary[(string) $year] = $elections
+                ->map(fn($election) => $election->winner()?->party->acronym)
+                ->filter()
+                ->countBy()
+                ->toArray();
+        }
+
         return Inertia::render('Homepage', [
             'regions' => FreguesiaPTEntry::all()->toResourceCollection(),
-            'electionSummary' => [],
-            'electionYears' => [],
+            'elections' => $electionSummary,
+            'districts' => FreguesiaPTEntry::where('entity_type', 'district')->get(),
         ]);
     }
 

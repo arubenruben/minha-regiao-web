@@ -2,10 +2,10 @@ import React from 'react'
 import { Slider } from '@mui/material';
 
 
-const SliderHomepage = ({ electionYears, setSelectedYear }) => {
+const SliderHomepage = ({ selectedYear, electionYears, setSelectedYear }) => {
     return (
         <Slider
-            defaultValue={electionYears[0]}
+            defaultValue={selectedYear}
             step={null}
             marks={electionYears.map(year => ({ value: year, label: year }))}
             min={Math.min(...electionYears)}

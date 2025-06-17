@@ -30,9 +30,12 @@ class Election extends Model
         return $this->hasMany(ElectionResult::class);
     }
 
-    #public function president()
-    #{
-    #    return $this->belongsTo(User::class, 'president_id');
-    #}
+    // Create a method winner that analyzes the election results and returns the winner
+    public function winner()
+    {
+        return $this->electionResults()
+            ->orderBy('number_votes', 'desc')
+            ->first();
+    }
 
 }
