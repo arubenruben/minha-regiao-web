@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "clickbar/laravel-magellan": "^2.0",
         "fakerphp/faker": "^1.23",
         "inertiajs/inertia-laravel": "^2.0",
         "knuckleswtf/scribe": "^5.2",
@@ -78,5 +79,8 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.5"
+    }
 }

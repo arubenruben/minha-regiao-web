@@ -20,8 +20,14 @@ return new class extends Migration {
             $table->string('email')->nullable()->comment('Email of the freguesia');
             $table->string('phone')->nullable()->comment('Phone number of the freguesia');
             $table->string('website')->nullable()->comment('Website of the freguesia');
-            $table->geometry('geo_polygon')->nullable()->comment('Geo polygon of the freguesia');
-            $table->geometry('polygon_centroid')->nullable()->comment('Centroid of the polygon');
+
+            $table->magellanGeometry('geo_polygon')
+                ->nullable()
+                ->comment('Geographical polygon of the freguesia_pt_entry');
+
+            $table->magellanPoint('polygon_centroid')
+                ->nullable()
+                ->comment('Centroid point of the freguesia_pt_entry polygon');
 
             $table->string('entity_type')->comment('Type of the entity (e.g., City, Parish)');
             $table->unsignedBigInteger('entity_id')->comment('ID of the entity this entry belongs to');

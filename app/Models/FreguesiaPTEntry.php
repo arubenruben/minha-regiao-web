@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Clickbar\Magellan\Data\Geometries\MultiPolygon;
+use Clickbar\Magellan\Data\Geometries\Point;
 
 class FreguesiaPTEntry extends Model
 {
+
     protected $table = "freguesia_pt_entries";
     protected $fillable = [
         'name',
@@ -19,6 +22,10 @@ class FreguesiaPTEntry extends Model
         'polygon_centroid',
         'entity_type',
         'entity_id',
+    ];
+    protected $casts = [
+        'geo_polygon' => MultiPolygon::class,
+        'polygon_centroid' => Point::class,
     ];
 
     public function entity()

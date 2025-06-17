@@ -3,7 +3,10 @@ import json
 import requests
 import pandas as pd
 from tqdm import tqdm
+import geopandas as gpd
 from typing import List, Dict, Optional, Any
+from geoalchemy2.shape import to_shape
+from shapely.wkb import loads
 
 
 class DataLoader:
@@ -84,6 +87,46 @@ class DataLoader:
 
     def _build_location_data(self, row: Any) -> Dict[str, Any]:
         """Build common location data dictionary"""
+        # row.geo_polygon and row.polygon_centroid are string representations of hexadecimal binary
+        # Load the hexadecimal binary into a geometry object
+        if not pd.isna(row.geo_polygon):
+            geo_polygon = loads(row.geo_polygon)
+            gdf = gpd.GeoDataFrame(geometry=[geo_polygon], crs="epsg:3763", index=[0])
+            gdf = gdf.to_crs(epsg=4326)
+            geo_polygon_geo_json = gdf.geometry[0].__geo_interface__
+        else:
+            geo_polygon_geo_json = None
+
+        if pd.isna(row.polygon_centroid):
+            centroid_geo_json = None
+        else:
+            polygon_centroid = loads(row.polygon_centroid)
+            centroid_gdf = gpd.GeoDataFrame(
+                geometry=[polygon_centroid], crs="epsg:3763", index=[0]
+            )
+            centroid_gdf = centroid_gdf.to_crs(epsg=4326)
+            centroid_geo_json = centroid_gdf.geometry[0].__geo_interface__
+
+        if hasattr(row, "old_geo_polygon") and pd.notna(row.old_geo_polygon):
+            old_geo_polygon = loads(row.old_geo_polygon)
+            old_gdf = gpd.GeoDataFrame(
+                geometry=[old_geo_polygon], crs="epsg:3763", index=[0]
+            )
+            old_gdf = old_gdf.to_crs(epsg=4326)
+            old_geo_polygon_geo_json = old_gdf.geometry[0].__geo_interface__
+        else:
+            old_geo_polygon_geo_json = None
+
+        if hasattr(row, "old_polygon_centroid") and row.old_polygon_centroid:
+            old_polygon_centroid = loads(row.old_polygon_centroid)
+            old_centroid_gdf = gpd.GeoDataFrame(
+                geometry=[old_polygon_centroid], crs="epsg:3763", index=[0]
+            )
+            old_centroid_gdf = old_centroid_gdf.to_crs(epsg=4326)
+            old_centroid_geo_json = old_centroid_gdf.geometry[0].__geo_interface__
+        else:
+            old_centroid_geo_json = None
+
         return {
             "name": row.name,
             "freguesias_pt_url": row.freguesias_pt_url,
@@ -92,6 +135,10 @@ class DataLoader:
             "email": row.email if pd.notna(row.email) else None,
             "phone": row.phone if pd.notna(row.phone) else None,
             "website": row.website if pd.notna(row.website) else None,
+            "geo_polygon": geo_polygon_geo_json,
+            "polygon_centroid": centroid_geo_json,
+            "old_geo_polygon": old_geo_polygon_geo_json,
+            "old_polygon_centroid": old_centroid_geo_json,
         }
 
     def _find_mapping_id(
@@ -196,6 +243,7 @@ class DataLoader:
     def load_districts(self) -> List[Dict]:
         """Load all districts"""
         existing_mapping = self._load_mapping("districts_mapping.json")
+
         if existing_mapping:
             return existing_mapping
 

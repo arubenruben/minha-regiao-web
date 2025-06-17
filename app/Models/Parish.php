@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Clickbar\Magellan\Data\Geometries\MultiPolygon;
+use Clickbar\Magellan\Data\Geometries\Point;
 
 class Parish extends Model
 {
@@ -15,6 +17,10 @@ class Parish extends Model
         'city_id',
         'old_geo_polygon',
         'old_polygon_centroid'
+    ];
+    protected $casts = [
+        'old_geo_polygon' => MultiPolygon::class,
+        'old_polygon_centroid' => Point::class,
     ];
 
     public function freguesiaPtEntry()

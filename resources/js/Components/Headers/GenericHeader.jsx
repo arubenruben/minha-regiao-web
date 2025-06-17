@@ -9,10 +9,10 @@ const GenericHeader = () => {
         <header>
             <Link href="/" style={{ textDecoration: "none" }}>
                 <Grid container direction={"row"} sx={{ alignItems: "center", pt: 2.5, pb: 1, pl: 3 }}>
-                    <Grid item xs={12} sm={6} md={1}>
+                    <Grid item size={{ xs: 12, sm: 6, md: 1 }}>
                         <Image id='logo' src={logo} roundedCircle />
                     </Grid>
-                    <Grid item container direction={"column"} xs={12} sm={6} md={8} sx={{ pl: 2 }}>
+                    <Grid item container direction={"column"} sx={{ pl: 2 }} size={{ xs: 12, sm: 6, md: 8 }}>
                         <Grid item>
                             <h1>A minha Região</h1>
                         </Grid>

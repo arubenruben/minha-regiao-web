@@ -18,7 +18,7 @@ const Homepage = ({ regions, electionSummary, electionYears, districts, abstenti
 
     return (
         <Grid direction="column">
-            <Grid item direction="column">
+            <Grid direction="column">
                 <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: { xs: 3, md: 10 }, height: { xs: "300px", lg: "60vh" } }} >
                     <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                         <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>

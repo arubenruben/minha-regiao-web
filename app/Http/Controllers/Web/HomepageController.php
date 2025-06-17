@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\FreguesiaPTEntry;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +15,7 @@ class HomepageController extends Controller
     public function index()
     {
         return Inertia::render('Homepage', [
-            'regions' => [],
+            'regions' => FreguesiaPTEntry::all()->toResourceCollection(),
             'electionSummary' => [],
             'electionYears' => [],
         ]);

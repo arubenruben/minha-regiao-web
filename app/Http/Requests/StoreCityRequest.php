@@ -3,9 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Clickbar\Magellan\Http\Requests\TransformsGeojsonGeometry;
+use Clickbar\Magellan\Rules\GeometryGeojsonRule;
+use Clickbar\Magellan\Data\Geometries\MultiPolygon;
+use Clickbar\Magellan\Data\Geometries\Point;
 
 class StoreCityRequest extends FormRequest
 {
+    use TransformsGeojsonGeometry;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -29,9 +35,13 @@ class StoreCityRequest extends FormRequest
             'email' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
             'website' => 'nullable|string|max:512',
-            'geo_polygon' => 'nullable|geometry',
-            'polygon_centroid' => 'nullable|geometry',
+            'geo_polygon' => ['required', new GeometryGeojsonRule([MultiPolygon::class])],
+            'polygon_centroid' => ['required', new GeometryGeojsonRule([Point::class])],
             'district_id' => 'required|integer|exists:districts,id',
         ];
+    }
+    public function geometries(): array
+    {
+        return ['geo_polygon', 'polygon_centroid'];
     }
 }

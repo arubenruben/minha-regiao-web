@@ -1,3 +1,286 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("variables.css");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+}
+
+header {
+    background-color: var(--blue-at);
+    color: white;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#logo {
+    max-height: 70px;
+}
+
+main {
+    position: relative;
+    min-height: 100vh;
+}
+
+#homepage-logo {
+    max-height: 150px;
+    width: 100%;
+}
+
+#homepage-front {
+    background-color: var(--blue-at);    
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#homepage-front .MuiAutocomplete-root * {
+    color: white !important;
+    border-color: white !important;
+}
+
+#list-election-years {
+    text-align: right;
+    font-weight: 700;
+    background-color: whitesmoke;
+}
+
+
+
+
+footer {
+    background-color: var(--blue-at);
+    color: white;
+    width: 100%;
+    text-align: center;
+    margin-top: 3rem;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+html a {
+    text-decoration: none;
+    padding: 0;
+    border: none;
+    margin: 0;
+    color: inherit;
+}
+
+.card-link {
+    text-decoration: underline;
+    color: var(--blue-at);
+}
+
+
+#election-map {
+    height: 200px !important;
+    min-height: 200px !important;
+}
+
+.party-card-img {
+    max-width: 150px;
+}
+
+.card-news .card-body {
+    height: 600px;
+    overflow-y: hidden;
+}
+
+.card-news .card-header {
+    background-color: var(--blue-at);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.accordion-button {
+    background-color: var(--blue-at) !important;
+    color: white !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+.accordion-button::after {
+    color: white !important;
+    background-color: white !important;
+    border-radius: 50%;
+}
+
+.card-president {
+    height: 370px !important;
+}
+
+.card-president .card-img-top {
+    height: 200px;
+    object-fit: scale-down;
+}
+
+.card-president .carousel-item {
+    height: 200px;
+}
+
+.president-image-election {
+    height: 90px;
+    min-height: 90px;
+    object-fit: cover;
+}
+
+.slider-container {
+    position: relative;
+}
+
+#title {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#fab-chat {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
+
+.btn-open-in-new {
+    color: white !important;
+}
+
+.link-table {
+    text-decoration: underline !important;
+    color: var(--blue-at) !important;
+    font-weight: 600 !important;
+}
+
+#list-election-type {
+    background-color: var(--blue-at) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    border-radius: 0.5rem !important;
+    height: 100% !important;
+}
+
+#list-election-type .MuiListItemButton-root {
+    border-bottom: 1px solid white !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+#list-election-type .MuiSvgIcon-root {
+    color: var(--blue-at) !important;
+}
+
+#list-election-type .MuiAvatar-root {
+    background-color: white !important;
+}
+
+.ssn-subtitle {
+    font-weight: 300;
+}
+
+#slogan {
+    font-weight: 500;
+}
+
+.MuiSlider-root {
+    color: var(--blue-at) !important;
+}
+
+.MuiTableCell-head {
+    background-color: var(--blue-at) !important;
+    color: white !important;
+    border: none !important;
+}
+
+#chatbot {
+    position: fixed;
+    top: 10%;
+    left: 35%;
+    z-index: 1000;
+}
+
+#chatbot .react-chatbot-kit-chat-container {
+    width: 400px !important;
+}
+
+.carousel-indicators button {
+    color: var(--blue-at) !important;
+    background-color: var(--blue-at) !important;
+}
+
+.card-homepage {
+    height: 100% !important;
+    font-size: 1.1rem !important;
+}
+
+.carousel-fade {
+    height: 100% !important;
+}
+
+.carousel-inner {
+    height: 100% !important;
+}
+
+.carousel-item{
+    height: 100% !important;
+}
+
+.card-homepage .card-header {
+    background-color: var(--blue-at) !important;
+    color: white !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+.card-homepage .card-body {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.empathize-homepage {
+    color: var(--blue-at) !important;
+    font-weight: 700 !important;
+
+    text-decoration: underline !important;
+}
+
+#card-me {
+    border-radius: 0.4rem !important;
+    box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+#card-me img {
+    width: 100% !important;
+    min-height: 400px !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-top-left-radius: 0.4rem !important;
+    border-bottom-left-radius: 0.4rem !important;
+}
+
+#card-me {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+#name{
+    margin: 0;
+}
+
+.card-teacher img {
+    height: 200px !important;
+    width: 200px !important;
+}
+
+#image-arquivo{
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: scale-down !important;
+}

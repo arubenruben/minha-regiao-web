@@ -18,6 +18,14 @@ return new class extends Migration {
                 ->onDelete('cascade')
                 ->comment('ID of the city this parish belongs to');
 
+            $table->magellanGeometry('old_geo_polygon')
+                ->nullable()
+                ->comment('Geographical polygon of the parish');
+
+            $table->magellanPoint('old_polygon_centroid')
+                ->nullable()
+                ->comment('Centroid point of the parish polygon');
+
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Election;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ElectionController extends Controller
 {
@@ -36,7 +37,9 @@ class ElectionController extends Controller
      */
     public function show(Election $election)
     {
-        //
+        return Inertia::render('Election', [
+            'election' => $election
+        ]);
     }
 
     /**
