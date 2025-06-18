@@ -35,7 +35,8 @@ class DistrictResource extends JsonResource
             'freguesia_pt_entry_id' => $this->freguesiaPtEntry->id,
             'geo_polygon' => $this->freguesiaPtEntry->geo_polygon,
             'polygon_centroid' => $this->freguesiaPtEntry->polygon_centroid,
-            'cities' => $cities
+            'cities' => $cities,
+            'wikipedia' => $this->freguesiaPtEntry->wikipedia,
         ];
     }
 }

@@ -12,6 +12,9 @@ import SliderDistrict from '@/Components/Sliders/SliderDistrict';
 import TableDistrict from '@/Components/Tables/TableDistrict';
 
 const District = ({ district, electionYears }) => {
+    console.log(district);
+
+
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
 
     const breadCrumbs = [
