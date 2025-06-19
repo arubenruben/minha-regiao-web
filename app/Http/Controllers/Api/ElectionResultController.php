@@ -30,7 +30,7 @@ class ElectionResultController extends Controller
      */
     public function store(StoreElectionResultRequest $request)
     {
-        $electionResult = ElectionResult::create($request->validated());
+        $electionResult = ElectionResult::create($request->all());
         return response()->json($electionResult, 201);
     }
 

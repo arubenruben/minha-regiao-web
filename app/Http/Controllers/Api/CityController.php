@@ -35,9 +35,9 @@ class CityController extends Controller
     {
         try {
             $city = DB::transaction(function () use ($request) {
-                $city = City::create($request->validated());
+                $city = City::create($request->all());
 
-                $city->freguesiaPtEntry()->create($request->validated() + [
+                $city->freguesiaPtEntry()->create($request->all() + [
                     'entity_type' => 'App\Models\City',
                     'entity_id' => $city->id,
                 ]);

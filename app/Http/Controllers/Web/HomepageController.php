@@ -46,7 +46,7 @@ class HomepageController extends Controller
             'name' => $district->freguesiaPtEntry->name,
             #'geo_polygon' => ST::simplifyPolygonHull($district->freguesiaPtEntry->geo_polygon, 0.1), // Simplify the geo_polygon for better performance                
             #'geo_polygon' => $district->freguesiaPtEntry->geo_polygon   
-            'geo_polygon' => json_decode(DB::table('freguesia_pt_entries')
+            'geo_polygon' => json_decode(DB::table('freguesias_pt_entries')
                 ->selectRaw('ST_AsGeoJSON(ST_SimplifyPreserveTopology(geo_polygon, ?)) as geojson', [0.001])
                 ->where('id', $district->id)
                 ->first()->geojson, true)

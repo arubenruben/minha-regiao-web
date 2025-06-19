@@ -30,7 +30,7 @@ class WikipediaController extends Controller
      */
     public function store(StoreWikipediaRequest $request)
     {
-        $wikipedia = Wikipedia::create($request->validated());
+        $wikipedia = Wikipedia::create($request->all());
 
         return response()->json($wikipedia, 201);
     }

@@ -25,6 +25,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+
 networks:
   minha-regiao:
     driver: bridge
+
+volumes:
+  postgis_data:
+    driver: local

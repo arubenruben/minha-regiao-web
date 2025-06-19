@@ -8,12 +8,11 @@ use Clickbar\Magellan\Data\Geometries\Point;
 
 class FreguesiaPTEntry extends Model
 {
-
-    protected $table = "freguesia_pt_entries";
+    protected $table = "freguesias_pt_entries";
     protected $fillable = [
         'name',
-        'freguesia_pt_id',
-        'freguesia_pt_url',
+        'freguesias_pt_id',
+        'freguesias_pt_url',
         'address',
         'email',
         'phone',

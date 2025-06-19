@@ -25,7 +25,7 @@ class StoreWikipediaRequest extends FormRequest
             'title' => 'required|string|max:255',
             'url' => 'required|url',
             'summary' => 'nullable|string',
-            'freguesia_pt_entry_id' => 'required|exists:freguesia_pt_entries,id',
+            'freguesia_pt_entry_id' => 'required|exists:freguesias_pt_entries,id',
         ];
     }
 }

@@ -30,7 +30,7 @@ class CandidateController extends Controller
      */
     public function store(StoreCandidateRequest $request)
     {
-        $candidate = Candidate::create($request->validated());
+        $candidate = Candidate::create($request->all());
 
         return response()->json($candidate, 201);
     }

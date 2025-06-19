@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->integer('number_absentee_votes')->unsigned();
 
             $table->foreignId('freguesia_pt_entry_id')
-                ->constrained('freguesia_pt_entries')
+                ->constrained('freguesias_pt_entries')
                 ->onDelete('cascade');
 
             $table->timestamps();

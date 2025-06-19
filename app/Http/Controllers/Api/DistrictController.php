@@ -36,7 +36,7 @@ class DistrictController extends Controller
             $district = DB::transaction(function () use ($request) {
                 $district = District::create();
 
-                $district->freguesiaPtEntry()->create($request->validated() + [
+                $district->freguesiaPtEntry()->create($request->all() + [
                     'entity_type' => 'App\Models\District',
                     'entity_id' => $district->id,
                 ]);

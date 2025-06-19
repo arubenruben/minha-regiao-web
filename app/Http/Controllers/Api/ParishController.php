@@ -34,9 +34,9 @@ class ParishController extends Controller
     {
         try {
             $parish = DB::transaction(function () use ($request) {
-                $parish = Parish::create($request->validated());
+                $parish = Parish::create($request->all());
 
-                $parish->freguesiaPtEntry()->create($request->validated() + [
+                $parish->freguesiaPtEntry()->create($request->all() + [
                     'entity_type' => 'App\Models\Parish',
                     'entity_id' => $parish->id,
                 ]);

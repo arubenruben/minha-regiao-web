@@ -16,10 +16,10 @@ return new class extends Migration {
             $table->string('url')->comment('URL of the Wikipedia entry');
             $table->text('summary')->comment('Summary of the Wikipedia entry');
             $table->foreignId('freguesia_pt_entry_id')
-                ->constrained('freguesia_pt_entries')
+                ->constrained('freguesias_pt_entries')
                 ->onDelete('cascade')
                 ->onUpdate('cascade')
-                ->comment('Foreign key referencing the freguesia_pt_entries table');
+                ->comment('Foreign key referencing the freguesias_pt_entries table');
             $table->timestamps();
         });
     }

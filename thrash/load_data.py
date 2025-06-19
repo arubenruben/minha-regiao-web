@@ -67,7 +67,7 @@ class DataLoader:
         ].str.strip()
         return self.election_results_df["party"].unique()
 
-    def _create_wikipedia_entry(self, row: Any, freguesia_pt_entry_id: int) -> None:
+    def _create_wikipedia_entry(self, row: Any, new_freguesia_pt_entry: int) -> None:
         """Create Wikipedia entry if it exists"""
         if pd.notna(row.wikipedia_entry_id):
             wikipedia_entry = self.wikipedia_df[
@@ -81,7 +81,7 @@ class DataLoader:
                         "title": entry["title"],
                         "url": entry["wikipedia_url"],
                         "summary": entry["summary"],
-                        "freguesia_pt_entry_id": freguesia_pt_entry_id,
+                        "freguesia_pt_entry_id": new_freguesia_pt_entry,
                     },
                 )
 
@@ -257,7 +257,9 @@ class DataLoader:
             response_data = self._make_request("districts", location_data)
             new_district_id = response_data["id"]
 
-            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
+            self._create_wikipedia_entry(
+                row, new_freguesia_pt_entry=response_data["freguesia_pt_entry_id"]
+            )
 
             mapping.append(
                 {
@@ -311,11 +313,11 @@ class DataLoader:
                 }
             )
 
-            self._process_elections_for_entry(row, new_city_id, parties)
+            self._process_elections_for_entry(
+                row, response_data["freguesia_pt_entry_id"], parties
+            )
 
-            break
-
-        # self._save_mapping("city_mapping.json", mapping)
+        self._save_mapping("city_mapping.json", mapping)
 
         return mapping
 
@@ -358,7 +360,9 @@ class DataLoader:
 
             self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
 
-            self._process_elections_for_entry(row, new_municipality_id, parties)
+            self._process_elections_for_entry(
+                row, response_data["freguesia_pt_entry_id"], parties
+            )
 
     def load_all_data(self) -> None:
         """Load all data in the correct order"""
