@@ -38,12 +38,12 @@ class CityController extends Controller
      */
     public function show(Request $request)
     {
-        $city = City::with('freguesiaPtEntry')->whereHas('freguesiaPtEntry', function ($query) use ($request) {
+        $city = City::whereHas('freguesiaPtEntry', function ($query) use ($request) {
             $query->where('name', $request->city);
         })->firstOrFail();
 
         return Inertia::render('City', [
-            'city' => $city,
+            'city' => $city->toResource(),
         ]);
     }
 

@@ -18,8 +18,6 @@ const TableLocalities = ({ localities, selectedElectionYear }) => {
         );
     }, [localities, selectedElectionYear]);
 
-    console.log(elections[0]);
-
     return (
         <TableContainer sx={{ maxHeight: 350 }}>
             <Table size="small" stickyHeader>
@@ -35,13 +33,9 @@ const TableLocalities = ({ localities, selectedElectionYear }) => {
                     {elections.map((election, index) => (
                         <TableRow key={index}>
                             <TableCell component="th" scope="row">
-                                {election.city && election.city.name ? (
-                                    <Link href={route('cities.show', { city: election.city.name })} className="link-table">
-                                        {election.city.name}
-                                    </Link>
-                                ) : (
-                                    election.city?.name || 'N/A'
-                                )}
+                                <Link href={route('cities.show', { city: election.city.name })} className="link-table">
+                                    {election.city.name}
+                                </Link>
                             </TableCell>
                             <TableCell align="right">{election.election.winner.party.acronym}</TableCell>
                             <TableCell align="right">{election.election.winner.candidate.name ?? "-"}</TableCell>
