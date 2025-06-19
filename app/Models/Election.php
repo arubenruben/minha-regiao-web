@@ -35,7 +35,14 @@ class Election extends Model
     {
         return $this->electionResults()
             ->orderBy('number_votes', 'desc')
+            ->with('party')
+            ->with('candidate')
             ->first();
+    }
+
+    public function candidates()
+    {
+        return $this->hasManyThrough(Candidate::class, ElectionResult::class, 'election_id', 'election_result_id');
     }
 
     public function city()

@@ -1,67 +1,63 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { BarChart } from '@mui/x-charts/BarChart';
 
 const PlotHomepage = ({ elections, selectedYear }) => {
-    console.log(elections);
+    // Memoize the processed elections data to avoid recalculating on every render
+    const processedElections = useMemo(() => {
+        if (!elections) return {};
 
-    // Aggregate keys based on the following convertion map:
-    // if 'PS' and a '.' in the key, convert to 'PS'
-    // if 'PPD/PSD' and a '.' in the key, convert to 'PPD/PSD'
-    for (const year in elections) {
-        for (const key in elections[year]) {
-            if (key.includes('PS') && key.includes('.') && key !== 'PS') {
-                elections[year]['PS'] = (elections[year]['PS'] || 0
-                ) + elections[year][key];
-                delete elections[year][key];
-            } else if (key.includes('PPD/PSD') && key.includes('.') && key !== 'PPD/PSD') {
-                elections[year]['PPD/PSD'] = (elections[year]['PPD/PSD'] || 0
-                ) + elections[year][key];
-                delete elections[year][key];
-            } else if (key.includes('PCP') && key.includes('.') && key !== 'PCP') {
-                elections[year]['PCP'] = (elections[year]['PCP'] || 0
-                ) + elections[year][key];
-                delete elections[year][key];
+        const processed = JSON.parse(JSON.stringify(elections)); // Deep clone to avoid mutating original
+
+        for (const year in processed) {
+            // Aggregate keys based on party names
+            for (const key in processed[year]) {
+                if (key.includes('PS') && key.includes('.') && key !== 'PS') {
+                    processed[year]['PS'] = (processed[year]['PS'] || 0) + processed[year][key];
+                    delete processed[year][key];
+                } else if (key.includes('PPD/PSD') && key.includes('.') && key !== 'PPD/PSD') {
+                    processed[year]['PPD/PSD'] = (processed[year]['PPD/PSD'] || 0) + processed[year][key];
+                    delete processed[year][key];
+                } else if (key.includes('PCP') && key.includes('.') && key !== 'PCP') {
+                    processed[year]['PCP'] = (processed[year]['PCP'] || 0) + processed[year][key];
+                    delete processed[year][key];
+                }
+            }
+
+            // Group all keys with 1 value into 'Outros'
+            const otherKeys = Object.keys(processed[year]).filter(key => processed[year][key] === 1);
+            if (otherKeys.length > 0) {
+                processed[year]['Outros'] = otherKeys.length;
+                otherKeys.forEach(key => delete processed[year][key]);
             }
         }
 
-        // Group all keys with 1 value into 'Outros'
-        const otherKeys = Object.keys(elections[year]).filter(key => elections[year][key] === 1);
+        return processed;
+    }, [elections]);
 
-        if (otherKeys.length > 0) {
-            elections[year]['Outros'] = otherKeys.reduce((sum, key) => sum + elections[year][key], 0);
-            otherKeys.forEach(key => delete elections[year][key]);
-        }
-    }
-
-    const [xAxis, setXAxis] = useState([]);
-    const [series, setSeries] = useState([]);
-
-    useEffect(() => {
-
-        // The XAxis is the elections[selectedYear] keys
-        // The Series is the elections[selectedYear] values
-        if (!elections || !selectedYear || !elections[selectedYear]) {
-            setXAxis([]);
-            setSeries([]);
-            return;
+    // Memoize chart data to avoid recalculating when processedElections or selectedYear don't change
+    const chartData = useMemo(() => {
+        if (!processedElections || !selectedYear || !processedElections[selectedYear]) {
+            return { xAxis: [], series: [] };
         }
 
-        setXAxis(Object.keys(elections[selectedYear]));
-        setSeries([{
-            name: 'Número de Cidades',
-            data: Object.values(elections[selectedYear]),
-        }]);
-
-
-    }, [elections, selectedYear]);
+        return {
+            xAxis: Object.keys(processedElections[selectedYear]),
+            series: Object.values(processedElections[selectedYear])
+        };
+    }, [processedElections, selectedYear]);
 
     return (
         <BarChart
             xAxis={[{
-                data: xAxis,
+                data: chartData.xAxis,
                 name: 'Partido',
             }]}
-            series={series}
+            series={[
+                {
+                    name: 'Número de Cidades',
+                    data: chartData.series
+                }
+            ]}
             height={300}
         />
     )

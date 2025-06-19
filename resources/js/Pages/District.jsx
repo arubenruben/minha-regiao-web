@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import Grid from '@mui/material/Grid';
 import { Link } from '@inertiajs/react'
 import GenericLayout from '@/Layouts/GenericLayout';
@@ -6,16 +6,27 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import LocalMap from '@/Components/Maps/LocalMap';
 import AccordionWikipedia from '@/Components/Accordion/AccordionWikipedia';
 import AccordionPlots from '@/Components/Accordion/AccordionPlots';
-import PlotVotersDistrict from '@/Components/Plots/PlotVotersDistrict';
 import PlotAbstention from '@/Components/Plots/PlotAbstention';
 import SliderDistrict from '@/Components/Sliders/SliderDistrict';
 import TableDistrict from '@/Components/Tables/TableDistrict';
+import PlotVoters from '@/Components/Plots/PlotVoters';
 
-const District = ({ district, electionYears }) => {
-    console.log(district);
-
-
+const District = ({ district }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
+
+    const electionYears = useMemo(() => {
+        const yearSet = new Set();
+        district?.cities?.forEach(city => {
+            city.elections?.forEach(election => {
+                yearSet.add(election.year);
+            });
+        });
+        const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
+        setSelectedElectionYear(sortedYears[0]);
+        return sortedYears;
+    }, [district?.cities]);
+
+
 
     const breadCrumbs = [
         <Link key="1" href="/">
@@ -59,8 +70,8 @@ const District = ({ district, electionYears }) => {
                         </Grid>
                         <hr />
                         <AccordionPlots
-                            plotVoters={<PlotVotersDistrict cities={district?.cities} electionYears={electionYears} />}
-                            plotAbstention={<PlotAbstention cities={district?.cities} electionYears={electionYears} />}
+                            plotVoters={<PlotVoters locations={district?.cities} />}
+                            plotAbstention={<PlotAbstention locations={district?.cities} electionYears={electionYears} />}
                         />
                     </Grid>
                     {/* Map only for the smaller screens */}

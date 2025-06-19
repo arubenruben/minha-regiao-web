@@ -1,33 +1,47 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
 
-const PlotVoters = (props) => {
-    const [xAxis, setXAxis] = useState([]);
-    const [yAxis, setYAxis] = useState([]);
+const PlotVoters = ({ locations }) => {
 
-    useEffect(() => {
-        if (props.elections) {
-            // Sort elections by year
-            const sortedElections = props.elections.sort((a, b) => a.year - b.year);
-
-            setXAxis(sortedElections.map((locality) => locality.year));
-            setYAxis(sortedElections.map((locality) => locality.number_registered_voters));
+    const { xAxis, series } = useMemo(() => {
+        if (!locations || locations.length === 0) {
+            return { xAxis: [], series: [] };
         }
-    }, [props.elections, props.electionYears]);
+
+        // Extract and sort unique years
+        const yearsSet = new Set();
+
+        locations.forEach(city => {
+            city.elections?.forEach(election => {
+                yearsSet.add(election.year);
+            });
+        });
+
+        const sortedYears = Array.from(yearsSet).sort((a, b) => a - b);
+
+        // Calculate voters data
+        const votersData = sortedYears.map(year => {
+            return locations.reduce((total, city) => {
+                const election = city.elections?.find(election => election.year === year);
+                return total + (election?.number_registered_voters || 0);
+            }, 0);
+        });
+
+        return { xAxis: sortedYears, series: votersData };
+
+    }, [locations]);
 
     return (
         <LineChart
             xAxis={[{
                 data: xAxis,
                 label: 'Eleições Autárquicas',
-                scaleType: 'point', // Ensure X-axis is numeric
+                scaleType: 'point',
             }]}
-            yAxis={[{ label: 'Eleitores', scaleType: 'linear' }]} // Use the yAxis data from the voters state
-            series={[
-                {
-                    data: yAxis,
-                },
-            ]}
+            yAxis={[{ label: 'Eleitores', scaleType: 'linear' }]}
+            series={[{
+                data: series,
+            }]}
             height={300}
         />
     )

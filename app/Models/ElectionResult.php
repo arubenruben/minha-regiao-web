@@ -27,8 +27,8 @@ class ElectionResult extends Model
         return $this->belongsTo(Party::class);
     }
 
-    public function candidates()
+    public function candidate()
     {
-        return $this->hasMany(Candidate::class, "election_result_id");
+        return $this->hasOne(Candidate::class);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Models\District;
+use App\Models\Election;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Controllers\Controller;
@@ -38,12 +39,12 @@ class DistrictController extends Controller
      */
     public function show(Request $request)
     {
-        $district = District::with('freguesiaPtEntry')->whereHas('freguesiaPtEntry', function ($query) use ($request) {
+        $district = District::whereHas('freguesiaPtEntry', function ($query) use ($request) {
             $query->where('name', $request->district);
         })->firstOrFail();
 
         return Inertia::render('District', [
-            'district' => $district->toResource(),
+            'district' => $district->toResource(),            
         ]);
     }
 

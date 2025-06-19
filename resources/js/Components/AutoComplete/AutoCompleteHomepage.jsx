@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -14,12 +14,20 @@ const AutoCompleteHomepage = ({ regions }) => {
         };
         return routeMap[option.type];
     };
-    
+
+    const handleChange = (event, value) => {
+        if (value) {
+            const routeConfig = getRouteConfig(value);
+            router.visit(route(routeConfig.name, routeConfig.params));
+        }
+    };
+
     return (
         <Autocomplete
             options={sortedRegions}
             getOptionLabel={(option) => option.name}
             groupBy={(option) => option.type}
+            onChange={handleChange}
             renderOption={(props, option) => {
                 const { key, ...optionProps } = props;
                 const routeConfig = getRouteConfig(option);

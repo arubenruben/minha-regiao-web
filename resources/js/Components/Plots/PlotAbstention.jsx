@@ -1,38 +1,41 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
 
-const PlotAbstention = (props) => {
-    const [absenteeVoters, setAbsenteeVoters] = useState([]);
+const PlotAbstention = ({ locations }) => {
+    const absenteeVoters = useMemo(() => {
+        if (!locations) {
+            return [];
+        }
 
-    const constructAbsenteeVoters = (cities, electionYears) => {
+        // Calculate electionYears from locations using a Set
+        const electionYears = [...new Set(
+            locations.flatMap(city => 
+                city.elections.map(election => election.year)
+            )
+        )].sort((a, b) => a - b);
+
         const votersAccumulator = electionYears.map(year => {
             let totalAbsenteeVotes = 0;
             let totalRegisteredVoters = 0;
-            let citiesWithDataCount = 0;
+            let locationsWithDataCount = 0;
 
-            cities.forEach(city => {
+            locations.forEach(city => {
                 const election = city.elections.find(election => election.year === year);
                 if (election) {
                     totalAbsenteeVotes += election.number_absentee_votes;
                     totalRegisteredVoters += election.number_registered_voters;
-                    citiesWithDataCount++;
+                    locationsWithDataCount++;
                 }
             });
 
             // Calculate the average abstention rate only if we have data
-            const voters = citiesWithDataCount > 0 ? ((totalAbsenteeVotes / totalRegisteredVoters) * 100).toFixed(2) : 0;
+            const voters = locationsWithDataCount > 0 ? ((totalAbsenteeVotes / totalRegisteredVoters) * 100).toFixed(2) : 0;
 
             return { year, voters };
         });
 
-        setAbsenteeVoters(votersAccumulator.sort((a, b) => a.year - b.year));
-    }
-
-    useEffect(() => {
-        if (props.cities && props.electionYears) {
-            constructAbsenteeVoters(props.cities, props.electionYears);
-        }
-    }, [props.cities, props.electionYears]);
+        return votersAccumulator.sort((a, b) => a.year - b.year);
+    }, [locations]);
 
     return (
         <LineChart
