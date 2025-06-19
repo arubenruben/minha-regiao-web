@@ -10,6 +10,6 @@ use App\Http\Controllers\Web\DistrictController;
 Route::get('/', [HomepageController::class, 'index'])->name('home');
 Route::get('/distrito/{district}', [DistrictController::class, 'show'])->name('districts.show');
 Route::get('/cidade/{city}', [CityController::class, 'show'])->name('cities.show');
-Route::get('/freguesia/{parish}', [ParishController::class, 'show'])->name('parishes.show');
+Route::get('/freguesia/{freguesias_pt_entry_id}', [ParishController::class, 'show'])->name('parishes.show');
 
 //require __DIR__.'/auth.php';

@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('freguesias_pt_entries', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
 
             $table->string('name')->comment('Name of the freguesia');
             $table->string('freguesias_pt_url')->unique()->nullable()->comment('URL of the freguesia on freguesias.pt');

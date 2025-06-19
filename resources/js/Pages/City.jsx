@@ -7,12 +7,12 @@ import LocalMap from '@/Components/Maps/LocalMap';
 import AccordionWikipedia from '@/Components/Accordion/AccordionWikipedia';
 import AccordionPlots from '@/Components/Accordion/AccordionPlots';
 import PlotVoters from '@/Components/Plots/PlotVoters';
-import PlotAbstentionCity from '@/Components/Plots/PlotAbstentionCity';
 import PlotHistory from '@/Components/Plots/PlotHistory';
-import TableCityHistoric from '@/Components/Tables/TableCityHistoric';
+import TableElectionHistoric from '@/Components/Tables/TableElectionHistoric';
 import TableCity from '@/Components/Tables/TableCity';
 import PlotNumberCities from '@/Components/Plots/PlotNumberCities';
 import SliderCity from '@/Components/Sliders/SliderCity';
+import PlotAbstention from '@/Components/Plots/PlotAbstention';
 
 
 const City = ({ city, electionYears }) => {
@@ -25,9 +25,7 @@ const City = ({ city, electionYears }) => {
         <Link key="2" href={route("districts.show", { district: city.district.freguesia_pt_entry.name })}>
             {city.district.freguesia_pt_entry.name}
         </Link>,
-        <Link key="3" href={route("cities.show", { city: city.name })}>
-            {city.name}
-        </Link>
+        <span key="3">{city.name}</span>
     ]
 
     return (
@@ -43,7 +41,7 @@ const City = ({ city, electionYears }) => {
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
                     <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
                         <LocalMap
-                            localities={city.municipalities}
+                            localities={city.parishes}
                             polygon_centroid={city.polygon_centroid}
                             endpoint={"freguesia"} />
                         <p className="ssn-subtitle">Navega pelo nosso mapa</p>
@@ -62,8 +60,8 @@ const City = ({ city, electionYears }) => {
                         </Grid>
                         <hr />
                         <AccordionPlots
-                            plotVoters={<PlotVoters elections={city.elections} electionYears={electionYears} />}
-                            plotAbstention={<PlotAbstentionCity elections={city.elections} />}
+                            plotVoters={<PlotVoters locations={[city]} />}
+                            plotAbstention={<PlotAbstention locations={[city]} />}
                         />
                     </Grid>
                 </Grid>
@@ -74,7 +72,7 @@ const City = ({ city, electionYears }) => {
                 </Grid>
                 <Grid container item direction="column" sx={{ alignItems: "center", mb: 3 }}>
                     <Grid item size={{ xs: 8, mb: 3 }}>
-                        <TableCityHistoric name={city.name} elections={city.elections} endpoint={"cidade"} />
+                        <TableElectionHistoric name={city.name} elections={city.elections} endpoint={"cidade"} />
                     </Grid>
                     <Grid item size={{ xs: 10 }} sx={{ mt: 5 }}>
                         <PlotHistory elections={city.elections} />

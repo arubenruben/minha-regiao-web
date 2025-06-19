@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('election_results', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
 
             $table->integer('number_votes')->unsigned();
             $table->decimal('percentage_votes', 5, 2)->unsigned();

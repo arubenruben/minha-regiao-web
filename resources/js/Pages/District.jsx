@@ -33,7 +33,7 @@ const District = ({ district }) => {
         <Link key="2" href={route("districts.show", { district: district.name })}>
             {district.name}
         </Link>,
-     
+        <span key="3">{district.name}</span>
     ]
 
     return (

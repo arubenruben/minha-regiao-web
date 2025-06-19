@@ -10,7 +10,7 @@ const AutoCompleteHomepage = ({ regions }) => {
         const routeMap = {
             'District': { name: 'districts.show', params: { district: option.name } },
             'City': { name: 'cities.show', params: { city: option.name } },
-            'Parish': { name: 'parishes.show', params: { parish: option.id } }
+            'Parish': { name: 'parishes.show', params: { freguesias_pt_entry_id: option.id } }
         };
         return routeMap[option.type];
     };

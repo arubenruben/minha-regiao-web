@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('elections', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->integer('year')->unsigned();
             $table->integer('number_participant_voters')->unsigned();
             $table->integer('number_registered_voters')->unsigned();

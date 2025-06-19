@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('newspapers', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('name')->comment('Name of the newspaper');
             $table->string('original_url')->comment('Original URL of the newspaper');
             $table->string('arquivo_pt_url')->nullable()->comment('URL of the newspaper on arquivo.pt');

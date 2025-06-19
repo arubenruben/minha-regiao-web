@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
 
             $table->integer('year')
                 ->comment('Year of the news');

@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\City;
+use App\Models\District;
 
 class ParishResource extends JsonResource
 {
@@ -22,6 +24,12 @@ class ParishResource extends JsonResource
             'phone' => $this->freguesiaPtEntry->phone,
             'website' => $this->freguesiaPtEntry->website,
             'freguesia_pt_entry_id' => $this->freguesiaPtEntry->id,
+            'geo_polygon' => $this->freguesiaPtEntry->geo_polygon,
+            'polygon_centroid' => $this->freguesiaPtEntry->polygon_centroid,
+            'wikipedia' => $this->freguesiaPtEntry->wikipedia,
+            'city' => City::with('freguesiaPtEntry')->find($this->city_id),
+            'district' => District::with('freguesiaPtEntry')->find($this->city->district_id),
+            'elections' => $this->freguesiaPtEntry->elections->toResourceCollection(),
         ];
     }
 }

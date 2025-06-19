@@ -9,6 +9,12 @@ from geoalchemy2.shape import to_shape
 from shapely.wkb import loads
 
 
+class DuplicateException(Exception):
+    """Custom exception for duplicate entries"""
+
+    pass
+
+
 class DataLoader:
     def __init__(self, base_dir: str = None):
         self.base_dir = base_dir or os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +42,13 @@ class DataLoader:
         response = requests.post(
             f"{self.base_url}/{endpoint}/", json=data, headers=self.headers
         )
+
+        if response.status_code == 500:
+            if "Unique violation" in (
+                response.json().get("error") or response.json().get("message") or ""
+            ):
+                raise DuplicateException(f"Duplicate entry for {data} in {endpoint}")
+
         response.raise_for_status()
         return response.json()
 
@@ -359,8 +372,11 @@ class DataLoader:
             location_data = self._build_location_data(row)
             location_data["city_id"] = city_id
 
-            response_data = self._make_request("parishes", location_data)
-            new_municipality_id = response_data["id"]
+            try:
+                response_data = self._make_request("parishes", location_data)
+            except DuplicateException as e:
+                print(f"Skipping duplicate entry for {row.name}: {e}")
+                continue
 
             self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
 

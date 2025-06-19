@@ -15,11 +15,11 @@ class CityResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $parishes = $this->parishes->map(function ($parish) {
+        $parishes = $this->parishes->map(function ($parish) {            
             return [
                 'name' => $parish->freguesiaPtEntry->name,
                 'geo_polygon' => $parish->freguesiaPtEntry->geo_polygon,
-                'elections' => $parish->freguesiaPtEntry->elections()->get()->toResourceCollection()
+                'elections' => $parish->freguesiaPtEntry->elections->toResourceCollection()
             ];
         });
 
@@ -36,6 +36,7 @@ class CityResource extends JsonResource
             'parishes' => $parishes,
             'wikipedia' => $this->freguesiaPtEntry->wikipedia,
             'district' => District::with('freguesiaPtEntry')->find($this->district_id),
+            'elections' => $this->freguesiaPtEntry->elections->toResourceCollection(),
         ];
     }
 }

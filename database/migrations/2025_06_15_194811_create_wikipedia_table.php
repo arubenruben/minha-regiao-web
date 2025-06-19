@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('wikipedia', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('title')->comment('Title of the Wikipedia entry');
             $table->string('url')->comment('URL of the Wikipedia entry');
             $table->text('summary')->comment('Summary of the Wikipedia entry');

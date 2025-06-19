@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('cities', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
 
             $table->foreignId('district_id')
                 ->constrained('districts')

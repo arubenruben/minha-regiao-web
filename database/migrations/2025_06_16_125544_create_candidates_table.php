@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('candidates', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
 
             $table->string('name')->comment('Name of the president');
 

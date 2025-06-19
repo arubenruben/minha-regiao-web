@@ -5,33 +5,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Link } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 
-const TableCityHistoric = ({ elections = [], endpoint, name }) => {
-    const [processedElections, setProcessedElections] = useState([]);
-
-    useEffect(() => {
-        if (!elections?.length) return;
-
-        const results = elections.map(election => {
-            // Find the winner and calculate total votes
-            let winner = null;
-            let totalVotes = 0;
-
-            election.election_results.forEach(result => {
-                totalVotes += result.number_votes;
-                if (!winner || result.number_votes > winner.number_votes) {
-                    winner = result;
-                }
-            });
-
-            return { election, winner, totalVotes };
-        });
-
-        // Sort by year descending
-        setProcessedElections(results.sort((a, b) => b.election.year - a.election.year));
-    }, [elections]);
-
+const TableElectionHistoric = ({ elections, endpoint, name }) => {
     return (
         <Table size="small" stickyHeader>
             <TableHead>
@@ -44,7 +20,7 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {processedElections.map((elem, index) => {
+                {elections.map((election, index) => {
                     return (
                         <TableRow
                             key={index}
@@ -54,12 +30,12 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
                                 '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
                             }}
                         >
-                            <TableCell className="link-table">{elem.election.year}</TableCell>
-                            <TableCell align="right">{elem.winner?.party}</TableCell>
-                            <TableCell align="right">{elem.election.president?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{elem.winner?.percentage.toFixed(2)}%</TableCell>
+                            <TableCell className="link-table">{election.year}</TableCell>
+                            <TableCell align="right">{election.winner.party.acronym}</TableCell>
+                            <TableCell align="right">{election.winner.candidate?.name ?? "-"}</TableCell>
+                            <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}</TableCell>
                             <TableCell align="center">
-                                <Link to={`/eleicao/${endpoint}/${name}/${elem.election.year}`}>
+                                <Link href={`/eleicao/${endpoint}/${name}/${election.year}`}>
                                     <OpenInNewIcon />
                                 </Link>
                             </TableCell>
@@ -71,4 +47,4 @@ const TableCityHistoric = ({ elections = [], endpoint, name }) => {
     );
 };
 
-export default TableCityHistoric;
+export default TableElectionHistoric;

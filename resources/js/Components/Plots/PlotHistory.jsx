@@ -1,38 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart';
 
 const PlotHistory = ({ elections }) => {
-    const [xAxis, setXAxis] = useState([]);
-    const [series, setSeries] = useState([]);
-
     // Generate yAxis values from 0 to 100 with step of 5
     const yAxis = Array.from({ length: 21 }, (_, i) => i * 5);
 
-    useEffect(() => {
-        if (!elections) return;
+    const { xAxis, series } = useMemo(() => {
+        if (!elections) return { xAxis: [], series: [] };
 
         // Sort elections by year and extract years for xAxis
         const sortedElections = [...elections].sort((a, b) => a.year - b.year);
-        setXAxis(sortedElections.map(election => election.year));
+        const xAxisData = sortedElections.map(election => election.year);
 
         // Find all unique parties
         const parties = new Set();
         sortedElections.forEach(election => {
-            election.election_results.forEach(result => parties.add(result.party));
+            election.election_results.forEach(result => parties.add(result.party.acronym));
         });
 
         // Create series for each party
-        const newSeries = Array.from(parties).map(party => ({
+        const seriesData = Array.from(parties).map(party => ({
             data: sortedElections.map(election => {
-                const result = election.election_results.find(r => r.party === party);
-                return result ? result.percentage : null;
+                const result = election.election_results.find(r => r.party.acronym === party);
+                return result ? parseFloat(result[0].percentage_votes).toFixed(2) : null;
             }),
             label: party,
             connectNulls: true,
         }));
 
-        setSeries(newSeries);
-
+        return { xAxis: xAxisData, series: seriesData };
     }, [elections]);
 
     return (

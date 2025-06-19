@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('parties', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('name')->nullable()->unique()->comment('Name of the party');
             $table->string('acronym')->unique()->comment('Acronym of the party');
             $table->timestamps();

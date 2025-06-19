@@ -14,7 +14,7 @@ const TableLocalities = ({ localities, selectedElectionYear }) => {
         return localities.flatMap((city) =>
             city.elections
                 .filter((election) => election.year === selectedElectionYear)
-                .map((election) => ({ city, election }))
+                .map((election) => ({ ...election, city }))
         );
     }, [localities, selectedElectionYear]);
 
@@ -37,9 +37,9 @@ const TableLocalities = ({ localities, selectedElectionYear }) => {
                                     {election.city.name}
                                 </Link>
                             </TableCell>
-                            <TableCell align="right">{election.election.winner.party.acronym}</TableCell>
-                            <TableCell align="right">{election.election.winner.candidate?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{parseFloat(election.election.winner.percentage_votes).toFixed(2)}</TableCell>
+                            <TableCell align="right">{election.winner.party.acronym}</TableCell>
+                            <TableCell align="right">{election.winner.candidate?.name ?? "-"}</TableCell>
+                            <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
