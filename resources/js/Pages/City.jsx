@@ -19,11 +19,11 @@ import TableLocalities from '@/Components/Tables/TableLocalities';
 const City = ({ city }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
     console.log(city);
-    
+
     const electionYears = useMemo(() => {
         const yearSet = new Set();
         city.elections.forEach(election => {
-            yearSet.add(election.year);            
+            yearSet.add(election.year);
         });
         return Array.from(yearSet).sort((a, b) => a - b);
     }, [city]);
@@ -103,7 +103,10 @@ const City = ({ city }) => {
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableLocalities localities={city.parishes} selectedElectionYear={selectedElectionYear} />
+                        <TableLocalities
+                            localities={city.parishes}
+                            type={"parish"}
+                            selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
             </Grid>

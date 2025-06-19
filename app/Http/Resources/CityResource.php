@@ -17,6 +17,7 @@ class CityResource extends JsonResource
     {
         $parishes = $this->parishes->map(function ($parish) {            
             return [
+                'freguesias_pt_entry_id' => $parish->freguesiaPtEntry->id,
                 'name' => $parish->freguesiaPtEntry->name,
                 'geo_polygon' => $parish->freguesiaPtEntry->geo_polygon,
                 'elections' => $parish->freguesiaPtEntry->elections->toResourceCollection()

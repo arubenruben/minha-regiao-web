@@ -98,7 +98,10 @@ const District = ({ district }) => {
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableLocalities localities={district.cities} selectedElectionYear={selectedElectionYear} />
+                        <TableLocalities 
+                        localities={district.cities} 
+                        type={"city"}
+                        selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
             </Grid>

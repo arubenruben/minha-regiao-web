@@ -7,14 +7,14 @@ import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
 import { Link } from '@inertiajs/react';
 
-const TableLocalities = ({ localities, selectedElectionYear }) => {
+const TableLocalities = ({ localities, selectedElectionYear, type }) => {
     const elections = useMemo(() => {
         if (!localities || !selectedElectionYear) return [];
 
-        return localities.flatMap((city) =>
-            city.elections
+        return localities.flatMap((local) =>
+            local.elections
                 .filter((election) => election.year === selectedElectionYear)
-                .map((election) => ({ ...election, city }))
+                .map((election) => ({ ...election, local }))
         );
     }, [localities, selectedElectionYear]);
 
@@ -30,18 +30,26 @@ const TableLocalities = ({ localities, selectedElectionYear }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {elections.map((election, index) => (
-                        <TableRow key={index}>
-                            <TableCell component="th" scope="row">
-                                <Link href={route('cities.show', { city: election.city.name })} className="link-table">
-                                    {election.city.name}
-                                </Link>
-                            </TableCell>
-                            <TableCell align="right">{election.winner.party.acronym}</TableCell>
-                            <TableCell align="right">{election.winner.candidate?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}</TableCell>
-                        </TableRow>
-                    ))}
+                    {elections.map((election, index) => {
+                        let link;
+
+                        if (type === 'city') {
+                            link = <Link href={route("cities.show", { city: election.local.name })} className="link-table">{election.local.name}</Link>;
+                        } else if (type === 'parish') {
+                            link = <Link href={route("parishes.show", { freguesias_pt_entry_id: election.local.freguesias_pt_entry_id })} className="link-table">{election.local.name}</Link>;
+                        }
+
+                        return (
+                            <TableRow key={index}>
+                                <TableCell component="th" scope="row">
+                                    {link}
+                                </TableCell>
+                                <TableCell align="right">{election.winner.party.acronym}</TableCell>
+                                <TableCell align="right">{election.winner.candidate?.name ?? "-"}</TableCell>
+                                <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}</TableCell>
+                            </TableRow>
+                        )
+                    })}
                 </TableBody>
             </Table>
         </TableContainer>

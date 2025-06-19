@@ -17,6 +17,7 @@ class DistrictResource extends JsonResource
         # Remove all attributes in cities that are not: name, geo_polygon
         $cities = $this->cities->map(function ($city) {
             return [
+                'freguesias_pt_entry_id' => $city->freguesiaPtEntry->id,
                 'name' => $city->freguesiaPtEntry->name,
                 'geo_polygon' => $city->freguesiaPtEntry->geo_polygon,
                 'elections' => $city->freguesiaPtEntry->elections()->get()->toResourceCollection()
