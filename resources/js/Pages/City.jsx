@@ -16,19 +16,16 @@ import SliderCity from '@/Components/Sliders/SliderCity';
 
 
 const City = ({ city, electionYears }) => {
-    console.log(city);
-
-
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
 
     const breadCrumbs = [
-        <Link key="1" href="/">
+        <Link key="1" href={route("home")}>
             Início
         </Link>,
-        <Link key="2" href={`/distrito/${city.district_name}`}>
-            {city.district.name}
+        <Link key="2" href={route("districts.show", { district: city.district.freguesia_pt_entry.name })}>
+            {city.district.freguesia_pt_entry.name}
         </Link>,
-        <Link key="3" to={`/cidade/${city.name}`}>
+        <Link key="3" href={route("cities.show", { city: city.name })}>
             {city.name}
         </Link>
     ]

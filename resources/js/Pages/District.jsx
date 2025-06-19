@@ -27,12 +27,13 @@ const District = ({ district }) => {
     }, [district.cities]);
 
     const breadCrumbs = [
-        <Link key="1" href="/">
+        <Link key="1" href={route("home")}>
             Início
         </Link>,
-        <Link key="2" href={`/distrito/${district.name}`}>
+        <Link key="2" href={route("districts.show", { district: district.name })}>
             {district.name}
-        </Link>
+        </Link>,
+     
     ]
 
     return (

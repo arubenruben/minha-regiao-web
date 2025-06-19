@@ -38,7 +38,7 @@ const TableLocalities = ({ localities, selectedElectionYear }) => {
                                 </Link>
                             </TableCell>
                             <TableCell align="right">{election.election.winner.party.acronym}</TableCell>
-                            <TableCell align="right">{election.election.winner.candidate.name ?? "-"}</TableCell>
+                            <TableCell align="right">{election.election.winner.candidate?.name ?? "-"}</TableCell>
                             <TableCell align="right">{parseFloat(election.election.winner.percentage_votes).toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
