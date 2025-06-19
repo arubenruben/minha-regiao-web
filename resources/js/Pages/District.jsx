@@ -7,10 +7,9 @@ import LocalMap from '@/Components/Maps/LocalMap';
 import AccordionWikipedia from '@/Components/Accordion/AccordionWikipedia';
 import AccordionPlots from '@/Components/Accordion/AccordionPlots';
 import PlotAbstention from '@/Components/Plots/PlotAbstention';
-import SliderDistrict from '@/Components/Sliders/SliderDistrict';
-import TableDistrict from '@/Components/Tables/TableLocalities';
+import TableLocalities from '@/Components/Tables/TableLocalities';
 import PlotVoters from '@/Components/Plots/PlotVoters';
-import PlotNumberCities from '@/Components/Plots/PlotNumberCities';
+import PlotNumberCities from '@/Components/Plots/PlotWinningParties';
 import SliderLocal from '@/Components/Sliders/SliderDistrict';
 
 const District = ({ district }) => {
@@ -99,7 +98,7 @@ const District = ({ district }) => {
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableDistrict localities={district.cities} selectedElectionYear={selectedElectionYear} />
+                        <TableLocalities localities={district.cities} selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
             </Grid>

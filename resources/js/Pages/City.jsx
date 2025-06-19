@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import GenericLayout from '@/Layouts/GenericLayout'
 import { Link } from '@inertiajs/react'
 import Grid from '@mui/material/Grid';
@@ -10,13 +10,23 @@ import PlotVoters from '@/Components/Plots/PlotVoters';
 import PlotHistory from '@/Components/Plots/PlotHistory';
 import TableElectionHistoric from '@/Components/Tables/TableElectionHistoric';
 import TableCity from '@/Components/Tables/TableCity';
-import PlotNumberCities from '@/Components/Plots/PlotNumberCities';
-import SliderCity from '@/Components/Sliders/SliderCity';
+import PlotWinningParties from '@/Components/Plots/PlotWinningParties';
 import PlotAbstention from '@/Components/Plots/PlotAbstention';
+import SliderLocal from '@/Components/Sliders/SliderDistrict';
+import TableLocalities from '@/Components/Tables/TableLocalities';
 
 
-const City = ({ city, electionYears }) => {
+const City = ({ city }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
+    console.log(city);
+    
+    const electionYears = useMemo(() => {
+        const yearSet = new Set();
+        city.elections.forEach(election => {
+            yearSet.add(election.year);            
+        });
+        return Array.from(yearSet).sort((a, b) => a - b);
+    }, [city]);
 
     const breadCrumbs = [
         <Link key="1" href={route("home")}>
@@ -86,14 +96,14 @@ const City = ({ city, electionYears }) => {
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", alignItems: "center", mr: 1 }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
                         <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
-                            <PlotNumberCities yAxisLabel={"Número de Juntas de Freguesia"} cities={city.municipalities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />
+                            <PlotWinningParties yAxisLabel={"Número de Juntas de Freguesia"} locations={city.parishes} selectedElectionYear={selectedElectionYear} />
                         </Grid>
                         <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
-                            {false && <SliderCity electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />}
+                            <SliderLocal electionYears={electionYears} selectedElectionYear={selectedElectionYear} setSelectedElectionYear={setSelectedElectionYear} />
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableCity municipalities={city.municipalities} selectedElectionYear={selectedElectionYear} />
+                        <TableLocalities localities={city.parishes} selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
             </Grid>
