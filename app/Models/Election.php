@@ -22,7 +22,7 @@ class Election extends Model
 
     public function freguesiaPtEntry()
     {
-        return $this->belongsTo(FreguesiaPTEntry::class);
+        return $this->belongsTo(FreguesiaPTEntry::class, 'freguesia_pt_entry_id');
     }
 
     public function electionResults()
@@ -36,6 +36,15 @@ class Election extends Model
         return $this->electionResults()
             ->orderBy('number_votes', 'desc')
             ->first();
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'freguesia_pt_entry_id', 'id')
+            ->join('freguesias_pt_entries', function ($join) {
+                $join->on('cities.id', '=', 'freguesias_pt_entries.entity_id')
+                    ->where('freguesias_pt_entries.entity_type', City::class);
+            });
     }
 
 }

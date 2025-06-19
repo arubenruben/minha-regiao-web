@@ -28,4 +28,17 @@ class City extends Model
     {
         return $this->hasMany(Parish::class, 'city_id');
     }
+
+    public function elections()
+    {
+        return $this->hasManyThrough(
+            Election::class,
+            FreguesiaPTEntry::class,
+            'entity_id',
+            'freguesia_pt_entry_id',
+            'id',
+            'id'
+        )->where('entity_type', City::class);
+    }
+
 }

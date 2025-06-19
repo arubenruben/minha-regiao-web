@@ -197,7 +197,11 @@ class DataLoader:
                     "election_id": election_id,
                     "party_id": party_id,
                     "number_votes": result_row.votes,
-                    "percentage_votes": result_row.percentage,
+                    "percentage_votes": (
+                        result_row.votes / election_row.number_participant_voters * 100
+                        if election_row.number_participant_voters > 0
+                        else 0
+                    ),
                 },
             )
 

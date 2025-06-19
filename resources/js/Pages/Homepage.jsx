@@ -13,7 +13,6 @@ import PlotHomepageAbstention from '@/Components/Plots/PlotHomepageAbstention';
 import CardArquivoPT from '@/Components/Cards/CardArquivoPT';
 
 const Homepage = ({ regions, elections, abstencion, districts }) => {
-
     const [selectedYear, setSelectedYear] = useState()
     const [electionYears, setElectionYears] = useState();
 

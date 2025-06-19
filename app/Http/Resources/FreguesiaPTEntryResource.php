@@ -15,13 +15,11 @@ class FreguesiaPTEntryResource extends JsonResource
     public function toArray(Request $request): array
     {
         if ($this->entity_type === 'App\Models\District') {
-            $type = 'Distrito';
+            $type = 'District';
         } elseif ($this->entity_type === 'App\Models\City') {
-            $type = 'Município';
-        } elseif ($this->entity_type === 'App\Models\County') {
-            $type = 'Concelho';
+            $type = 'City';
         } elseif ($this->entity_type === 'App\Models\Parish') {
-            $type = 'Freguesia';
+            $type = 'Parish';
         } else {
             throw new \Exception("Unknown entity type: {$this->entity_type}");
         }
