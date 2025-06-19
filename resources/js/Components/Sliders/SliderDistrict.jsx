@@ -1,30 +1,45 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Slider } from '@mui/material';
 
+const SliderLocal = ({ electionYears, selectedElectionYear, setSelectedElectionYear }) => {
+    const { minYear, maxYear, marks } = useMemo(() => {
+        if (!electionYears?.length) return { minYear: 0, maxYear: 0, marks: [] };
 
-const SliderDistrict = ({ electionYears, setSelectedElectionYear }) => {
-    useEffect(() => {
-        if (electionYears?.length) {
-            const mostRecentYear = Math.max(...electionYears);
-            setSelectedElectionYear(mostRecentYear);
-        }
+        return {
+            minYear: Math.min(...electionYears),
+            maxYear: Math.max(...electionYears),
+            marks: electionYears.map(year => ({ value: year, label: year }))
+        };
     }, [electionYears]);
+
+    useEffect(() => {
+        if (electionYears?.length && !selectedElectionYear) {
+            setSelectedElectionYear(maxYear);
+        }
+    }, [electionYears, selectedElectionYear, maxYear, setSelectedElectionYear]);
+
+    const handleChange = (_, value) => {
+        if (value) {
+            setSelectedElectionYear(value);
+        }
+    };
+
+    // Don't render the slider if we don't have the necessary data
+    if (!electionYears?.length || !selectedElectionYear) {
+        return null;
+    }
 
     return (
         <Slider
-            defaultValue={electionYears[0]}
+            value={selectedElectionYear}
             step={null}
-            marks={electionYears.map(year => ({ value: year, label: year }))}
-            min={Math.min(...electionYears)}
-            max={Math.max(...electionYears)}
+            marks={marks}
+            min={minYear}
+            max={maxYear}
             valueLabelDisplay="auto"
-            onChange={(_, value) => {
-                if (value) {
-                    setSelectedElectionYear(value);
-                }
-            }}
+            onChange={handleChange}
         />
-    )
-}
+    );
+};
 
-export default SliderDistrict
+export default SliderLocal;

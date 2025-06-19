@@ -1,33 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableContainer from '@mui/material/TableContainer';
-import { Link } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 
-const TableDistrict = ({ cities, selectedElectionYear }) => {
-    const [elections, setElections] = useState([]);
+const TableLocalities = ({ localities, selectedElectionYear }) => {
+    const elections = useMemo(() => {
+        if (!localities || !selectedElectionYear) return [];
 
-    useEffect(() => {
-        if (cities && selectedElectionYear) {
-            // Filter the elections based on the selected election year
-            const filteredElections = cities.map((city) => {
-                return city.elections.filter((election) => election.year === selectedElectionYear);
-            }).flat();
+        return localities.flatMap((city) =>
+            city.elections
+                .filter((election) => election.year === selectedElectionYear)
+                .map((election) => ({ city, election }))
+        );
+    }, [localities, selectedElectionYear]);
 
-            // Process elections data using map and reduce instead of for loops
-            //const newElections = filteredElections.map((election, i) => _constructElections(cities[i], election));
-
-            // Sort newElections by city name
-            setElections([].sort((a, b) => a.city.name.localeCompare(b.city.name)));
-        }
-    }, [cities, selectedElectionYear]);
+    console.log(elections[0]);
 
     return (
         <TableContainer sx={{ maxHeight: 350 }}>
-
             <Table size="small" stickyHeader>
                 <TableHead>
                     <TableRow>
@@ -41,13 +35,17 @@ const TableDistrict = ({ cities, selectedElectionYear }) => {
                     {elections.map((election, index) => (
                         <TableRow key={index}>
                             <TableCell component="th" scope="row">
-                                <Link to={`/cidade/${election.city.name}`} className="link-table">
-                                    {election.city.name}
-                                </Link>
+                                {election.city && election.city.name ? (
+                                    <Link href={route('cities.show', { city: election.city.name })} className="link-table">
+                                        {election.city.name}
+                                    </Link>
+                                ) : (
+                                    election.city?.name || 'N/A'
+                                )}
                             </TableCell>
-                            <TableCell align="right">{election.winner.party}</TableCell>
-                            <TableCell align="right">{election.election.president?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{election.winner.percentage.toFixed(2)}</TableCell>
+                            <TableCell align="right">{election.election.winner.party.acronym}</TableCell>
+                            <TableCell align="right">{election.election.winner.candidate.name ?? "-"}</TableCell>
+                            <TableCell align="right">{parseFloat(election.election.winner.percentage_votes).toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -56,4 +54,4 @@ const TableDistrict = ({ cities, selectedElectionYear }) => {
     );
 };
 
-export default TableDistrict;
+export default TableLocalities;

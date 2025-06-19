@@ -10,6 +10,8 @@ import PlotAbstention from '@/Components/Plots/PlotAbstention';
 import SliderDistrict from '@/Components/Sliders/SliderDistrict';
 import TableDistrict from '@/Components/Tables/TableDistrict';
 import PlotVoters from '@/Components/Plots/PlotVoters';
+import PlotNumberCities from '@/Components/Plots/PlotNumberCities';
+import SliderLocal from '@/Components/Sliders/SliderDistrict';
 
 const District = ({ district }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
@@ -21,12 +23,8 @@ const District = ({ district }) => {
                 yearSet.add(election.year);
             });
         });
-        const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
-        setSelectedElectionYear(sortedYears[0]);
-        return sortedYears;
+        return Array.from(yearSet).sort((a, b) => a - b);
     }, [district?.cities]);
-
-
 
     const breadCrumbs = [
         <Link key="1" href="/">
@@ -87,14 +85,20 @@ const District = ({ district }) => {
                 <Grid item container direction="row" sx={{ justifyContent: "space-around", mr: 1 }}>
                     <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
                         <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
-                            {false && <PlotNumberCities yAxisLabel={"Número de Câmaras Municipais"} cities={district?.cities} electionYears={electionYears} selectedElectionYear={selectedElectionYear} />}
+                            <PlotNumberCities
+                                yAxisLabel={"Número de Câmaras Municipais"}
+                                locations={district?.cities}
+                                selectedElectionYear={selectedElectionYear} />
                         </Grid>
                         <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
-                            {false && <SliderDistrict electionYears={electionYears} setSelectedElectionYear={setSelectedElectionYear} />}
+                            <SliderLocal
+                                electionYears={electionYears}
+                                selectedElectionYear={selectedElectionYear}
+                                setSelectedElectionYear={setSelectedElectionYear} />
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableDistrict cities={district?.cities} selectedElectionYear={selectedElectionYear} />
+                        <TableDistrict localities={district.cities} selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
             </Grid>
