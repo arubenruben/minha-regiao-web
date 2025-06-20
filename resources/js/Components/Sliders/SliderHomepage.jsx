@@ -1,23 +1,48 @@
-import React from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { Slider } from '@mui/material';
 
+const SliderHomepage = ({ elections, setSelectedYear }) => {
+    
+    const { minYear, maxYear, marks, latestYear } = useMemo(() => {    
+        // The election years are the keys of the object elections
+        const electionYears = Object.keys(elections).map(year => parseInt(year)).filter(year => !isNaN(year));
+                
+        if (electionYears.length === 0)
+            return { minYear: 0, maxYear: 0, marks: [], latestYear: 0 };
+        
+        return {
+            minYear: Math.min(...electionYears),
+            maxYear: Math.max(...electionYears),
+            marks: electionYears.map(year => ({ value: year, label: year })),
+            latestYear: Math.max(...electionYears)
+        };
 
-const SliderHomepage = ({ selectedYear, electionYears, setSelectedYear }) => {
+
+    }, [elections]);
+
+    useEffect(() => {
+        if (latestYear > 0) {
+            setSelectedYear(latestYear);
+        }
+    }, [latestYear, setSelectedYear]);
+
+    const handleChange = (_, value) => {
+        if (value) {
+            setSelectedYear(value);
+        }
+    };
+
     return (
         <Slider
-            value={selectedYear}
+            defaultValue={maxYear}
             step={null}
-            marks={electionYears.map(year => ({ value: year, label: year }))}
-            min={Math.min(...electionYears)}
-            max={Math.max(...electionYears)}
+            marks={marks}
+            min={minYear}
+            max={maxYear}
             valueLabelDisplay="auto"
-            onChange={(_, value) => {
-                if (value) {
-                    setSelectedYear(value);
-                }
-            }}
+            onChange={handleChange}
         />
-    )
-}
+    );
+};
 
-export default SliderHomepage
+export default SliderHomepage;

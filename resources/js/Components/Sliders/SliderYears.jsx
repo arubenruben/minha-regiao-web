@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Slider } from '@mui/material';
 
-const SliderElection = ({ elections, setSelectedElectionYear }) => {
+const SliderYears = ({ elections, setSelectedElectionYear }) => {
 
     const { minYear, maxYear, marks } = useMemo(() => {
         if (!elections?.length)
@@ -12,24 +12,16 @@ const SliderElection = ({ elections, setSelectedElectionYear }) => {
         if (electionYears.length === 0)
             return { minYear: 0, maxYear: 0, marks: [] };
 
-        const currentYear = Math.max(...electionYears) + 5;
-
         return {
             minYear: Math.min(...electionYears),
-            maxYear: Math.max(...electionYears) + 5,
-            marks: [
-                ...electionYears.map(year => ({ value: year, label: year })),
-                { value: currentYear, label: new Date().getFullYear() }
-            ]
+            maxYear: Math.max(...electionYears),
+            marks: electionYears.map(year => ({ value: year, label: year }))
         };
 
     }, [elections]);
 
     const handleChange = (_, value) => {
-        const currentYear = new Date().getFullYear();
-        if (value === currentYear) {
-            setSelectedElectionYear(null);
-        } else {
+        if (value) {
             setSelectedElectionYear(value);
         }
     };
@@ -47,4 +39,4 @@ const SliderElection = ({ elections, setSelectedElectionYear }) => {
     );
 };
 
-export default SliderElection;
+export default SliderYears;

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Resources\ElectionWithLocalResource;
 use App\Models\Election;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Controllers\Controller;
 
 class ElectionController extends Controller
 {
@@ -35,10 +37,10 @@ class ElectionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Election $election)
+    public function show(Request $request)
     {
         return Inertia::render('Election', [
-            'election' => $election
+            'election' => new ElectionWithLocalResource(Election::findOrFail($request->election_id)),
         ]);
     }
 

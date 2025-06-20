@@ -9,16 +9,14 @@ import AccordionPlots from '@/Components/Accordion/AccordionPlots';
 import PlotVoters from '@/Components/Plots/PlotVoters';
 import PlotHistory from '@/Components/Plots/PlotHistory';
 import TableElectionHistoric from '@/Components/Tables/TableElectionHistoric';
-import TableCity from '@/Components/Tables/TableCity';
 import PlotWinningParties from '@/Components/Plots/PlotWinningParties';
 import PlotAbstention from '@/Components/Plots/PlotAbstention';
-import SliderLocal from '@/Components/Sliders/SliderDistrict';
+import SliderLocal from '@/Components/Sliders/SliderYears';
 import TableLocalities from '@/Components/Tables/TableLocalities';
 
 
 const City = ({ city }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
-    console.log(city);
 
     const electionYears = useMemo(() => {
         const yearSet = new Set();
@@ -82,7 +80,7 @@ const City = ({ city }) => {
                 </Grid>
                 <Grid container item direction="column" sx={{ alignItems: "center", mb: 3 }}>
                     <Grid item size={{ xs: 8, mb: 3 }}>
-                        <TableElectionHistoric name={city.name} elections={city.elections} endpoint={"cidade"} />
+                        <TableElectionHistoric elections={city.elections} />
                     </Grid>
                     <Grid item size={{ xs: 10 }} sx={{ mt: 5 }}>
                         <PlotHistory elections={city.elections} />

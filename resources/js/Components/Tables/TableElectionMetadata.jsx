@@ -5,11 +5,17 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-const TableElectionMetadata = (props) => {
+const TableElectionMetadata = ({ election, yearToCompare }) => {
+    const electionToCompare = React.useMemo(() => {
+        if (!yearToCompare || !election)
+            return null;
+        return election.other_elections.find(e => e.year === yearToCompare) || null;
+    }, [yearToCompare, election]);
+    
     return (
-        <Table stickyHeader>
-            {!props.electionToCompare && <caption>Detalhes da Eleição de {props.election?.year}</caption>}
-            {props.electionToCompare && <caption>Comparação das Eleições de {props.election?.year} e {props.electionToCompare?.year}</caption>}
+        <Table>
+            {!electionToCompare && <caption>Detalhes da Eleição de {election?.year}</caption>}
+            {electionToCompare && <caption>Comparação das Eleições de {election?.year} e {electionToCompare?.year}</caption>}
             <TableHead>
                 <TableRow>
                     <TableCell>Ano</TableCell>
@@ -21,21 +27,21 @@ const TableElectionMetadata = (props) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {props.election && <TableRow>
-                    <TableCell>{props.election.year}</TableCell>
-                    <TableCell>{props.election.number_registered_voters}</TableCell>
-                    <TableCell>{props.election.number_participant_voters}</TableCell>
-                    <TableCell>{(props.election.number_absentee_votes / props.election.number_registered_voters * 100).toFixed(2)}</TableCell>
-                    <TableCell>{(props.election.number_blank_votes / props.election.number_registered_voters * 100).toFixed(2)}</TableCell>
-                    <TableCell>{(props.election.number_null_votes / props.election.number_registered_voters * 100).toFixed(2)}</TableCell>
+                {election && <TableRow>
+                    <TableCell>{election.year}</TableCell>
+                    <TableCell>{election.number_registered_voters}</TableCell>
+                    <TableCell>{election.number_participant_voters}</TableCell>
+                    <TableCell>{(election.number_absentee_votes / election.number_registered_voters * 100).toFixed(2)}</TableCell>
+                    <TableCell>{(election.number_blank_votes / election.number_registered_voters * 100).toFixed(2)}</TableCell>
+                    <TableCell>{(election.number_null_votes / election.number_registered_voters * 100).toFixed(2)}</TableCell>
                 </TableRow>}
-                {props.electionToCompare && <TableRow>
-                    <TableCell>{props.electionToCompare.year}</TableCell>
-                    <TableCell>{props.electionToCompare.number_registered_voters}</TableCell>
-                    <TableCell>{props.electionToCompare.number_participant_voters}</TableCell>
-                    <TableCell>{(props.electionToCompare.number_absentee_votes / props.electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
-                    <TableCell>{(props.electionToCompare.number_blank_votes / props.electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
-                    <TableCell>{(props.electionToCompare.number_null_votes / props.electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
+                {electionToCompare && <TableRow>
+                    <TableCell>{electionToCompare.year}</TableCell>
+                    <TableCell>{electionToCompare.number_registered_voters}</TableCell>
+                    <TableCell>{electionToCompare.number_participant_voters}</TableCell>
+                    <TableCell>{(electionToCompare.number_absentee_votes / electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
+                    <TableCell>{(electionToCompare.number_blank_votes / electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
+                    <TableCell>{(electionToCompare.number_null_votes / electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
                 </TableRow>}
             </TableBody>
         </Table>

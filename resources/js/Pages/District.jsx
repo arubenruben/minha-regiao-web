@@ -10,7 +10,7 @@ import PlotAbstention from '@/Components/Plots/PlotAbstention';
 import TableLocalities from '@/Components/Tables/TableLocalities';
 import PlotVoters from '@/Components/Plots/PlotVoters';
 import PlotNumberCities from '@/Components/Plots/PlotWinningParties';
-import SliderLocal from '@/Components/Sliders/SliderDistrict';
+import SliderLocal from '@/Components/Sliders/SliderYears';
 
 const District = ({ district }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);

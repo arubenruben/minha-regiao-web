@@ -13,7 +13,6 @@ import PlotHistory from '@/Components/Plots/PlotHistory';
 import TableCityHistoric from '@/Components/Tables/TableElectionHistoric';
 
 const Parish = ({ parish }) => {
-    console.log(parish);
 
     const breadCrumbs = [
         <Link key="1" href="/">

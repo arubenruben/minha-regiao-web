@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid';
 import GenericFooter from '@/Components/Footers/GenericFooter';
 import { Image } from 'react-bootstrap';
@@ -14,16 +14,7 @@ import CardArquivoPT from '@/Components/Cards/CardArquivoPT';
 
 const Homepage = ({ regions, elections, abstencion, districts }) => {
     const [selectedYear, setSelectedYear] = useState()
-    const [electionYears, setElectionYears] = useState();
-
-    useEffect(() => {
-        if (elections) {
-            const years = Object.keys(elections).sort((a, b) => b - a);
-            setElectionYears(years);
-            setSelectedYear(years[0]); // Set the first year as default
-        }
-    }, []);
-
+  
     return (
         <Grid direction="column">
             <Grid direction="column">
@@ -52,10 +43,10 @@ const Homepage = ({ regions, elections, abstencion, districts }) => {
                         </Grid>
                         <Grid item container direction="column">
                             <Grid item>
-                                {elections && selectedYear && <PlotHomepage elections={elections} selectedYear={selectedYear} />}
+                                <PlotHomepage elections={elections} selectedYear={selectedYear} />
                             </Grid>
                             <Grid item>
-                                {electionYears && selectedYear && <SliderHomepage electionYears={electionYears} selectedYear={selectedYear} setSelectedYear={setSelectedYear} />}
+                                <SliderHomepage elections={elections} setSelectedYear={setSelectedYear} />
                             </Grid>
                         </Grid>
                     </Grid>

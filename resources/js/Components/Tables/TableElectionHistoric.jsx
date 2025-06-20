@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Link } from '@inertiajs/react';
 
-const TableElectionHistoric = ({ elections, endpoint, name }) => {
+const TableElectionHistoric = ({ elections }) => {
     return (
         <Table size="small" stickyHeader>
             <TableHead>
@@ -35,7 +35,7 @@ const TableElectionHistoric = ({ elections, endpoint, name }) => {
                             <TableCell align="right">{election.winner.candidate?.name ?? "-"}</TableCell>
                             <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}</TableCell>
                             <TableCell align="center">
-                                <Link href={`/eleicao/${endpoint}/${name}/${election.year}`}>
+                                <Link href={route("elections.show", { election_id: election.id })}>
                                     <OpenInNewIcon />
                                 </Link>
                             </TableCell>

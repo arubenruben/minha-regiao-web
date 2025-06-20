@@ -51,8 +51,6 @@ const TableCity = ({ municipalities, selectedElectionYear }) => {
         setElections(processedElections);
     }, [municipalities, selectedElectionYear]);
 
-    console.log(elections);
-
     return (
         <TableContainer sx={{ maxHeight: 350 }}>
             <Table size="small" stickyHeader>

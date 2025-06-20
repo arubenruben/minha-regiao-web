@@ -1,23 +1,67 @@
 import GenericLayout from '@/Layouts/GenericLayout'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Grid, Breadcrumbs } from '@mui/material'
 import { Link } from '@inertiajs/react'
 import PlotElection from '@/Components/Plots/PlotElection'
 import TableElectionMetadata from '@/Components/Tables/TableElectionMetadata'
+import SliderYears from '@/Components/Sliders/SliderYears'
 import SliderElection from '@/Components/Sliders/SliderElection'
 
-const Election = ({ year, name }) => {
-    const [election, setElection] = useState(null);
-    const [electionToCompare, setElectionToCompare] = useState(null);
+const Election = ({ election }) => {
 
-    const breadCrumbs = [
-        <Link key="1" to="/">
-            Ínicio
-        </Link>,
-        <Link key="2" to={`/${type}/${name}`}>{name}</Link>,
-        <span key="3">Eleições</span>,
-        <span key="4">{year}</span>
-    ]
+    const [yearToCompare, setYearToCompare] = React.useState(null);
+
+    const breadCrumbs = useMemo(() => {
+        const breadCrumbs = [];
+
+        breadCrumbs.push(
+            <Link key="1" href={route("home")}>
+                Início
+            </Link>
+        );
+
+        if (election.district) {
+            breadCrumbs.push(
+                <Link key="2" href={route("districts.show", { district: election.district.name })}>
+                    {election.district.name}
+                </Link>
+            );
+        }
+        if (election.city) {
+            breadCrumbs.push(
+                <Link key="3" href={route("cities.show", { city: election.city.name })}>
+                    {election.city.name}
+                </Link>
+            );
+        }
+        if (election.parish) {
+            breadCrumbs.push(
+                <Link key="4" href={route("parishes.show", { parish: election.parish.name })}>
+                    {election.parish.name}
+                </Link>
+            );
+        }
+
+        breadCrumbs.push(
+            <span key="5">Eleição de {election.year}</span>
+        )
+
+        return breadCrumbs;
+    }, [election]);
+
+    const name = useMemo(() => {
+        if (election.parish) {
+            return election.parish.name;
+        }
+        if (election.city) {
+            return election.city.name;
+        }
+        if (election.district) {
+            return election.district.name;
+        }
+        return "";
+    }, [election]);
+
 
     return (
         <GenericLayout
@@ -31,7 +75,7 @@ const Election = ({ year, name }) => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <h2>Eleição de {year} em {name}</h2>
+                        <h2>Eleição de {election.year} em {name}</h2>
                         <p className="ssn-subtitle">Compara os resultados dos partidos</p>
                     </Grid>
                     <Grid item container direction="row" sx={{ mt: 5, justifyContent: "space-around" }}>
@@ -39,23 +83,18 @@ const Election = ({ year, name }) => {
                             <Grid item>
                                 <PlotElection
                                     election={election}
-                                    name={name}
-                                    type={type}
-                                    yearToCompare={yearToCompare}
-                                    year={year}
-                                    electionToCompare={electionToCompare}
-                                    setElectionToCompare={setElectionToCompare}
+                                    yearToCompare={yearToCompare}                                    
                                 />
-                                {electionYears && <SliderElection electionYears={electionYears} setYearToCompare={setYearToCompare} />}
+                                <SliderElection elections={election.other_elections} setSelectedElectionYear={setYearToCompare} />
                             </Grid>
                         </Grid>
                         <Grid item size={{ xs: 12, md: 4.5 }} >
-                            <TableElectionMetadata election={election} electionToCompare={electionToCompare} year={year} yearToCompare={yearToCompare} />
+                            <TableElectionMetadata election={election} yearToCompare={yearToCompare} />
                         </Grid>
                     </Grid>
                     <hr />
                     <Grid item>
-                        <h3>As notícias locais em {name} sobre a Eleição de {year}</h3>
+                        <h3>As notícias locais em {name} sobre a Eleição de {election.year}</h3>
                         <p className="ssn-subtitle">Quais os temas falados nos jornais locais da região no período eleitoral?</p>
                     </Grid>
                     <Grid item container direction="row" sx={{ mt: 5 }} spacing={4}>
