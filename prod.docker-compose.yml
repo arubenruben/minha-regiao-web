@@ -13,7 +13,7 @@ services:
       - "${NGINX_PORT:-3000}:80"
     depends_on:
       php-fpm:
-        condition: service_started  # Wait for php-fpm health check
+        condition: service_healthy  # Wait for php-fpm health check
 
   php-fpm:
     # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
@@ -29,12 +29,11 @@ services:
       - .env
     networks:
       - minharegiao-production
-    #healthcheck:
-    #  test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
-    #  interval: 10s
-    #  timeout: 5s
-    #  retries: 3
-    #  start_period: 30s
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     depends_on:
       postgis:
         condition: service_healthy
