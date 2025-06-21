@@ -32,8 +32,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
       interval: 10s
-      timeout: 10s
-      retries: 10
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     depends_on:
       postgis:
         condition: service_healthy
