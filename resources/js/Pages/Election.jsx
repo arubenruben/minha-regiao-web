@@ -67,16 +67,18 @@ const Election = ({ election }) => {
         <GenericLayout
             main={
                 <Container>
-                    <Grid container direction="column" sx={{ mt: 3 }}>
-                        <Grid item container direction="row" sx={{ alignItems: "center", mt: 2 }}>
+                    <Grid container direction="column">
+                        <Grid item container direction="row" sx={{ alignItems: "center", mt: 3 }}>
                             <Grid item>
-                                <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                                <Breadcrumbs separator=">">
                                     {breadCrumbs}
                                 </Breadcrumbs>
                             </Grid>
                         </Grid>
-                        <h2>Eleição de {election.year} em {name}</h2>
-                        <p className="ssn-subtitle">Compara os resultados dos partidos</p>
+                        <Grid item sx={{ mt: 2 }}>
+                            <h2>Eleição de {election.year} em {name}</h2>
+                            <p className="ssn-subtitle">Compara os resultados dos partidos</p>
+                        </Grid>
                     </Grid>
                     <Grid item container direction="row" sx={{ mt: { sm: 3, md: 5 }, justifyContent: "space-around" }}>
                         <Grid item container direction="column" size={{ xs: 12, md: 7 }} >
@@ -90,18 +92,17 @@ const Election = ({ election }) => {
                                 <SliderElection elections={election.other_elections} setSelectedElectionYear={setYearToCompare} />
                             </Grid>
                         </Grid>
-                        <Grid item>
-                            <Grid item size={{ xs: 12, md: 4.5 }} sx={{ display: { xs: "none", md: "block" } }}>
-                                <TableElectionMetadata election={election} yearToCompare={yearToCompare} />
-                            </Grid>
+
+                        <Grid item size={{ xs: 12, md: 4.5 }} sx={{ justifyContent: { xs: "center" }, mt: { xs: 3, md: 0 } }}>
+                            <TableElectionMetadata election={election} yearToCompare={yearToCompare} />
                         </Grid>
                         <hr />
-                        <Grid item sx={{ mt: { xs: 1, md: 0 } }}>
+                        <Grid item sx={{ mt: { xs: 3, md: 0 } }}>
                             <h3>As notícias locais em {name} sobre a Eleição de {election.year}</h3>
                             <p className="ssn-subtitle">Quais os temas falados nos jornais locais da região no período eleitoral?</p>
                         </Grid>
-                        <Grid item container direction="row" sx={{ mt: 5 }} spacing={4}>
-                            <p>Brevemente Disponível</p>
+                        <Grid item container direction="row" sx={{ mt: 2 }} spacing={4}>
+                            <h3>Brevemente Disponível</h3>
                         </Grid>
                     </Grid>
                 </Container >
