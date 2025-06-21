@@ -11,11 +11,14 @@ const PlotElection = ({ election, yearToCompare }) => {
     }, [yearToCompare, election]);
 
     const xAxisData = useMemo(() => {
-        if (!election) return [];
+        if (!election)
+            return [];
 
         // If no compare data, just one series
         if (!electionToCompare) {
-            return election.election_results.map(r => r.party.acronym);
+            return election.election_results
+                .map(r => r.party.acronym)
+                .sort();
         }
 
         // 1. Gather all party names
@@ -24,8 +27,9 @@ const PlotElection = ({ election, yearToCompare }) => {
         election.election_results.forEach(r => partiesSet.add(r.party.acronym));
         electionToCompare.election_results.forEach(r => partiesSet.add(r.party.acronym));
 
-        return Array.from(partiesSet);
+        return Array.from(partiesSet).sort();
     }, [election, electionToCompare]);
+
 
     const series = useMemo(() => {
         if (!election)

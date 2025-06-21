@@ -1,5 +1,14 @@
 import React, { useMemo } from 'react'
 import { Slider } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledSlider = styled(Slider)({
+    '& .MuiSlider-markLabel': {
+        transform: 'rotate(-45deg)',
+        transformOrigin: 'left bottom',
+        marginTop: '8px',
+    },
+});
 
 const SliderElection = ({ elections, setSelectedElectionYear }) => {
 
@@ -12,14 +21,12 @@ const SliderElection = ({ elections, setSelectedElectionYear }) => {
         if (electionYears.length === 0)
             return { minYear: 0, maxYear: 0, marks: [] };
 
-        const currentYear = Math.max(...electionYears) + 5;
-
         return {
             minYear: Math.min(...electionYears),
-            maxYear: Math.max(...electionYears) + 5,
+            maxYear: Math.max(...electionYears) + 4,
             marks: [
                 ...electionYears.map(year => ({ value: year, label: year })),
-                { value: currentYear, label: new Date().getFullYear() }
+                { value: Math.max(...electionYears) + 4, label: new Date().getFullYear() }
             ]
         };
 
@@ -35,7 +42,7 @@ const SliderElection = ({ elections, setSelectedElectionYear }) => {
     };
 
     return (
-        <Slider
+        <StyledSlider
             defaultValue={maxYear}
             step={null}
             marks={marks}

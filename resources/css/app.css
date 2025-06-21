@@ -7,7 +7,12 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    position: relative;
+    position: relative;    
+}
+
+header,
+footer {
+    width: 100%;    
 }
 
 h2,
@@ -42,7 +47,7 @@ main {
 }
 
 #homepage-front {
-    background-color: var(--blue-at);    
+    background-color: var(--blue-at);
     color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -219,7 +224,7 @@ html a {
     height: 100% !important;
 }
 
-.carousel-item{
+.carousel-item {
     height: 100% !important;
 }
 
@@ -259,7 +264,7 @@ html a {
     font-family: 'Montserrat', sans-serif !important;
 }
 
-#name{
+#name {
     margin: 0;
 }
 
@@ -268,7 +273,7 @@ html a {
     width: 200px !important;
 }
 
-#image-arquivo{
+#image-arquivo {
     width: 100% !important;
     height: 100% !important;
     object-fit: scale-down !important;
