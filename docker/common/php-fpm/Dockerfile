@@ -92,9 +92,9 @@ COPY --from=builder /usr/local/bin/docker-php-ext-* /usr/local/bin/
 # -----------------------------------------------------------
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-RUN echo "max_file_uploads=100" >> /usr/local/etc/php/conf.d/docker-php-ext-max_file_uploads.ini
-RUN echo "post_max_size=250M" >> /usr/local/etc/php/conf.d/docker-php-ext-post_max_size.ini
-RUN echo "upload_max_filesize=250M" >> /usr/local/etc/php/conf.d/docker-php-ext-upload_max_filesize.ini
+#RUN echo "max_file_uploads=100" >> /usr/local/etc/php/conf.d/docker-php-ext-max_file_uploads.ini
+#RUN echo "post_max_size=250M" >> /usr/local/etc/php/conf.d/docker-php-ext-post_max_size.ini
+#RUN echo "upload_max_filesize=250M" >> /usr/local/etc/php/conf.d/docker-php-ext-upload_max_filesize.ini
 
 # Enable PHP-FPM status page by modifying zz-docker.conf with sed
 RUN sed -i '/\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/zz-docker.conf
