@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,10 +17,21 @@ class DistrictResource extends JsonResource
     {
         # Remove all attributes in cities that are not: name, geo_polygon
         $cities = $this->cities->map(function ($city) {
+            if ($city->freguesiaPtEntry->entity_type === "App\Models\City") {
+                $type = "city";
+            } else if ($city->freguesiaPtEntry->entity_type === "App\Models\Parish") {
+                $type = "parish";
+            } else if ($city->freguesiaPtEntry->entity_type === "App\Models\District") {
+                $type = "district";
+            } else {
+                throw new Exception("Error Processing Request", 1);
+            }
+
             return [
                 'freguesias_pt_entry_id' => $city->freguesiaPtEntry->id,
                 'name' => $city->freguesiaPtEntry->name,
                 'geo_polygon' => $city->freguesiaPtEntry->geo_polygon,
+                'type' => $type,
                 'elections' => $city->freguesiaPtEntry->elections()->get()->toResourceCollection()
             ];
         });

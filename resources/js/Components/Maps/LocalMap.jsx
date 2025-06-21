@@ -1,19 +1,24 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
 import { invertCoordinates } from '../../utils';
+import { router } from '@inertiajs/react'
 
-const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
+const LocalMap = ({ localities, polygon_centroid }) => {
     const [map, setMap] = useState(null);
-    const [popupPosition, setPopupPosition] = useState(null);
-    const [selectedDistrictId, setSelectedDistrictId] = useState(null);
 
-    const handlePolygonClick = useCallback((districtId, latlng) => {
-        setSelectedDistrictId(districtId);
-        setPopupPosition(latlng);
-
-        if (map) {
-            //navigate(`/distrito/${districtId}`);
+    const handlePolygonClick = useCallback((local) => {
+        if (!map) {
+            console.warn("Map is not initialized");
+            return;
         }
+
+        if (local.type === "district")
+            router.visit(route("districts.show", { district: local.name }));
+        else if (local.type === "city")
+            router.visit(route("cities.show", { city: local.name }));
+        else if (local.type === "parish")
+            router.visit(route("parishes.show", { parish: local.freguesia_pt_entry_id }));
+
     }, [map]);
 
     const renderPolygons = useMemo(() => {
@@ -30,14 +35,18 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
                     positions={coordinates}
                     pathOptions={{ color: 'purple' }}
                     eventHandlers={{
-                        click: (e) => handlePolygonClick(local.name, e.latlng)
+                        click: (e) => handlePolygonClick(local)
                     }}
                 />
             );
         });
     }, [localities, handlePolygonClick]);
 
-    const zoom = endpoint === "cidade" ? 8 : 11;
+    const zoom = useMemo(() => {
+        if (!localities || !localities.length) return 11; // Default zoom if no localities
+
+        return localities[0].type === "city" ? 8 : 11;
+    }, [localities]);
 
     return (
         <>
@@ -46,7 +55,7 @@ const LocalMap = ({ localities, polygon_centroid, endpoint }) => {
                 zoom={zoom}
                 scrollWheelZoom={true}
                 ref={setMap}
-                style={{ height: "400px", width: "100%" }}
+                style={{ height: "450px", width: "100%" }}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

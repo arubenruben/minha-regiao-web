@@ -18,7 +18,7 @@ import Container from '@mui/material/Container';
 
 const City = ({ city }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
-    
+
     const breadCrumbs = [
         <Link key="1" href={route("home")}>
             Início
@@ -31,7 +31,7 @@ const City = ({ city }) => {
 
     return (
         <GenericLayout main={
-            <Container maxWidth="md">
+            <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }}>
                 <Grid container direction="column">
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 2 }}>
                         <Grid item>
@@ -40,24 +40,21 @@ const City = ({ city }) => {
                             </Breadcrumbs>
                         </Grid>
                     </Grid>
-                    <Grid item container direction="row">
+                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", alignItems: "center", ml: { md: 3 } }}>
                         <Grid item size={{ md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
                             <LocalMap
                                 localities={city.parishes}
-                                polygon_centroid={city.polygon_centroid}
-                                endpoint={"freguesia"} />
+                                polygon_centroid={city.polygon_centroid} />
                             <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                         </Grid>
-                        <Grid item container direction="column" size={{ xs: 12, md: 7 }} sx={{ mt: { xs: 1, md: 0 } }}>
+                        <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
                             <Grid item>
                                 <AccordionWikipedia name={`Cidade ${city.name}`} wikipedia={city.wikipedia} />
                             </Grid>
                             <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
                                 <LocalMap
                                     localities={city.parishes}
-                                    polygon_centroid={city.polygon_centroid}
-                                    endpoint={"freguesia"}
-                                />
+                                    polygon_centroid={city.polygon_centroid} />
                                 <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                             </Grid>
                             <hr />

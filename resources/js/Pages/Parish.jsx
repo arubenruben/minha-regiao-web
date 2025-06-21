@@ -4,7 +4,6 @@ import GenericLayout from '@/Layouts/GenericLayout'
 import Grid from '@mui/material/Grid';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Alert from 'react-bootstrap/Alert';
-import ParishMap from '@/Components/Maps/ParishMap';
 import AccordionWikipedia from '@/Components/Accordion/AccordionWikipedia';
 import AccordionPlots from '@/Components/Accordion/AccordionPlots';
 import PlotVoters from '@/Components/Plots/PlotVoters';
@@ -12,6 +11,7 @@ import PlotAbstentionCity from '@/Components/Plots/PlotAbstentionLocal';
 import PlotHistory from '@/Components/Plots/PlotHistory';
 import TableElectionHistoric from '@/Components/Tables/TableElectionHistoric';
 import Container from '@mui/material/Container';
+import LocalMap from '@/Components/Maps/LocalMap';
 
 const Parish = ({ parish }) => {
 
@@ -29,7 +29,7 @@ const Parish = ({ parish }) => {
     ]
 
     return (
-        <Container maxWidth="md">
+        <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }}>
             <GenericLayout
                 main={
                     <Grid container direction="column">
@@ -40,9 +40,9 @@ const Parish = ({ parish }) => {
                                 </Breadcrumbs>
                             </Grid>
                         </Grid>
-                        <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
+                        <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", alignItems: "center", ml: { md: 3 } }}>
                             <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
-                                <ParishMap parish={parish} />
+                                <LocalMap localities={[parish]} polygon_centroid={parish.polygon_centroid} />
                                 <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                             </Grid>
                             <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
@@ -50,8 +50,9 @@ const Parish = ({ parish }) => {
                                     <AccordionWikipedia name={parish.name} wikipedia={parish.wikipedia} />
                                 </Grid>
                                 <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
-                                    <ParishMap
-                                        parish={parish}
+                                    <LocalMap
+                                        localities={[parish]}
+                                        polygon_centroid={parish.polygon_centroid}
                                     />
                                     <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                                 </Grid>

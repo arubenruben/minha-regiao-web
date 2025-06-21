@@ -30,15 +30,12 @@ const District = ({ district }) => {
         <Link key="1" href={route("home")}>
             Início
         </Link>,
-        <Link key="2" href={route("districts.show", { district: district.name })}>
-            {district.name}
-        </Link>,
-        <span key="3">{district.name}</span>
+        <span key="2">{district.name}</span>
     ]
 
     return (
         <GenericLayout main={
-            <Container>
+            <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }} sx={{ mt: 2, mb: 2 }}>
                 <Grid container direction="column" >
                     <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                         <Grid item>
@@ -47,12 +44,11 @@ const District = ({ district }) => {
                             </Breadcrumbs>
                         </Grid>
                     </Grid>
-                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: { md: 3 } }}>
-                        <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
+                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", alignItems: "center", ml: { md: 3 } }}>
+                        <Grid item size={{ md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
                             <LocalMap
                                 localities={district.cities}
-                                polygon_centroid={district.polygon_centroid}
-                                endpoint={"cidade"}
+                                polygon_centroid={district.polygon_centroid}                                
                             />
                             <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                         </Grid>
@@ -63,8 +59,7 @@ const District = ({ district }) => {
                             <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
                                 <LocalMap
                                     localities={district.cities}
-                                    polygon_centroid={district.polygon_centroid}
-                                    endpoint={"cidade"}
+                                    polygon_centroid={district.polygon_centroid}                                    
                                 />
                                 <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                             </Grid>
@@ -85,7 +80,7 @@ const District = ({ district }) => {
                         <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>
                     </Grid>
                     <Grid item container direction="row" sx={{ justifyContent: "space-around", mr: 1 }}>
-                        <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
+                        <Grid item container direction="column" size={{ xs: 12, md: 4 }}>
                             <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
                                 <PlotNumberCities
                                     yAxisLabel={"Número de Câmaras Municipais"}

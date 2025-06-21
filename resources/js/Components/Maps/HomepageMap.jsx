@@ -5,19 +5,13 @@ import { router } from '@inertiajs/react'
 
 const HomepageMap = ({ districts }) => {
     const [map, setMap] = useState(null);
-    const [popupPosition, setPopupPosition] = useState(null);
-    const [selectedDistrictId, setSelectedDistrictId] = useState(null);
 
     const center = [39.6496747, -8.2081579];
     const zoom = 6;
 
-
-    const handlePolygonClick = useCallback((districtId, latlng) => {
-        setSelectedDistrictId(districtId);
-        setPopupPosition(latlng);
-
+    const handlePolygonClick = useCallback((district) => {
         if (map) {
-            router.visit(`/distrito/${districtId}`);
+            router.visit(route("districts.show", { district: district.name }));
         }
     }, [map]);
 
@@ -34,7 +28,7 @@ const HomepageMap = ({ districts }) => {
                     positions={coordinates}
                     pathOptions={{ color: 'purple' }}
                     eventHandlers={{
-                        click: (e) => handlePolygonClick(district.name, e.latlng)
+                        click: (e) => handlePolygonClick(district, e.latlng)
                     }}
                 />
             );

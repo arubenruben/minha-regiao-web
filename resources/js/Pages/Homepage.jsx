@@ -17,7 +17,7 @@ const Homepage = ({ regions, elections, abstencion, districts }) => {
     const [selectedYear, setSelectedYear] = useState()
 
     return (
-        <Container maxWidth="xl" disableGutters={true}>
+        <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }} disableGutters={true}>
             <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: { xs: 3, md: 10 }, height: { xs: "300px", lg: "60vh" } }} >
                 <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                     <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>
@@ -35,9 +35,8 @@ const Homepage = ({ regions, elections, abstencion, districts }) => {
                     <h6 id="slogan">Informa-te sobre o histórico eleitoral autárquico da tua região.</h6>
                 </Grid>
             </Grid>
-            <Container>
-
-                <Grid item container direction="row" sx={{ mx: 3, mt: 3, alignItems: "center", justifyContent: "space-around" }}>
+            <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }} sx={{ mt: 5 }}>
+                <Grid item container direction="row" sx={{ mx: 3, alignItems: "center", justifyContent: "space-around" }}>
                     <Grid container direction="column" size={{ xs: 12, md: 6 }} sx={{ mr: { md: 8 } }} >
                         <Grid item>
                             <h2>Panorama Autárquico Nacional em {selectedYear}</h2>
