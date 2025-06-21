@@ -14,6 +14,11 @@ WORKDIR /var/www
 # Copy Laravel application code
 COPY . /var/www
 
+# Hotfix for cached routes. That derived in 404 in fpm
+RUN rm -rf node_modules/.vite
+RUN rm -rf public/build
+RUN rm -rf node_modules
+
 # Install Node.js dependencies and build assets
 RUN npm install && npm run build
 
