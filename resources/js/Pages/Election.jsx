@@ -65,7 +65,7 @@ const Election = ({ election }) => {
     return (
         <GenericLayout
             main={
-                <Container maxWidth="md">
+                <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }}>
                     <Grid container direction="column">
                         <Grid item container direction="row" sx={{ alignItems: "center", mt: 3 }}>
                             <Grid item>
@@ -79,8 +79,8 @@ const Election = ({ election }) => {
                             <p className="ssn-subtitle">Compara os resultados dos partidos</p>
                         </Grid>
                     </Grid>
-                    <Grid item container direction="row" sx={{ mt: { sm: 3, md: 5 }, justifyContent: "space-around" }}>
-                        <Grid item container direction="column" size={{ xs: 12, md: 7 }} >
+                    <Grid item container direction="row" sx={{ mt: { sm: 3, md: 5 }, justifyContent: "space-around", alignItems: "center" }}>
+                        <Grid item container direction="column" size={{ xs: 12, md: 5 }} >
                             <Grid item>
                                 <PlotElection
                                     election={election}
@@ -91,16 +91,17 @@ const Election = ({ election }) => {
                                 <SliderElection elections={election.other_elections} setSelectedElectionYear={setYearToCompare} />
                             </Grid>
                         </Grid>
-
                         <Grid item size={{ xs: 12, md: 4.5 }} sx={{ justifyContent: { xs: "center" }, mt: { xs: 3, md: 0 } }}>
                             <TableElectionMetadata election={election} yearToCompare={yearToCompare} />
                         </Grid>
-                        <hr />
-                        <Grid item sx={{ mt: { xs: 3, md: 0 } }}>
+                    </Grid>
+                    <hr />
+                    <Grid item container direction="column" sx={{ mt: 3, ml: { md: 3 } }}>
+                        <Grid item sx={{ mt: { xs: 3, md: 5 } }}>
                             <h3>As notícias locais em {name} sobre a Eleição de {election.year}</h3>
                             <p className="ssn-subtitle">Quais os temas falados nos jornais locais da região no período eleitoral?</p>
                         </Grid>
-                        <Grid item container direction="row" sx={{ mt: 2 }} spacing={4}>
+                        <Grid item container direction="row" sx={{ mt: 2, justifyContent: "center" }} spacing={4}>
                             <h3>Brevemente Disponível</h3>
                         </Grid>
                     </Grid>

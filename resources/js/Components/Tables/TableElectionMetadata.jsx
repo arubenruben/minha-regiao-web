@@ -19,8 +19,8 @@ const TableElectionMetadata = ({ election, yearToCompare }) => {
             <TableHead>
                 <TableRow>
                     <TableCell>Ano</TableCell>
-                    <TableCell sx={{ display: { xs: "None", md: "block" } }}>Eleitores</TableCell>
-                    <TableCell sx={{ display: { xs: "None", md: "block" } }}>Votos</TableCell>
+                    <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>Eleitores</TableCell>
+                    <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>Votos</TableCell>
                     <TableCell>% Abstenção</TableCell>
                     <TableCell>% Brancos</TableCell>
                     <TableCell>% Nulos</TableCell>
@@ -29,16 +29,16 @@ const TableElectionMetadata = ({ election, yearToCompare }) => {
             <TableBody>
                 {election && <TableRow>
                     <TableCell>{election.year}</TableCell>
-                    <TableCell sx={{ display: { xs: "None", md: "block" } }}>{election.number_registered_voters}</TableCell>
-                    <TableCell sx={{ display: { xs: "None", md: "block" } }}>{election.number_participant_voters}</TableCell>
+                    <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>{election.number_registered_voters}</TableCell>
+                    <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>{election.number_participant_voters}</TableCell>
                     <TableCell>{(election.number_absentee_votes / election.number_registered_voters * 100).toFixed(2)}</TableCell>
                     <TableCell>{(election.number_blank_votes / election.number_registered_voters * 100).toFixed(2)}</TableCell>
                     <TableCell>{(election.number_null_votes / election.number_registered_voters * 100).toFixed(2)}</TableCell>
                 </TableRow>}
                 {electionToCompare && <TableRow>
                     <TableCell>{electionToCompare.year}</TableCell>
-                    <TableCell sx={{ display: { xs: "None", md: "block" } }}>{electionToCompare.number_registered_voters}</TableCell>
-                    <TableCell sx={{ display: { xs: "None", md: "block" } }}>{electionToCompare.number_participant_voters}</TableCell>
+                    <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>{electionToCompare.number_registered_voters}</TableCell>
+                    <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>{electionToCompare.number_participant_voters}</TableCell>
                     <TableCell>{(electionToCompare.number_absentee_votes / electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
                     <TableCell>{(electionToCompare.number_blank_votes / electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
                     <TableCell>{(electionToCompare.number_null_votes / electionToCompare.number_registered_voters * 100).toFixed(2)}</TableCell>
