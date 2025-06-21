@@ -49,7 +49,7 @@ services:
     # this service will not start until the 'postgres' service passes its health check.
     # This prevents the application from trying to connect to the database before it's ready.
     depends_on:
-      postgres:
+      postgis:
         condition: service_healthy
   postgis:
     image: postgis/postgis:17-3.5
