@@ -34,7 +34,7 @@ const PlotHistory = ({ elections }) => {
     return (
         <LineChart
             xAxis={[{ data: xAxis, label: 'Eleições Autárquicas', scaleType: 'point' }]}
-            yAxis={[{ data: yAxis, label: 'Percentagem de Votos', scaleType: 'linear' }]}
+            yAxis={[{ data: yAxis, scaleType: 'linear' }]}
             series={series}
             height={300}
         />

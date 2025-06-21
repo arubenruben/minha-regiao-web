@@ -15,8 +15,8 @@ const TableElectionHistoric = ({ elections }) => {
                     <TableCell>Ano</TableCell>
                     <TableCell align="right">Partido Vencedor</TableCell>
                     <TableCell align="right">Presidente Eleito</TableCell>
-                    <TableCell align="right">% Votos</TableCell>
-                    <TableCell align="center">Detalhes da Eleição</TableCell>
+                    <TableCell align="right">Votos</TableCell>
+                    <TableCell align="center" sx={{ display: { xs: "None", md: "table-cell" } }}>Detalhes da Eleição</TableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -30,11 +30,15 @@ const TableElectionHistoric = ({ elections }) => {
                                 '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
                             }}
                         >
-                            <TableCell className="link-table">{election.year}</TableCell>
+                            <TableCell className="link-table">
+                                <Link href={route("elections.show", { election_id: election.id })}>
+                                    {election.year}
+                                </Link>
+                            </TableCell>
                             <TableCell align="right">{election.winner.party.acronym}</TableCell>
                             <TableCell align="right">{election.winner.candidate?.name ?? "-"}</TableCell>
-                            <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}</TableCell>
-                            <TableCell align="center">
+                            <TableCell align="right">{parseFloat(election.winner.percentage_votes).toFixed(2)}%</TableCell>
+                            <TableCell align="center" sx={{ display: { xs: "none", md: "table-cell" } }}>
                                 <Link href={route("elections.show", { election_id: election.id })}>
                                     <OpenInNewIcon />
                                 </Link>

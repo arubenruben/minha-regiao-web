@@ -78,7 +78,7 @@ const District = ({ district }) => {
                     </Grid>
                 </Grid>
                 <hr />
-                <Grid item sx={{ ml: 3 }}>
+                <Grid item>
                     <h3>Panorama Autárquico no Distrito {district.name} em {selectedElectionYear}:</h3>
                     <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>
                 </Grid>
@@ -98,10 +98,10 @@ const District = ({ district }) => {
                         </Grid>
                     </Grid>
                     <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableLocalities 
-                        localities={district.cities} 
-                        type={"city"}
-                        selectedElectionYear={selectedElectionYear} />
+                        <TableLocalities
+                            localities={district.cities}
+                            type={"city"}
+                            selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
             </Grid>

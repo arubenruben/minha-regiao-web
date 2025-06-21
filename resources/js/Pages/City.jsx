@@ -62,7 +62,7 @@ const City = ({ city }) => {
                             </Grid>
                             <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
                                 <LocalMap
-                                    localities={city.municipalities}
+                                    localities={city.parishes}
                                     polygon_centroid={city.polygon_centroid}
                                     endpoint={"freguesia"}
                                 />
@@ -76,20 +76,20 @@ const City = ({ city }) => {
                         </Grid>
                     </Grid>
                     <hr />
-                    <Grid item sx={{ ml: 3 }}>
+                    <Grid item>
                         <h3>Histórico Eleitoral na Câmara Municipal</h3>
                         <p className="ssn-subtitle">Como variam as votações de cada partido desde 1974?</p>
                     </Grid>
                     <Grid container item direction="column" sx={{ alignItems: "center", mb: 3 }}>
-                        <Grid item size={{ xs: 8, mb: 3 }} sx={{ display: { xs: "None", md: "block" } }}>
+                        <Grid item size={{ xs: 12, md: 7 }}>
                             <TableElectionHistoric elections={city.elections} />
                         </Grid>
-                        <Grid item size={{ xs: 10 }} sx={{ mt: 5 }}>
+                        <Grid item size={{ xs: 12, md: 10 }} sx={{ mt: 5 }}>
                             <PlotHistory elections={city.elections} />
                         </Grid>
                     </Grid>
                     <hr />
-                    <Grid item sx={{ ml: 3 }}>
+                    <Grid item>
                         <h2>Panorama Autárquico no Concelho {city.name} em {selectedElectionYear}:</h2>
                         <p className="ssn-subtitle">Quantas Juntas de Freguesia lidera cada partido?</p>
                     </Grid>
