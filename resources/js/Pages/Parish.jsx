@@ -29,7 +29,7 @@ const Parish = ({ parish }) => {
     ]
 
     return (
-        <Container>
+        <Container maxWidth="md">
             <GenericLayout
                 main={
                     <Grid container direction="column">

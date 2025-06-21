@@ -65,7 +65,7 @@ const Election = ({ election }) => {
     return (
         <GenericLayout
             main={
-                <Container>
+                <Container maxWidth="md">
                     <Grid container direction="column">
                         <Grid item container direction="row" sx={{ alignItems: "center", mt: 3 }}>
                             <Grid item>

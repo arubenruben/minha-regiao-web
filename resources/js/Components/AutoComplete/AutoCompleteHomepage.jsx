@@ -4,7 +4,17 @@ import { TextField } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
 const AutoCompleteHomepage = ({ regions }) => {
-    const sortedRegions = regions.sort((a, b) => a.type.localeCompare(b.type));
+    const typeOrder = { 'District': 1, 'City': 2, 'Parish': 3 };
+
+    const sortedRegions = regions.sort((a, b) => {
+        // First sort by type order
+        const typeComparison = typeOrder[a.type] - typeOrder[b.type];
+        if (typeComparison !== 0) {
+            return typeComparison;
+        }
+        // Then sort alphabetically by name within the same type
+        return a.name.localeCompare(b.name);
+    });
 
     const getRouteConfig = (option) => {
         const routeMap = {
@@ -26,7 +36,17 @@ const AutoCompleteHomepage = ({ regions }) => {
         <Autocomplete
             options={sortedRegions}
             getOptionLabel={(option) => option.name}
-            groupBy={(option) => option.type}
+            groupBy={(option) => {
+                if (option.type === 'District') {
+                    return 'Distritos';
+                }
+                if (option.type === 'City') {
+                    return 'Cidades';
+                }
+                if (option.type === 'Parish') {
+                    return 'Freguesias';
+                }
+            }}
             onChange={handleChange}
             renderOption={(props, option) => {
                 const { key, ...optionProps } = props;

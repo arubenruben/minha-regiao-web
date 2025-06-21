@@ -11,14 +11,11 @@ const StyledSlider = styled(Slider)({
 });
 
 const SliderYears = ({ elections, setSelectedElectionYear }) => {
-
     const { minYear, maxYear, marks } = useMemo(() => {
         if (!elections?.length)
             return { minYear: 0, maxYear: 0, marks: [] };
 
         const electionYears = elections.map(election => election.year).filter(year => year !== null);
-
-        console.log(electionYears);
 
         if (electionYears.length === 0)
             return { minYear: 0, maxYear: 0, marks: [] };

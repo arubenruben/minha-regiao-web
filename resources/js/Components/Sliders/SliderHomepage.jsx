@@ -1,5 +1,14 @@
 import React, { useMemo, useEffect } from 'react'
 import { Slider } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledSlider = styled(Slider)({
+    '& .MuiSlider-markLabel': {
+        transform: 'rotate(-45deg)',
+        transformOrigin: 'left bottom',
+        marginTop: '8px',
+    },
+});
 
 const SliderHomepage = ({ elections, setSelectedYear }) => {
     
@@ -33,7 +42,7 @@ const SliderHomepage = ({ elections, setSelectedYear }) => {
     };
 
     return (
-        <Slider
+        <StyledSlider
             defaultValue={maxYear}
             step={null}
             marks={marks}
