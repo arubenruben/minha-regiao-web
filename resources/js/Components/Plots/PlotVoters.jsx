@@ -11,8 +11,8 @@ const PlotVoters = ({ locations }) => {
         // Extract and sort unique years
         const yearsSet = new Set();
 
-        locations.forEach(city => {
-            city.elections?.forEach(election => {
+        locations.forEach(local => {
+            local.elections?.forEach(election => {
                 yearsSet.add(election.year);
             });
         });
@@ -21,8 +21,8 @@ const PlotVoters = ({ locations }) => {
 
         // Calculate voters data
         const votersData = sortedYears.map(year => {
-            return locations.reduce((total, city) => {
-                const election = city.elections?.find(election => election.year === year);
+            return locations.reduce((total, local) => {
+                const election = local.elections?.find(election => election.year === year);
                 return total + (election?.number_registered_voters || 0);
             }, 0);
         });
@@ -43,8 +43,8 @@ const PlotVoters = ({ locations }) => {
                 label: 'Eleições Autárquicas',
                 scaleType: 'point',
             }]}
-            yAxis={[{ 
-                label: yAxisLabel, 
+            yAxis={[{
+                label: yAxisLabel,
                 scaleType: 'linear',
                 valueFormatter: hasLargeValues ? (value) => `${value}K` : undefined
             }]}

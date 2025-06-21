@@ -94,7 +94,7 @@ class DataLoader:
                         "title": entry["title"],
                         "url": entry["wikipedia_url"],
                         "summary": entry["summary"],
-                        "freguesia_pt_entry_id": new_freguesia_pt_entry,
+                        "freguesias_pt_entry_id": new_freguesia_pt_entry,
                     },
                 )
 
@@ -164,7 +164,7 @@ class DataLoader:
         raise ValueError(f"ID {old_value} not found in mapping")
 
     def _create_election_data(
-        self, election_row: Any, freguesia_pt_entry_id: int
+        self, election_row: Any, freguesias_pt_entry_id: int
     ) -> Dict[str, Any]:
         """Build election data dictionary"""
         return {
@@ -174,7 +174,7 @@ class DataLoader:
             "number_blank_votes": election_row.number_blank_votes,
             "number_null_votes": election_row.number_null_votes,
             "number_absentee_votes": election_row.number_absentee_votes,
-            "freguesia_pt_entry_id": freguesia_pt_entry_id,
+            "freguesias_pt_entry_id": freguesias_pt_entry_id,
         }
 
     def _get_president_for_election(self, election_row: Any) -> Optional[Dict]:
@@ -228,14 +228,14 @@ class DataLoader:
                 )
 
     def _process_elections_for_entry(
-        self, row: Any, freguesia_pt_entry_id: int, parties: List[Dict]
+        self, row: Any, freguesias_pt_entry_id: int, parties: List[Dict]
     ) -> None:
         """Process all elections for a freguesia entry"""
         for election_row in self.elections_df[
-            self.elections_df["freguesia_pt_entry_id"] == row.id
+            self.elections_df["freguesias_pt_entry_id"] == row.id
         ].itertuples():
             election_data = self._create_election_data(
-                election_row, freguesia_pt_entry_id
+                election_row, freguesias_pt_entry_id
             )
             election_response = self._make_request("elections", election_data)
             election_id = election_response["id"]
@@ -275,7 +275,7 @@ class DataLoader:
             new_district_id = response_data["id"]
 
             self._create_wikipedia_entry(
-                row, new_freguesia_pt_entry=response_data["freguesia_pt_entry_id"]
+                row, new_freguesia_pt_entry=response_data["freguesias_pt_entry_id"]
             )
 
             mapping.append(
@@ -321,7 +321,7 @@ class DataLoader:
             response_data = self._make_request("cities", location_data)
             new_city_id = response_data["id"]
 
-            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
+            self._create_wikipedia_entry(row, response_data["freguesias_pt_entry_id"])
 
             mapping.append(
                 {
@@ -331,7 +331,7 @@ class DataLoader:
             )
 
             self._process_elections_for_entry(
-                row, response_data["freguesia_pt_entry_id"], parties
+                row, response_data["freguesias_pt_entry_id"], parties
             )
 
         self._save_mapping("city_mapping.json", mapping)
@@ -378,10 +378,10 @@ class DataLoader:
                 print(f"Skipping duplicate entry for {row.name}: {e}")
                 continue
 
-            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
+            self._create_wikipedia_entry(row, response_data["freguesias_pt_entry_id"])
 
             self._process_elections_for_entry(
-                row, response_data["freguesia_pt_entry_id"], parties
+                row, response_data["freguesias_pt_entry_id"], parties
             )
 
     def load_all_data(self) -> None:

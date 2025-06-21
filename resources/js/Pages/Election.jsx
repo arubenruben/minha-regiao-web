@@ -8,6 +8,7 @@ import SliderElection from '@/Components/Sliders/SliderElection'
 import Container from '@mui/material/Container'
 
 const Election = ({ election }) => {
+    console.log(election);
 
     const [yearToCompare, setYearToCompare] = React.useState(null);
 
@@ -36,7 +37,7 @@ const Election = ({ election }) => {
         }
         if (election.parish) {
             breadCrumbs.push(
-                <Link key="4" href={route("parishes.show", { parish: election.parish.name })}>
+                <Link key="4" href={route("parishes.show", { freguesias_pt_entry_id: election.parish.freguesia_pt_entry_id })}>
                     {election.parish.name}
                 </Link>
             );

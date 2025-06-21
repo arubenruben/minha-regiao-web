@@ -10,7 +10,8 @@ import AccordionPlots from '@/Components/Accordion/AccordionPlots';
 import PlotVoters from '@/Components/Plots/PlotVoters';
 import PlotAbstentionCity from '@/Components/Plots/PlotAbstentionLocal';
 import PlotHistory from '@/Components/Plots/PlotHistory';
-import TableCityHistoric from '@/Components/Tables/TableElectionHistoric';
+import TableElectionHistoric from '@/Components/Tables/TableElectionHistoric';
+import Container from '@mui/material/Container';
 
 const Parish = ({ parish }) => {
 
@@ -28,53 +29,56 @@ const Parish = ({ parish }) => {
     ]
 
     return (
-        <GenericLayout
-            main={
-                <Grid container direction="column">
-                    <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
-                        <Grid item>
-                            <Breadcrumbs separator=">" sx={{ mb: 2 }}>
-                                {breadCrumbs}
-                            </Breadcrumbs>
-                        </Grid>
-                    </Grid>
-                    <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
-                        <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
-                            <ParishMap parish={parish} />
-                            <p className="ssn-subtitle">Navega pelo nosso mapa</p>
-                        </Grid>
-                        <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
+        <Container>
+
+            <GenericLayout
+                main={
+                    <Grid container direction="column">
+                        <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                             <Grid item>
-                                <AccordionWikipedia name={parish.name} wikipedia={parish.wikipedia} />
+                                <Breadcrumbs separator=">" sx={{ mb: 2 }}>
+                                    {breadCrumbs}
+                                </Breadcrumbs>
                             </Grid>
-                            <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
-                                <ParishMap
-                                    parish={parish}
-                                />
+                        </Grid>
+                        <Grid item container direction="row" sx={{ justifyContent: "space-around", mt: 3, mb: 5 }}>
+                            <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
+                                <ParishMap parish={parish} />
                                 <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                             </Grid>
-                            <hr />
-                            <AccordionPlots
-                                plotVoters={<PlotVoters elections={parish.elections} />}
-                                plotAbstention={<PlotAbstentionCity elections={parish.elections} />}
-                            />
+                            <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
+                                <Grid item>
+                                    <AccordionWikipedia name={parish.name} wikipedia={parish.wikipedia} />
+                                </Grid>
+                                <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
+                                    <ParishMap
+                                        parish={parish}
+                                    />
+                                    <p className="ssn-subtitle">Navega pelo nosso mapa</p>
+                                </Grid>
+                                <hr />
+                                <AccordionPlots
+                                    plotVoters={<PlotVoters locations={[parish]} />}
+                                    plotAbstention={<PlotAbstentionCity elections={parish.elections} />}
+                                />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <hr />
-                    <Grid item>
-                        <h3>Histórico na Junta de Freguesia</h3>
-                    </Grid>
-                    <Grid container item direction="column" sx={{ alignItems: "center" }}>
-                        <Grid item size={{ xs: 10 }} sx={{ my: 3 }}>
-                            <PlotHistory elections={parish.elections} />
+                        <hr />
+                        <Grid item>
+                            <h3>Histórico na Junta de Freguesia</h3>
                         </Grid>
-                        <Grid item size={{ xs: 8 }}>
-                            {false && <TableCityHistoric name={parish.name} elections={parish.elections} endpoint={"freguesia"} />}
+                        <Grid container item direction="column" sx={{ alignItems: "center" }}>
+                            <Grid item size={{ xs:12, md: 10 }} sx={{ my: 3 }}>
+                                <PlotHistory elections={parish.elections} />
+                            </Grid>
+                            <Grid item size={{ xs: 12, md: 8 }}>
+                                <TableElectionHistoric elections={parish.elections} />
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Grid >
-            }
-        />
+                    </Grid >
+                }
+            />
+        </Container>
     )
 }
 
