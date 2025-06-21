@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 const PlotWinningParties = ({ yAxisLabel, locations, selectedElectionYear }) => {
+    console.log("PlotWinningParties", { yAxisLabel, locations, selectedElectionYear });
+    
+    
     const { xAxisData, yAxisData } = useMemo(() => {
         if (!locations) {
             return { xAxisData: [], yAxisData: [] };

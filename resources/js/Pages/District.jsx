@@ -11,6 +11,7 @@ import TableLocalities from '@/Components/Tables/TableLocalities';
 import PlotVoters from '@/Components/Plots/PlotVoters';
 import PlotNumberCities from '@/Components/Plots/PlotWinningParties';
 import SliderLocal from '@/Components/Sliders/SliderYears';
+import Container from '@mui/material/Container';
 
 const District = ({ district }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
@@ -37,28 +38,17 @@ const District = ({ district }) => {
 
     return (
         <GenericLayout main={
-            <Grid container direction="column" >
-                <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
-                    <Grid item>
-                        <Breadcrumbs separator=">" sx={{ mb: 2 }}>
-                            {breadCrumbs}
-                        </Breadcrumbs>
-                    </Grid>
-                </Grid>
-                <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: { md: 3 } }}>
-                    <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
-                        <LocalMap
-                            localities={district.cities}
-                            polygon_centroid={district.polygon_centroid}
-                            endpoint={"cidade"}
-                        />
-                        <p className="ssn-subtitle">Navega pelo nosso mapa</p>
-                    </Grid>
-                    <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
+            <Container>
+                <Grid container direction="column" >
+                    <Grid item container direction="row" sx={{ alignItems: "center", mt: 2, ml: 2 }}>
                         <Grid item>
-                            <AccordionWikipedia name={`Distrito ${district.name}`} wikipedia={district.wikipedia} />
+                            <Breadcrumbs separator=">">
+                                {breadCrumbs}
+                            </Breadcrumbs>
                         </Grid>
-                        <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
+                    </Grid>
+                    <Grid item container direction="row" sx={{ mt: 3, justifyContent: "space-around", ml: { md: 3 } }}>
+                        <Grid item size={{ xs: 0, md: 4 }} sx={{ display: { xs: "none", md: "block" } }}>
                             <LocalMap
                                 localities={district.cities}
                                 polygon_centroid={district.polygon_centroid}
@@ -66,45 +56,57 @@ const District = ({ district }) => {
                             />
                             <p className="ssn-subtitle">Navega pelo nosso mapa</p>
                         </Grid>
-                        <hr />
-                        <AccordionPlots
-                            plotVoters={<PlotVoters locations={district.cities} />}
-                            plotAbstention={<PlotAbstention locations={district.cities} electionYears={electionYears} />}
-                        />
+                        <Grid item container direction="column" size={{ xs: 12, md: 7 }}>
+                            <Grid item>
+                                <AccordionWikipedia name={`Distrito ${district.name}`} wikipedia={district.wikipedia} />
+                            </Grid>
+                            <Grid item sx={{ mt: { xs: 3 }, display: { xs: "block", md: "none" } }}>
+                                <LocalMap
+                                    localities={district.cities}
+                                    polygon_centroid={district.polygon_centroid}
+                                    endpoint={"cidade"}
+                                />
+                                <p className="ssn-subtitle">Navega pelo nosso mapa</p>
+                            </Grid>
+                            <hr />
+                            <AccordionPlots
+                                plotVoters={<PlotVoters locations={district.cities} />}
+                                plotAbstention={<PlotAbstention locations={district.cities} electionYears={electionYears} />}
+                            />
+                        </Grid>
+                        {/* Map only for the smaller screens */}
+                        <Grid item size={{ xs: 12, md: 0 }} >
+                            <LocalMap />
+                        </Grid>
                     </Grid>
-                    {/* Map only for the smaller screens */}
-                    <Grid item size={{ xs: 12, md: 0 }} >
-                        <LocalMap />
+                    <hr />
+                    <Grid item>
+                        <h3>Panorama Autárquico no Distrito {district.name} em {selectedElectionYear}:</h3>
+                        <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>
                     </Grid>
-                </Grid>
-                <hr />
-                <Grid item>
-                    <h3>Panorama Autárquico no Distrito {district.name} em {selectedElectionYear}:</h3>
-                    <p className="ssn-subtitle">Quantas Câmaras Municipais lidera cada partido?</p>
-                </Grid>
-                <Grid item container direction="row" sx={{ justifyContent: "space-around", mr: 1 }}>
-                    <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
-                        <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
-                            <PlotNumberCities
-                                yAxisLabel={"Número de Câmaras Municipais"}
-                                locations={district.cities}
+                    <Grid item container direction="row" sx={{ justifyContent: "space-around", mr: 1 }}>
+                        <Grid item container direction="column" size={{ xs: 12, md: 5 }}>
+                            <Grid item size={{ xs: 12 }} sx={{ mt: 3 }}>
+                                <PlotNumberCities
+                                    yAxisLabel={"Número de Câmaras Municipais"}
+                                    locations={district.cities}
+                                    selectedElectionYear={selectedElectionYear} />
+                            </Grid>
+                            <Grid item size={{ xs: 12, md: 10 }} sx={{ mx: "auto" }}>
+                                <SliderLocal
+                                    elections={district.cities[0].elections}
+                                    setSelectedElectionYear={setSelectedElectionYear} />
+                            </Grid>
+                        </Grid>
+                        <Grid item size={{ sx: 12, md: 7 }} sx={{ mt: { xs: 3, md: 0 } }}>
+                            <TableLocalities
+                                localities={district.cities}
+                                type={"city"}
                                 selectedElectionYear={selectedElectionYear} />
                         </Grid>
-                        <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
-                            <SliderLocal
-                                electionYears={electionYears}
-                                selectedElectionYear={selectedElectionYear}
-                                setSelectedElectionYear={setSelectedElectionYear} />
-                        </Grid>
-                    </Grid>
-                    <Grid item size={{ sx: 12, md: 7 }}>
-                        <TableLocalities
-                            localities={district.cities}
-                            type={"city"}
-                            selectedElectionYear={selectedElectionYear} />
                     </Grid>
                 </Grid>
-            </Grid>
+            </Container>
         } />
 
     )

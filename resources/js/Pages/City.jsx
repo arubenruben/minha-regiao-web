@@ -18,15 +18,7 @@ import Container from '@mui/material/Container';
 
 const City = ({ city }) => {
     const [selectedElectionYear, setSelectedElectionYear] = useState(null);
-
-    const electionYears = useMemo(() => {
-        const yearSet = new Set();
-        city.elections.forEach(election => {
-            yearSet.add(election.year);
-        });
-        return Array.from(yearSet).sort((a, b) => a - b);
-    }, [city]);
-
+    
     const breadCrumbs = [
         <Link key="1" href={route("home")}>
             Início
@@ -99,10 +91,10 @@ const City = ({ city }) => {
                                 <PlotWinningParties yAxisLabel={"Número de Juntas de Freguesia"} locations={city.parishes} selectedElectionYear={selectedElectionYear} />
                             </Grid>
                             <Grid item size={{ xs: 10 }} sx={{ mx: "auto" }}>
-                                <SliderLocal electionYears={electionYears} selectedElectionYear={selectedElectionYear} setSelectedElectionYear={setSelectedElectionYear} />
+                                <SliderLocal elections={city.elections} selectedElectionYear={selectedElectionYear} setSelectedElectionYear={setSelectedElectionYear} />
                             </Grid>
                         </Grid>
-                        <Grid item size={{ sx: 12, md: 7 }}>
+                        <Grid item size={{ sx: 12, md: 7 }} sx={{ mt: { xs: 3, md: 0 } }}>
                             <TableLocalities
                                 localities={city.parishes}
                                 type={"parish"}

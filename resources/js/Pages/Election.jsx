@@ -8,8 +8,6 @@ import SliderElection from '@/Components/Sliders/SliderElection'
 import Container from '@mui/material/Container'
 
 const Election = ({ election }) => {
-    console.log(election);
-
     const [yearToCompare, setYearToCompare] = React.useState(null);
 
     const breadCrumbs = useMemo(() => {

@@ -30,7 +30,6 @@ const Parish = ({ parish }) => {
 
     return (
         <Container>
-
             <GenericLayout
                 main={
                     <Grid container direction="column">
