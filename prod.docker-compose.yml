@@ -60,7 +60,7 @@ services:
 
 networks:
   minharegiao-production:
-    external: true
+    driver: bridge    
   minharegiao-database:
     internal: true
 
