@@ -26,7 +26,7 @@ class ElectionResource extends JsonResource
             'number_absentee_votes' => $this->number_absentee_votes,
             'freguesia_pt_entry_id' => $this->freguesia_pt_entry_id,
             'election_results' => ElectionResultResource::collection($this->electionResults),
-            'winner' => $this->winner()
+            'winner' => $this->winner
         ];
     }
 }

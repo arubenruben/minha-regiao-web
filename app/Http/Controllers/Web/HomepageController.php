@@ -7,9 +7,7 @@ use App\Models\District;
 use App\Models\FreguesiaPTEntry;
 use Cache;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\City;
 use App\Models\Election;
 
 class HomepageController extends Controller
@@ -21,7 +19,7 @@ class HomepageController extends Controller
     {
         $cacheKey = 'homepage_data';
 
-        $data = Cache::remember($cacheKey, now()->addHour(), function () {
+        $data = Cache::rememberForever($cacheKey, function () {
             // Get all elections with their cities and winners in one query
             $elections = Election::whereHas('city')
                 ->with(['city', 'winner.party'])

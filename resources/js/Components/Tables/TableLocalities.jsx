@@ -8,6 +8,8 @@ import TableContainer from '@mui/material/TableContainer';
 import { Link } from '@inertiajs/react';
 
 const TableLocalities = ({ localities, selectedElectionYear, type }) => {
+    console.log(localities);
+
     const elections = useMemo(() => {
         if (!localities || !selectedElectionYear) return [];
 
