@@ -18,7 +18,7 @@ class DistrictHomepageResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->freguesiaPtEntry->name,
-            'geo_polygon' => json_decode(DB::table('freguesias_pt_entries')
+            'geo_polygon' => json_decode(DB::table('freguesia_pt_entries')
                 ->selectRaw('ST_AsGeoJSON(ST_SimplifyPreserveTopology(geo_polygon, ?)) as geojson', [0.001])
                 ->where('id', $this->id)
                 ->first()->geojson, true),

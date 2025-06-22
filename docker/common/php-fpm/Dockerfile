@@ -96,6 +96,17 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 #RUN echo "post_max_size=250M" >> /usr/local/etc/php/conf.d/docker-php-ext-post_max_size.ini
 #RUN echo "upload_max_filesize=250M" >> /usr/local/etc/php/conf.d/docker-php-ext-upload_max_filesize.ini
 
+# Update the memory limit and other PHP settings
+# -----------------------------------------------------------
+RUN { \
+    echo 'memory_limit = 512M'; \
+    echo 'upload_max_filesize = 100M'; \
+    echo 'post_max_size = 100M'; \
+    echo 'max_execution_time = 300'; \
+    echo 'max_input_time = 300'; \
+    } > /usr/local/etc/php/conf.d/99-custom.ini
+# -----------------------------------------------------------
+
 # Enable PHP-FPM status page by modifying zz-docker.conf with sed
 RUN sed -i '/\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/zz-docker.conf
 # Update the variables_order to include E (for ENV)

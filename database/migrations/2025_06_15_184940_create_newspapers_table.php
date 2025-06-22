@@ -18,7 +18,7 @@ return new class extends Migration {
 
             $table->foreignId('freguesia_pt_entry_id')
                 ->nullable()
-                ->constrained('freguesias_pt_entries')
+                ->constrained('freguesia_pt_entries')
                 ->onDelete('cascade')
                 ->comment('ID of the freguesia.pt entry this newspaper belongs to');
 

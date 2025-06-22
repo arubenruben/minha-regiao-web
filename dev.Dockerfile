@@ -37,6 +37,15 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     gd \
     zip
 
+# Alter memory_limit in php.ini (rarely changes)
+RUN { \
+    echo 'memory_limit = 512M'; \
+    echo 'upload_max_filesize = 100M'; \
+    echo 'post_max_size = 100M'; \
+    echo 'max_execution_time = 300'; \
+    echo 'max_input_time = 300'; \
+    } > /usr/local/etc/php/conf.d/99-custom.ini
+
 # Install Node.js and npm (rarely changes)
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
     && apt-get install -y nodejs \

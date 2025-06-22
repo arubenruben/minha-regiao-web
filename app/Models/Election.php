@@ -33,11 +33,10 @@ class Election extends Model
     // Create a method winner that analyzes the election results and returns the winner
     public function winner()
     {
-        return $this->electionResults()
-            ->orderBy('number_votes', 'desc')
-            ->with('party')
-            ->with('candidate')
-            ->first();
+        return $this->hasOne(ElectionResult::class)
+            ->with(['party']) // eager load party
+            ->orderByDesc('number_votes')
+            ->limit(1); // this is crucial to make Eloquent treat it as 1:1
     }
 
     public function candidates()
@@ -48,9 +47,9 @@ class Election extends Model
     public function city()
     {
         return $this->belongsTo(City::class, 'freguesia_pt_entry_id', 'id')
-            ->join('freguesias_pt_entries', function ($join) {
-                $join->on('cities.id', '=', 'freguesias_pt_entries.entity_id')
-                    ->where('freguesias_pt_entries.entity_type', City::class);
+            ->join('freguesia_pt_entries', function ($join) {
+                $join->on('cities.id', '=', 'freguesia_pt_entries.entity_id')
+                    ->where('freguesia_pt_entries.entity_type', City::class);
             });
     }
 

@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\ElectionResultController;
 use App\Http\Controllers\Api\WikipediaController;
 use App\Http\Controllers\Api\CandidateController;
 
-#Route::apiResource("freguesias_pt_entries", FreguesiaPTEntryController::class);
+#Route::apiResource("freguesia_pt_entries", FreguesiaPTEntryController::class);
 Route::apiResource("cities", CityController::class, ['as' => 'api']);
 Route::apiResource("districts", DistrictController::class, ['as' => 'api']);
 Route::apiResource("parishes", ParishController::class, ['as' => 'api']);

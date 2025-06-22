@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('freguesias_pt_entries', function (Blueprint $table) {
+        Schema::create('freguesia_pt_entries', function (Blueprint $table) {
             $table->id()->autoIncrement();
 
             $table->string('name')->comment('Name of the freguesia');
@@ -31,7 +31,7 @@ return new class extends Migration {
 
             $table->string('entity_type')->comment('Type of the entity (e.g., City, Parish)');
             $table->unsignedBigInteger('entity_id')->comment('ID of the entity this entry belongs to');
-            $table->index(['entity_type', 'name']);       
+            $table->index(['entity_type', 'name']);
 
             $table->timestamps();
         });
@@ -42,6 +42,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('freguesias_pt_entries');
+        Schema::dropIfExists('freguesia_pt_entries');
     }
 };

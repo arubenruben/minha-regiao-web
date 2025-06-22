@@ -18,6 +18,7 @@ class DuplicateException(Exception):
 class DataLoader:
     def __init__(self, base_dir: str = None):
         self.base_dir = base_dir or os.path.dirname(os.path.abspath(__file__))
+        # self.base_url = "http://37.59.109.198:3000/api"
         self.base_url = "http://localhost:8000/api"
         self.headers = {
             "Content-Type": "application/json",
@@ -94,7 +95,7 @@ class DataLoader:
                         "title": entry["title"],
                         "url": entry["wikipedia_url"],
                         "summary": entry["summary"],
-                        "freguesias_pt_entry_id": new_freguesia_pt_entry,
+                        "freguesia_pt_entry_id": new_freguesia_pt_entry,
                     },
                 )
 
@@ -174,7 +175,7 @@ class DataLoader:
             "number_blank_votes": election_row.number_blank_votes,
             "number_null_votes": election_row.number_null_votes,
             "number_absentee_votes": election_row.number_absentee_votes,
-            "freguesias_pt_entry_id": freguesias_pt_entry_id,
+            "freguesia_pt_entry_id": freguesias_pt_entry_id,
         }
 
     def _get_president_for_election(self, election_row: Any) -> Optional[Dict]:
@@ -232,7 +233,7 @@ class DataLoader:
     ) -> None:
         """Process all elections for a freguesia entry"""
         for election_row in self.elections_df[
-            self.elections_df["freguesias_pt_entry_id"] == row.id
+            self.elections_df["freguesia_pt_entry_id"] == row.id
         ].itertuples():
             election_data = self._create_election_data(
                 election_row, freguesias_pt_entry_id
@@ -275,7 +276,7 @@ class DataLoader:
             new_district_id = response_data["id"]
 
             self._create_wikipedia_entry(
-                row, new_freguesia_pt_entry=response_data["freguesias_pt_entry_id"]
+                row, new_freguesia_pt_entry=response_data["freguesia_pt_entry_id"]
             )
 
             mapping.append(
@@ -321,7 +322,7 @@ class DataLoader:
             response_data = self._make_request("cities", location_data)
             new_city_id = response_data["id"]
 
-            self._create_wikipedia_entry(row, response_data["freguesias_pt_entry_id"])
+            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
 
             mapping.append(
                 {
@@ -331,7 +332,7 @@ class DataLoader:
             )
 
             self._process_elections_for_entry(
-                row, response_data["freguesias_pt_entry_id"], parties
+                row, response_data["freguesia_pt_entry_id"], parties
             )
 
         self._save_mapping("city_mapping.json", mapping)
@@ -378,10 +379,10 @@ class DataLoader:
                 print(f"Skipping duplicate entry for {row.name}: {e}")
                 continue
 
-            self._create_wikipedia_entry(row, response_data["freguesias_pt_entry_id"])
+            self._create_wikipedia_entry(row, response_data["freguesia_pt_entry_id"])
 
             self._process_elections_for_entry(
-                row, response_data["freguesias_pt_entry_id"], parties
+                row, response_data["freguesia_pt_entry_id"], parties
             )
 
     def load_all_data(self) -> None:

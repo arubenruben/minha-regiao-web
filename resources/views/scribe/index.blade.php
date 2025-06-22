@@ -63982,7 +63982,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value="architecto"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the freguesias_pt_entries table. Example: <code>architecto</code></p>
+<p>The <code>id</code> of an existing record in the freguesia_pt_entries table. Example: <code>architecto</code></p>
         </div>
         </form>
 

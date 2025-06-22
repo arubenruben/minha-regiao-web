@@ -39,7 +39,7 @@ class ParishController extends Controller
     public function show(Request $request)
     {
         $parish = Parish::whereHas('freguesiaPtEntry', function ($query) use ($request) {
-            $query->where('freguesias_pt_entries.id', $request->freguesias_pt_entry_id);
+            $query->where('freguesia_pt_entries.id', $request->freguesias_pt_entry_id);
         })->firstOrFail();
 
         return Inertia::render('Parish', [

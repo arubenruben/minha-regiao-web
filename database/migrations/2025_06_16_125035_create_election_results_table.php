@@ -24,6 +24,8 @@ return new class extends Migration {
                 ->constrained('parties')
                 ->onDelete('cascade');
 
+            $table->index(['election_id', 'party_id']);
+
             $table->timestamps();
         });
     }

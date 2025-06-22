@@ -9,62 +9,56 @@ use Cache;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\City;
+use App\Models\Election;
 
 class HomepageController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $districts = District::with('freguesiaPtEntry')->get();
+        $cacheKey = 'homepage_data';
 
-        if (Cache::has("elections") && Cache::has("abstencion")) {
-            $elections = Cache::get("elections");
-            $abstencion = Cache::get("abstencion");
+        $data = Cache::remember($cacheKey, now()->addHour(), function () {
+            // Get all elections with their cities and winners in one query
+            $elections = Election::whereHas('city')
+                ->with(['city', 'winner.party'])
+                ->orderBy('year', 'desc')
+                ->get();
 
-        } else {
-            $electionSummary = [];
-            $abstencionSummary = [];
+            // Calculate both metrics in a single iteration
+            $groupedElections = $elections->groupBy('year');
 
-            $results = [];
+            $abstencion = [];
+            $electionResults = [];
 
-            foreach ($districts as $district) {
-                foreach ($district->cities as $city) {
-                    foreach ($city->elections as $election) {
-                        if (!isset($results[$election->year])) {
-                            $results[$election->year] = [];
-                        }
-                        $results[$election->year][] = $election;
-                    }
-                }
-            }
+            foreach ($groupedElections as $year => $yearElections) {
+                // Calculate abstention
+                $totalAbstencion = $yearElections->sum(fn($e) => $e->number_registered_voters - $e->number_participant_voters);
+                $totalRegistered = $yearElections->sum('number_registered_voters');
+                $abstencion[$year] = ($totalAbstencion / $totalRegistered) * 100;
 
-            foreach ($results as $year => $elections) {
-                $electionSummary[(string) $year] = collect($elections)
-                    ->map(fn($election) => $election->winner()?->party->acronym)
+                // Calculate election winners
+                $electionResults[$year] = $yearElections
+                    ->pluck('winner.party.acronym')
                     ->filter()
                     ->countBy()
                     ->toArray();
-
-                $abstencionSummary[(string) $year] = collect($elections)
-                    ->map(fn($election) => $election->number_registered_voters > 0 ? 100 - $election->number_participant_voters / $election->number_registered_voters * 100 : 100)
-                    ->avg();
             }
 
-            Cache::put('abstencion', $abstencionSummary);
-            Cache::put('elections', $electionSummary);
-            $elections = $electionSummary;
-            $abstencion = $abstencionSummary;
-        }
+            return [
+                'elections' => $electionResults,
+                'abstencion' => $abstencion,
+            ];
+        });
 
         return Inertia::render('Homepage', [
             'regions' => FreguesiaPTEntry::all()->toResourceCollection(),
-            'elections' => $elections,
-            'abstencion' => $abstencion,
-            'districts' => $districts->toResourceCollection(DistrictHomepageResource::class),
+            'elections' => $data['elections'],
+            'abstencion' => $data['abstencion'],
+            'districts' => District::all()->toResourceCollection(DistrictHomepageResource::class),
         ]);
     }
-
 }

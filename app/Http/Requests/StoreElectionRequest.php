@@ -28,7 +28,7 @@ class StoreElectionRequest extends FormRequest
             'number_blank_votes' => 'required|integer|min:0',
             'number_null_votes' => 'required|integer|min:0',
             'number_absentee_votes' => 'required|integer|min:0',
-            'freguesia_pt_entry_id' => 'required|exists:freguesias_pt_entries,id',
+            'freguesia_pt_entry_id' => 'required|exists:freguesia_pt_entries,id',
         ];
     }
 }
