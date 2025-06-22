@@ -29,6 +29,7 @@ services:
       - .env
     networks:
       - minharegiao-production
+      - minharegiao-database
     healthcheck:
       test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
       interval: 10s
@@ -42,8 +43,6 @@ services:
     container_name: postgis
     restart: unless-stopped
     user: postgres
-    ports:
-      - "${POSTGRES_PORT:-9001}:5432"
     environment:
       - POSTGRES_DB=${POSTGRES_DATABASE:-postgres}
       - POSTGRES_USER=${POSTGRES_USERNAME:-postgres}
@@ -51,7 +50,7 @@ services:
     volumes:
       - minharegiao-data-production:/var/lib/postgresql/data
     networks:
-      - minharegiao-production
+      - minharegiao-database
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -61,6 +60,9 @@ services:
 
 networks:
   minharegiao-production:
+    external: true
+  minharegiao-database:
+    internal: true
 
 volumes:
   minharegiao-data-production:
