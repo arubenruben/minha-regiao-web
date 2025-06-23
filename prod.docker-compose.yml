@@ -10,6 +10,7 @@ services:
       - minharegiao-public-assets:/var/www/public/build:ro      
     networks:
       - minharegiao-production
+      - nginx_base_nginx_proxy_manager
     ports:
       - "${NGINX_PORT:-3000}:80"
     depends_on:
@@ -62,6 +63,8 @@ services:
 networks:
   minharegiao-production:
     internal: true
+  nginx_base_nginx_proxy_manager:
+    external: true
 
 volumes:
   minharegiao-data-production:
