@@ -13,7 +13,7 @@ services:
     ports:
       - "${NGINX_PORT:-3000}:80"
     depends_on:
-      php-fpm:
+      minharegiao-fpm:
         condition: service_healthy  # Wait for php-fpm health check
 
   minharegiao-fpm:
@@ -37,9 +37,9 @@ services:
       timeout: 5s
       retries: 3
     depends_on:
-      postgis:
+      minharegiao-postgis:
         condition: service_healthy
-  postgis:
+  minharegiao-postgis:
     image: postgis/postgis:17-3.5
     container_name: postgis
     restart: unless-stopped
