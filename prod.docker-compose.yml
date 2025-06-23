@@ -31,7 +31,6 @@ services:
       - .env
     networks:
       - minharegiao-production
-      - minharegiao-production
     healthcheck:
       test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
       interval: 10s
