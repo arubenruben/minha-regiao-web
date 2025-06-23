@@ -1,8 +1,9 @@
 services:
-  web:
+  minharegiao-nginx:
     build:
       context: .
       dockerfile: ./docker/production/nginx/Dockerfile
+    container_name: minharegiao-nginx
     restart: unless-stopped # Automatically restart unless the service is explicitly stopped
     volumes:
       - minharegiao-storage-production:/var/www/storage:ro
@@ -15,12 +16,13 @@ services:
       php-fpm:
         condition: service_healthy  # Wait for php-fpm health check
 
-  php-fpm:
+  minharegiao-fpm:
     # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
     build:
       context: .
       dockerfile: ./docker/common/php-fpm/Dockerfile
       target: production
+    container_name: minharegiao-fpm
     restart: unless-stopped
     volumes:
       - minharegiao-public-assets:/var/www/public/build  # Mount built public assets to ensure the manifest.json and hashed files match between Nginx and PHP-FPM
@@ -29,7 +31,7 @@ services:
       - .env
     networks:
       - minharegiao-production
-      - minharegiao-database
+      - minharegiao-production
     healthcheck:
       test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
       interval: 10s
@@ -50,7 +52,7 @@ services:
     volumes:
       - minharegiao-data-production:/var/lib/postgresql/data
     networks:
-      - minharegiao-database
+      - minharegiao-production
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -60,8 +62,6 @@ services:
 
 networks:
   minharegiao-production:
-    driver: bridge    
-  minharegiao-database:
     internal: true
 
 volumes:
