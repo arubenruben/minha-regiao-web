@@ -1,0 +1,73 @@
+services:
+  minharegiao-nginx:
+    build:
+      context: .
+      dockerfile: ./docker/production/nginx/Dockerfile
+    container_name: minharegiao-nginx
+    restart: unless-stopped # Automatically restart unless the service is explicitly stopped
+    volumes:
+      - minharegiao-storage-production:/var/www/storage:ro
+      - minharegiao-public-assets:/var/www/public/build:ro      
+    networks:
+      - minharegiao-production
+    ports:
+      - "3000:80"  # Expose Nginx on port 3000
+    depends_on:
+      minharegiao-fpm:
+        condition: service_healthy  # Wait for php-fpm health check
+
+  minharegiao-fpm:
+    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    build:
+      context: .
+      dockerfile: ./docker/common/php-fpm/Dockerfile
+      target: production
+    container_name: minharegiao-fpm
+    restart: unless-stopped
+    volumes:
+      - minharegiao-public-assets:/var/www/public/build  # Mount built public assets to ensure the manifest.json and hashed files match between Nginx and PHP-FPM
+      - minharegiao-storage-production:/var/www/storage  # Mount the storage volume
+    env_file:
+      - .env
+    networks:
+      - minharegiao-production
+    ports:
+      - "9000:9000"  # Expose PHP-FPM on port 9000
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      minharegiao-postgis:
+        condition: service_healthy
+  minharegiao-postgis:
+    image: postgis/postgis:17-3.5
+    container_name: postgis
+    restart: unless-stopped
+    user: postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE:-postgres}
+      - POSTGRES_USER=${POSTGRES_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - minharegiao-data-production:/var/lib/postgresql/data
+    networks:
+      - minharegiao-production
+    ports:
+      - "9001:5432"  # Expose PostGIS on port 5432
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+networks:
+  minharegiao-production:
+    driver: bridge    
+
+volumes:
+  minharegiao-data-production:
+  minharegiao-storage-production:
+  minharegiao-public-assets:
