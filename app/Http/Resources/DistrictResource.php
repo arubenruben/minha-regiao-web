@@ -9,12 +9,37 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class DistrictResource extends JsonResource
 {
     /**
+     * Indicates if the resource should return simplified data
+     */
+    private bool $simplified = false;
+
+    /**
+     * Create a new resource instance for simplified output
+     */
+    public static function simplified($resource)
+    {
+        $instance = new static($resource);
+        $instance->simplified = true;
+        return $instance;
+    }
+
+    /**
      * Transform the resource collection into an array.
      *
      * @return array<int|string, mixed>
      */
     public function toArray(Request $request): array
     {
+        // Return simplified version for API index calls
+        if ($this->simplified) {
+            return [
+                'id' => $this->id,
+                'name' => $this->freguesiaPtEntry->name,
+                'freguesia_pt_entry_id' => $this->freguesiaPtEntry->id,
+            ];
+        }
+
+        // Return full detailed version for individual district calls
         # Remove all attributes in cities that are not: name, geo_polygon
         $cities = $this->cities->map(function ($city) {
             if ($city->freguesiaPtEntry->entity_type === "App\Models\City") {

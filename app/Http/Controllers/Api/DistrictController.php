@@ -11,12 +11,28 @@ use Illuminate\Support\Facades\DB;
 
 class DistrictController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/districts",
+     *     summary="List districts",
+     *     tags={"Districts"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of districts",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/District")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        return District::all()->toResourceCollection();
+        $districts = District::with('freguesiaPtEntry')->get();
+        return DistrictResource::collection($districts->map(function ($district) {
+            return DistrictResource::simplified($district);
+        }));
     }
 
     /**
@@ -24,7 +40,7 @@ class DistrictController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -52,11 +68,31 @@ class DistrictController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/districts/{district}",
+     *     summary="Show a specific district",
+     *     tags={"Districts"},
+     *     @OA\Parameter(
+     *         name="district",
+     *         in="path",
+     *         required=true,
+     *         description="District ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="District details",
+     *         @OA\JsonContent(ref="#/components/schemas/District")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="District not found"
+     *     )
+     * )
      */
     public function show(District $district)
     {
-        return new DistrictResource($district);
+        return $district->toResource();
     }
 
     /**
@@ -64,22 +100,16 @@ class DistrictController extends Controller
      */
     public function edit(District $district)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, District $district)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(District $district)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 }

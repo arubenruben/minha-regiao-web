@@ -11,13 +11,28 @@ use Illuminate\Support\Facades\DB;
 
 class CityController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/cities",
+     *     summary="List cities",
+     *     tags={"Cities"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of cities",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/City")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        return City::all()->toResourceCollection();
-
+        $cities = City::with('freguesiaPtEntry')->get();
+        return CityResource::collection($cities->map(function ($city) {
+            return CityResource::simplified($city);
+        }));
     }
 
     /**
@@ -25,7 +40,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -51,13 +66,28 @@ class CityController extends Controller
             return response()->json(['error' => 'Failed to create city: ' . $e->getMessage()], 500);
         }
     }
-
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/cities/{id}",
+     *     summary="Get a specific city",
+     *     tags={"Cities"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="City details",
+     *         @OA\JsonContent(ref="#/components/schemas/City")
+     *     )
+     * )
      */
+
     public function show(City $city)
     {
-        return new CityResource($city);
+        return $city->toResource();
     }
 
     /**
@@ -65,7 +95,7 @@ class CityController extends Controller
      */
     public function edit(City $city)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -73,7 +103,7 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -81,6 +111,6 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 }

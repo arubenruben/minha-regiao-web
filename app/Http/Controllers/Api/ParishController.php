@@ -12,11 +12,26 @@ use App\Http\Resources\ParishResource;
 class ParishController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/parishes",
+     *     summary="List parishes",
+     *     tags={"Parishes"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of parishes",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Parish")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        return Parish::all()->toResourceCollection();
+        $parishes = Parish::with('freguesiaPtEntry')->get();
+        return ParishResource::collection($parishes->map(function ($parish) {
+            return ParishResource::simplified($parish);
+        }));
     }
 
     /**
@@ -24,7 +39,7 @@ class ParishController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -52,11 +67,31 @@ class ParishController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/parishes/{parish}",
+     *     summary="Show a specific parish",
+     *     tags={"Parishes"},
+     *     @OA\Parameter(
+     *         name="parish",
+     *         in="path",
+     *         required=true,
+     *         description="Parish ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Parish details",
+     *         @OA\JsonContent(ref="#/components/schemas/Parish")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Parish not found"
+     *     )
+     * )
      */
     public function show(Parish $parish)
     {
-        return new ParishResource($parish);
+        return $parish->toResource();
     }
 
     /**
@@ -64,7 +99,7 @@ class ParishController extends Controller
      */
     public function edit(Parish $parish)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -72,7 +107,7 @@ class ParishController extends Controller
      */
     public function update(Request $request, Parish $parish)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -80,6 +115,6 @@ class ParishController extends Controller
      */
     public function destroy(Parish $parish)
     {
-        //
+        abort(501, 'Not implemented');
     }
 }

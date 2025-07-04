@@ -1,0 +1,781 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Minha Região API",
+        "description": "Restful API for electoral data in Portugal",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api/candidates": {
+            "get": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "List candidates",
+                "operationId": "c05cd65a3a82fb13680e02a577ca9bd6",
+                "responses": {
+                    "200": {
+                        "description": "List of candidates",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Candidate"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/candidates/{id}": {
+            "get": {
+                "tags": [
+                    "Candidates"
+                ],
+                "summary": "Get candidate information",
+                "description": "Returns candidate data",
+                "operationId": "getCandidateById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Candidate id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/Candidate"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Candidate not found"
+                    }
+                }
+            }
+        },
+        "/api/cities": {
+            "get": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "List cities",
+                "operationId": "185d0aefb5fd6e9d4e5f1263e2734df4",
+                "responses": {
+                    "200": {
+                        "description": "List of cities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/City"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cities/{id}": {
+            "get": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "Get a specific city",
+                "operationId": "87b6e2f2af6fbfa74374d2f9e3512d76",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "City details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/City"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/districts": {
+            "get": {
+                "tags": [
+                    "Districts"
+                ],
+                "summary": "List districts",
+                "operationId": "8800c7d0e9395532e394fd57aaa0de00",
+                "responses": {
+                    "200": {
+                        "description": "List of districts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/District"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/districts/{district}": {
+            "get": {
+                "tags": [
+                    "Districts"
+                ],
+                "summary": "Show a specific district",
+                "operationId": "97c48aa85136ea387bd1d7f748ef704a",
+                "parameters": [
+                    {
+                        "name": "district",
+                        "in": "path",
+                        "description": "District ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "District details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/District"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "District not found"
+                    }
+                }
+            }
+        },
+        "/api/elections/{election}": {
+            "get": {
+                "tags": [
+                    "Elections"
+                ],
+                "summary": "Show a specific election",
+                "operationId": "aa51af516947218fcc22821c58ee10ae",
+                "parameters": [
+                    {
+                        "name": "election",
+                        "in": "path",
+                        "description": "Election ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Election details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Election"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Election not found"
+                    }
+                }
+            }
+        },
+        "/api/parishes": {
+            "get": {
+                "tags": [
+                    "Parishes"
+                ],
+                "summary": "List parishes",
+                "operationId": "95e48f5c0029860fb651a427b84942af",
+                "responses": {
+                    "200": {
+                        "description": "List of parishes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Parish"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/parishes/{parish}": {
+            "get": {
+                "tags": [
+                    "Parishes"
+                ],
+                "summary": "Show a specific parish",
+                "operationId": "473143c9c394f935f842f5cf92801082",
+                "parameters": [
+                    {
+                        "name": "parish",
+                        "in": "path",
+                        "description": "Parish ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Parish details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Parish"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Parish not found"
+                    }
+                }
+            }
+        },
+        "/api/parties": {
+            "get": {
+                "tags": [
+                    "Parties"
+                ],
+                "summary": "List parties",
+                "operationId": "4243ef8d982d9a99bf14fd4255bd0885",
+                "responses": {
+                    "200": {
+                        "description": "List of parties",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Party"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/parties/{party}": {
+            "get": {
+                "tags": [
+                    "Parties"
+                ],
+                "summary": "Show a specific party",
+                "operationId": "6f1ddf79556ef10b27b990a864dca1ce",
+                "parameters": [
+                    {
+                        "name": "party",
+                        "in": "path",
+                        "description": "Party ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Party details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Party"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Party not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Candidate": {
+                "required": [
+                    "id",
+                    "name",
+                    "election_result_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "João Silva"
+                    },
+                    "election_result_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "City": {
+                "required": [
+                    "id",
+                    "district_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Lisboa"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Praça do Município, 1100-365 Lisboa"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "info@cm-lisboa.pt"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "218 170 000"
+                    },
+                    "website": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.lisboa.pt"
+                    },
+                    "freguesia_pt_entry_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "geo_polygon": {
+                        "description": "Geometric polygon data",
+                        "type": "string",
+                        "example": "MULTIPOLYGON(((0 0, 0 1, 1 1, 1 0, 0 0)))"
+                    },
+                    "polygon_centroid": {
+                        "description": "Geometric point data",
+                        "type": "string",
+                        "example": "POINT(0.5 0.5)"
+                    },
+                    "district_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "parishes": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "wikipedia": {
+                        "type": "object"
+                    },
+                    "district": {
+                        "type": "object"
+                    },
+                    "elections": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "District": {
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Lisboa"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Praça do Município, 1100-365 Lisboa"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "info@gov-lisboa.pt"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "218 170 000"
+                    },
+                    "website": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.gov-lisboa.pt"
+                    },
+                    "freguesia_pt_entry_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "geo_polygon": {
+                        "description": "Geometric polygon data",
+                        "type": "string",
+                        "example": "MULTIPOLYGON(((0 0, 0 1, 1 1, 1 0, 0 0)))"
+                    },
+                    "polygon_centroid": {
+                        "description": "Geometric point data",
+                        "type": "string",
+                        "example": "POINT(0.5 0.5)"
+                    },
+                    "cities": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "freguesias_pt_entry_id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "geo_polygon": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "elections": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "wikipedia": {
+                        "type": "object"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "ElectionResult": {
+                "required": [
+                    "id",
+                    "election_id",
+                    "party_id",
+                    "number_votes"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "number_votes": {
+                        "type": "integer",
+                        "example": 1250
+                    },
+                    "percentage_votes": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 35.5
+                    },
+                    "election_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "party_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Election": {
+                "required": [
+                    "id",
+                    "year",
+                    "freguesia_pt_entry_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "year": {
+                        "type": "integer",
+                        "example": 2021
+                    },
+                    "number_participant_voters": {
+                        "type": "integer",
+                        "example": 1500
+                    },
+                    "number_registered_voters": {
+                        "type": "integer",
+                        "example": 2000
+                    },
+                    "number_blank_votes": {
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "number_null_votes": {
+                        "type": "integer",
+                        "example": 25
+                    },
+                    "number_absentee_votes": {
+                        "type": "integer",
+                        "example": 475
+                    },
+                    "freguesia_pt_entry_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Parish": {
+                "required": [
+                    "id",
+                    "city_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Santa Maria Maior"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Largo do Chafariz de Dentro, 1100-139 Lisboa"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "info@jf-santamariamaior.pt"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "218 870 456"
+                    },
+                    "website": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "https://www.jf-santamariamaior.pt"
+                    },
+                    "freguesia_pt_entry_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "geo_polygon": {
+                        "description": "Geometric polygon data",
+                        "type": "string",
+                        "example": "MULTIPOLYGON(((0 0, 0 1, 1 1, 1 0, 0 0)))"
+                    },
+                    "polygon_centroid": {
+                        "description": "Geometric point data",
+                        "type": "string",
+                        "example": "POINT(0.5 0.5)"
+                    },
+                    "wikipedia": {
+                        "type": "object"
+                    },
+                    "city": {
+                        "type": "object"
+                    },
+                    "district": {
+                        "type": "object"
+                    },
+                    "elections": {
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        }
+                    },
+                    "city_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "old_geo_polygon": {
+                        "description": "Geometric polygon data",
+                        "type": "string",
+                        "example": "MULTIPOLYGON(((0 0, 0 1, 1 1, 1 0, 0 0)))"
+                    },
+                    "old_polygon_centroid": {
+                        "description": "Geometric point data",
+                        "type": "string",
+                        "example": "POINT(0.5 0.5)"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Party": {
+                "required": [
+                    "id",
+                    "name",
+                    "acronym"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Partido Socialista"
+                    },
+                    "acronym": {
+                        "type": "string",
+                        "example": "PS"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Candidates",
+            "description": "Candidates"
+        },
+        {
+            "name": "Cities",
+            "description": "Cities"
+        },
+        {
+            "name": "Districts",
+            "description": "Districts"
+        },
+        {
+            "name": "Elections",
+            "description": "Elections"
+        },
+        {
+            "name": "Parishes",
+            "description": "Parishes"
+        },
+        {
+            "name": "Parties",
+            "description": "Parties"
+        }
+    ]
+}

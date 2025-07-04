@@ -9,7 +9,19 @@ use App\Http\Controllers\Controller;
 class PartyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/parties",
+     *     summary="List parties",
+     *     tags={"Parties"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of parties",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Party")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -21,7 +33,7 @@ class PartyController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -35,11 +47,31 @@ class PartyController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/parties/{party}",
+     *     summary="Show a specific party",
+     *     tags={"Parties"},
+     *     @OA\Parameter(
+     *         name="party",
+     *         in="path",
+     *         required=true,
+     *         description="Party ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Party details",
+     *         @OA\JsonContent(ref="#/components/schemas/Party")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Party not found"
+     *     )
+     * )
      */
     public function show(Party $party)
     {
-        return response()->json($party, 200);
+        return $party->toResource();
     }
 
     /**
@@ -47,7 +79,7 @@ class PartyController extends Controller
      */
     public function edit(Party $party)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -55,7 +87,7 @@ class PartyController extends Controller
      */
     public function update(Request $request, Party $party)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -63,6 +95,6 @@ class PartyController extends Controller
      */
     public function destroy(Party $party)
     {
-        //
+        abort(501, 'Not implemented');
     }
 }

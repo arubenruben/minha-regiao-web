@@ -7,14 +7,27 @@ use App\Models\Candidate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+
 class CandidateController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/candidates",
+     *     summary="List candidates",
+     *     tags={"Candidates"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of candidates",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Candidate")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
-        return Candidate::all();
+        return Candidate::all()->toResourceCollection();
     }
 
     /**
@@ -22,7 +35,7 @@ class CandidateController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -36,11 +49,35 @@ class CandidateController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/candidates/{id}",
+     *     operationId="getCandidateById",
+     *     tags={"Candidates"},
+     *     summary="Get candidate information",
+     *     description="Returns candidate data",
+     *     @OA\Parameter(
+     *         name="id",
+     *         description="Candidate id",
+     *         required=true,
+     *         in="path",
+     *         @OA\Schema(
+     *             type="integer"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(ref="#components/schemas/Candidate")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Candidate not found"
+     *     )
+     * )
      */
     public function show(Candidate $candidate)
     {
-        //
+        return $candidate->toResource();
     }
 
     /**
@@ -48,7 +85,7 @@ class CandidateController extends Controller
      */
     public function edit(Candidate $candidate)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -56,7 +93,7 @@ class CandidateController extends Controller
      */
     public function update(Request $request, Candidate $candidate)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 
     /**
@@ -64,6 +101,6 @@ class CandidateController extends Controller
      */
     public function destroy(Candidate $candidate)
     {
-        //
+        abort(501, 'Not Implemented');
     }
 }

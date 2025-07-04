@@ -9,12 +9,9 @@ use App\Http\Controllers\Controller;
 
 class ElectionResultController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return ElectionResult::all()->toResourceCollection();
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -22,7 +19,7 @@ class ElectionResultController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -34,12 +31,9 @@ class ElectionResultController extends Controller
         return response()->json($electionResult, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(ElectionResult $electionResult)
     {
-        return $electionResult->toResource();
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -47,7 +41,7 @@ class ElectionResultController extends Controller
      */
     public function edit(ElectionResult $electionResult)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -55,7 +49,7 @@ class ElectionResultController extends Controller
      */
     public function update(Request $request, ElectionResult $electionResult)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -63,6 +57,6 @@ class ElectionResultController extends Controller
      */
     public function destroy(ElectionResult $electionResult)
     {
-        //
+        abort(501, 'Not implemented');
     }
 }

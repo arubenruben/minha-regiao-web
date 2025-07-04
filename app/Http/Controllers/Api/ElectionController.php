@@ -10,12 +10,9 @@ use Illuminate\Http\Request;
 
 class ElectionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return Election::all()->toResourceCollection();
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -23,7 +20,7 @@ class ElectionController extends Controller
      */
     public function create()
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -37,7 +34,27 @@ class ElectionController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/elections/{election}",
+     *     summary="Show a specific election",
+     *     tags={"Elections"},
+     *     @OA\Parameter(
+     *         name="election",
+     *         in="path",
+     *         required=true,
+     *         description="Election ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Election details",
+     *         @OA\JsonContent(ref="#/components/schemas/Election")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Election not found"
+     *     )
+     * )
      */
     public function show(Election $election)
     {
@@ -49,7 +66,7 @@ class ElectionController extends Controller
      */
     public function edit(Election $election)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -57,7 +74,7 @@ class ElectionController extends Controller
      */
     public function update(Request $request, Election $election)
     {
-        //
+        abort(501, 'Not implemented');
     }
 
     /**
@@ -65,6 +82,6 @@ class ElectionController extends Controller
      */
     public function destroy(Election $election)
     {
-        //
+        abort(501, 'Not implemented');
     }
 }
