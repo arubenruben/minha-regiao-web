@@ -7,12 +7,12 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-    position: relative;     
+    position: relative;
 }
 
 header,
 footer {
-    width: 100%;    
+    width: 100%;
 }
 
 h2,
@@ -44,6 +44,15 @@ main {
 #homepage-logo {
     max-height: 150px;
     width: 100%;
+}
+
+#homepage-header {
+    background-color: var(--blue-at);
+}
+
+#homepage-header a {
+    color: white !important;
+    font-weight: 600 !important;
 }
 
 #homepage-front {

@@ -12,12 +12,27 @@ import PlotHomepageAbstention from '@/Components/Plots/PlotHomepageAbstention';
 import CardArquivoPT from '@/Components/Cards/CardArquivoPT';
 import Container from '@mui/material/Container';
 import SliderHomepage from '@/Components/Sliders/SliderHomepage';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import Button from '@mui/material/Button';
 
 const Homepage = ({ regions, elections, abstencion, districts }) => {
     const [selectedYear, setSelectedYear] = useState()
 
     return (
         <Container maxWidth={{ sm: false, md: "lg", lg: "xl", xl: "xl" }} disableGutters={true}>
+            <Grid id="homepage-header" container direction="row" sx={{ justifyContent: "flex-end", alignItems: "center" }}>
+                <Grid item sx={{ mt: 2, pr: 2 }}>
+                    <Button href={route('about-us')} variant="text">
+                        Sobre Nós
+                    </Button>
+                </Grid>
+                <Grid item sx={{ mt: 2, pr: 2 }}>
+                    <Button href="/api/docs" target="_blank" variant="text">
+                        Visita a nossa API
+                        <OpenInNewIcon />
+                    </Button>
+                </Grid>
+            </Grid>
             <Grid id="homepage-front" container direction="column" sx={{ justifyContent: "center", alignItems: "center", pt: { xs: 3, md: 10 }, height: { xs: "300px", lg: "60vh" } }} >
                 <Grid container direction="row" size={{ xs: 12 }} sx={{ justifyContent: "center", alignItems: "center", pb: 3 }}>
                     <Grid container direction="column" size={{ xs: 8.5, md: 3 }}>
