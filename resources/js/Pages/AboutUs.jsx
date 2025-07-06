@@ -81,25 +81,40 @@ const AboutUs = () => {
                                                     <h2>Rúben Almeida</h2>
                                                     <h6>Prof. Assistente na Faculdade de Engenharia da U.Porto</h6>
                                                     <h6>Colaborador Externo INESC TEC</h6>
-                                                    <h6>AI Engineer dstgroup</h6>
+                                                    <h6>Autor MinhaRegião.pt</h6>
                                                 </Col>
                                                 <Col xs={12} md={4}>
                                                     <Image src={ricardo} alt="Ricardo Campos" roundedCircle width={200} height={200} className="mb-3" />
                                                     <h2>Ricardo Campos</h2>
                                                     <h6>Prof. Auxiliar na Universidade da Beira Interior</h6>
                                                     <h6>Investigador no INESC TEC</h6>
+                                                    <h6>Orientador</h6>
                                                 </Col>
                                                 <Col xs={12} md={4}>
                                                     <Image src={sergio} alt="Sérgio Nunes" roundedCircle width={200} height={200} className="mb-3" />
                                                     <h2>Sérgio Nuens</h2>
                                                     <h6>Prof. Associado na Faculdade de Engenharia da U.Porto</h6>
                                                     <h6>Investigador no INESC TEC</h6>
+                                                    <h6>Orientador</h6>
                                                 </Col>
                                             </Row>
                                         </div>
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="5">
+                                    <Accordion.Header>O Projeto tem Motivações Políticas?</Accordion.Header>
+                                    <Accordion.Body>
+                                        <div className="accordion-content">
+                                            O autor da plataforma, Rúben Almeida, é um defensor da regionalização em Portugal e acredita que a criação de regiões administrativas pode trazer benefícios significativos para o país.
+                                            Os orientadores não partilham necessariamente desta visão, mas apoiam o projeto como uma iniciativa de promoção do conhecimento e da participação cívica.
+                                            <br />
+                                            A plataforma é uma ferramenta neutra do ponto de vista partidário, destinada a informar os cidadãos sobre as suas regiões e o histórico eleitoral autárquico.
+                                            <br />
+                                            Não nos associamos a nenhum partido político ou movimento político, e víncula somente à promoção da participação cívica e do conhecimento sobre as regiões de Portugal.
+                                        </div>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="6">
                                     <Accordion.Header>Como é Financiado a MinhaRegião.pt?</Accordion.Header>
                                     <Accordion.Body>
                                         <div className="accordion-content">
@@ -109,9 +124,10 @@ const AboutUs = () => {
                                         </div>
                                     </Accordion.Body>
                                 </Accordion.Item>
-                                <Accordion.Item eventKey="6">
+                                <Accordion.Item eventKey="7">
                                     <Accordion.Header>Como posso contactar a equipa?</Accordion.Header>
                                     <Accordion.Body>
+                                        Utilize o nosso formulário de contacto disponível na página <Link href={route("contact-us")}>Contacte-nos</Link> ou envie-nos uma mensagem através do nosso perfil no <a href="https://www.linkedin.com/company/minha-regi%C3%A3o" target="_blank">LinkedIn</a>.
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion>
