@@ -92,7 +92,7 @@ const AboutUs = () => {
                                                 </Col>
                                                 <Col xs={12} md={4}>
                                                     <Image src={sergio} alt="Sérgio Nunes" roundedCircle width={200} height={200} className="mb-3" />
-                                                    <h2>Sérgio Nuens</h2>
+                                                    <h2>Sérgio Nunes</h2>
                                                     <h6>Prof. Associado na Faculdade de Engenharia da U.Porto</h6>
                                                     <h6>Investigador no INESC TEC</h6>
                                                     <h6>Orientador</h6>
@@ -125,6 +125,18 @@ const AboutUs = () => {
                                     </Accordion.Body>
                                 </Accordion.Item>
                                 <Accordion.Item eventKey="7">
+                                    <Accordion.Header>Como Posso Contribuir?</Accordion.Header>
+                                    <Accordion.Body>
+                                        A MinhaRegião.pt é um projeto open-source e está disponível no GitHub. Brevemente o autor irá disponibilizar um guia de contribuição para que os utilizadores possam ajudar a melhorar a plataforma baseado em GitHub issues e pull requests.
+                                        <br />
+                                        O repositório do projeto é <a href="https://github.com/arubenruben/minha-regiao" target="_blank"> o seguinte</a>.
+                                        <br />
+                                        Se tiver sugestões, correções ou melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request.
+                                        <br />
+                                        Se preferir, pode também enviar-nos um email através do nosso formulário de contacto disponível na página <Link href={route("contact-us")}>Contacte-nos</Link>.
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                                <Accordion.Item eventKey="8">
                                     <Accordion.Header>Como posso contactar a equipa?</Accordion.Header>
                                     <Accordion.Body>
                                         Utilize o nosso formulário de contacto disponível na página <Link href={route("contact-us")}>Contacte-nos</Link> ou envie-nos uma mensagem através do nosso perfil no <a href="https://www.linkedin.com/company/minha-regi%C3%A3o" target="_blank">LinkedIn</a>.
