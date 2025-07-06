@@ -34,7 +34,7 @@ class Election extends Model
     public function winner()
     {
         return $this->hasOne(ElectionResult::class)
-            ->with(['party']) // eager load party
+            ->with(['party', 'candidate']) // eager load party
             ->orderByDesc('number_votes')
             ->limit(1); // this is crucial to make Eloquent treat it as 1:1
     }
