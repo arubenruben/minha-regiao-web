@@ -1,5 +1,5 @@
-import GenericLayout from '@/Layouts/GenericLayout'
 import React from 'react'
+import GenericLayout from '@/Layouts/GenericLayout'
 import { Link } from '@inertiajs/react'
 import Grid from '@mui/material/Grid';
 import Breadcrumbs from '@mui/material/Breadcrumbs';

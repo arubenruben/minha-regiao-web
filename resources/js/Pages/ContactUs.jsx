@@ -1,6 +1,6 @@
+import React, { useState } from 'react'
 import GenericLayout from '@/Layouts/GenericLayout'
 import { Alert as BootstrapAlert } from 'react-bootstrap'
-import React, { useState } from 'react'
 import {
     Box,
     Container,
