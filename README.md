@@ -1,61 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MinhaRegião.pt
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### About the Project
 
-## About Laravel
+**Minha Região** is an open-source platform that consolidates electoral information from 1976 to 2021 for each of the 3,091 Portuguese parishes.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The project won the 2025 edition of the [Arquivo.pt Award](https://sobre.arquivo.pt/pt/conheca-os-vencedores-do-premio-arquivo-pt-2025/).
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### This Repository
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This repository contains the codebase for the web application powering the **MinhaRegião.pt** platform.
 
-## Learning Laravel
+### Related Repositories
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* [Minha Região Package](https://github.com/arubenruben/minha-regiao-package) – Python code supporting the data science and machine learning components of the Minha Região ecosystem.
+* [Minha Região (Index)](https://github.com/arubenruben/minha-regiao) – Central repository that serves as an entry point and index for the overall project.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### How to Contribute
 
-## Laravel Sponsors
+We welcome contributions from developers, data scientists, and civic tech enthusiasts! This platform was developed as a side project with the sole aim of democratizing access to electoral data across Portuguese districts, cities, and parishes.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+If you believe that local regions play a key role in Portugal’s future, feel free to get involved.
 
-### Premium Partners
+#### What's Already Implemented?
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+* User interface to explore regional ("Autárquicas") election data from 1976 to 2021.
+* Optimized data model for handling historical electoral data.
+* Initial version (v0.0.1) of the REST API, including a [Swagger UI](#) for exploration.
 
-## Contributing
+#### Features Suspended Under the "Only Publish What My Students Can Inspect" Philosophy
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+* **Chatbot navigation** – Currently paused due to lack of a proper UI and subpar results.
+* **News indexing by locality** – Suspended due to issues where news from unrelated localities were being shown. Further bug fixes are needed.
 
-## Code of Conduct
+#### Major Features Still Missing
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* **\[Web Developer]** Interface to explore other types of elections (Parliamentary / *Legislativas*, Presidential / *Presidenciais*, European / *Europeias*).
+* **\[Backend Engineer]** API authentication using Bearer tokens for enhanced security and reliability.
+* **\[QA Engineer]** A test suite using PHPUnit and Playwright for robust testing coverage.
+* **\[DevOps Contributor]** CI/CD improvements using GitHub Actions.
 
-## Security Vulnerabilities
+For a full list of pending features and their development status, check our [Project Board](https://github.com/users/arubenruben/projects/10).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+### About Us
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The team behind the 2025 Arquivo.pt submission was led by [Rúben Almeida](https://www.linkedin.com/in/almeida-ruben/), under the academic supervision of [Ricardo Campos](https://www.di.ubi.pt/~rcampos/) and [Sérgio Nunes](https://sigarra.up.pt/feup/pt/func_geral.formview?p_codigo=310021).
+
+Minha Região is a non-profit initiative. All infrastructure, hosting, and ongoing maintenance are funded by the author, Rúben Almeida.
