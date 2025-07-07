@@ -15,12 +15,13 @@ WORKDIR /var/www
 COPY . /var/www
 
 # Hotfix for cached routes. That derived in 404 in fpm
-RUN rm -rf node_modules/.vite
-RUN rm -rf public/build
-RUN rm -rf node_modules
+RUN rm -rf node_modules/ public/build .vite dist
 
-# Install Node.js dependencies and build assets
-RUN npm install && npm run build
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
 
 # Stage 2: Nginx production image
 FROM nginx:alpine
