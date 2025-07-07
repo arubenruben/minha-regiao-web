@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: ./docker/production/nginx/Dockerfile
     container_name: minharegiao-nginx
+    pull_policy: always
     restart: unless-stopped # Automatically restart unless the service is explicitly stopped
     volumes:
       - minharegiao-storage-production:/var/www/storage:ro
@@ -24,6 +25,7 @@ services:
       dockerfile: ./docker/common/php-fpm/Dockerfile
       target: production
     container_name: minharegiao-fpm
+    pull_policy: always
     restart: unless-stopped
     volumes:
       - minharegiao-public-assets:/var/www/public/build  # Mount built public assets to ensure the manifest.json and hashed files match between Nginx and PHP-FPM
