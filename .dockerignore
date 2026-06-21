@@ -1,7 +1,0 @@
-.env
-.package.lock
-node_modules
-thrash
-public/hot
-public/build
-storage/logs/*
