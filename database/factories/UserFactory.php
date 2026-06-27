@@ -4,8 +4,10 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Laravel\Fortify\RecoveryCode;
 
 /**
  * @extends Factory<User>
@@ -46,5 +48,16 @@ class UserFactory extends Factory
     /**
      * Indicate that the model has two-factor authentication configured.
      */
-    public function withTwoFactor(): static {}
+    /**
+     * @param  array<int, string>|null  $recoveryCodes
+     */
+    public function withTwoFactor(?string $secret = null, ?array $recoveryCodes = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'two_factor_secret' => encrypt($secret ?? Str::random(10)),
+            'two_factor_recovery_codes' => encrypt(json_encode(
+                $recoveryCodes ?? Collection::times(8, fn () => RecoveryCode::generate())->all()
+            )),
+        ]);
+    }
 }
