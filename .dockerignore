@@ -1,7 +1,11 @@
-.env
-.package.lock
+.git
 node_modules
-thrash
-public/hot
+vendor
 public/build
-storage/logs/*
+public/hot
+storage/logs/*.log
+.env
+.env.*
+!.env.example
+.phpunit.cache
+.phpunit.result.cache

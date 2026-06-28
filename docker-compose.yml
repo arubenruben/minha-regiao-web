@@ -1,0 +1,81 @@
+# Laravel + Inertia.js (React) — Docker Compose stack
+services:
+  app:
+    build: .
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: ["sh", "docker/dev.entrypoint.sh"]
+    ports:
+      - "8080:8000"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+    environment:
+      APP_ENV: local
+
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: laravel
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+
+      VITE_DEV_SERVER_HOST: 0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  vite:
+    image: php:8.4-cli-alpine
+    container_name: laravel_vite
+    restart: unless-stopped
+    working_dir: /var/www/html
+    command: >
+      sh -c "apk add --no-cache nodejs npm &&
+             echo 'Waiting for composer dependencies...' &&
+             until [ -f vendor/autoload.php ]; do sleep 2; done &&
+             npm install &&
+             npm run dev -- --host"
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/var/www/html      
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:5173/@vite/client || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+
+  db:
+    image: postgres:16-alpine
+    container_name: laravel_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "laravel", "-d", "laravel"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+
+volumes:
+  vite_node_modules:
+
+  db_data:
+

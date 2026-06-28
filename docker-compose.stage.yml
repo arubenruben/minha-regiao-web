@@ -1,0 +1,59 @@
+# Laravel + Inertia.js (React) — Docker Compose stack (staging)
+#
+# Runs the `latest` image (built from every push to `develop`/`main`/`master`,
+# see .github/workflows/docker.yml). No source bind mount and no Vite dev
+# server — the app runs entirely from what's baked into the image.
+services:
+  app:
+    image: ghcr.io/arubenruben/minha-regiao-web:latest
+    container_name: minha_regiao_app_stage
+    restart: unless-stopped
+    working_dir: /var/www/html
+    networks:
+      - default
+      - proxy-net
+    depends_on:
+      - db
+
+    environment:
+      APP_ENV: staging
+      APP_KEY: ${APP_KEY}
+      APP_URL: ${APP_URL}
+
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: ${DB_DATABASE:-laravel}
+      DB_USERNAME: ${DB_USERNAME:-laravel}
+      DB_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    image: postgres:16-alpine
+    container_name: minha_regiao_db_stage
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-laravel}
+      POSTGRES_USER: ${DB_USERNAME:-laravel}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_data_stage:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME:-laravel}", "-d", "${DB_DATABASE:-laravel}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+
+volumes:
+  db_data_stage:
+
+networks:
+  proxy-net:
+    external: true
