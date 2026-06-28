@@ -9,6 +9,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -18,6 +19,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // The app container is only ever reached through the Docker
+        // `proxy-net` reverse proxy (see docker-compose.*.yml), which
+        // terminates TLS and forwards plain HTTP with X-Forwarded-* headers.
+        // Without trusting it, Laravel sees every request as HTTP and
+        // generates insecure (http://) URLs for assets, redirects, etc.
+        $middleware->trustProxies(
+            at: '*',
+            headers: SymfonyRequest::HEADER_X_FORWARDED_FOR
+                | SymfonyRequest::HEADER_X_FORWARDED_HOST
+                | SymfonyRequest::HEADER_X_FORWARDED_PORT
+                | SymfonyRequest::HEADER_X_FORWARDED_PROTO,
+        );
+
         $middleware->prepend(EnsureSiteIsUnderMaintenance::class);
 
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
