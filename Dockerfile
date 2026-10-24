@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.4.27-fpm-alpine
 
 RUN apk add --no-cache \
     bash curl zip unzip git nginx libpng-dev libjpeg-turbo-dev freetype-dev \
@@ -18,6 +18,9 @@ COPY . .
 # dev still uses `php artisan serve` directly (see docker/dev.entrypoint.sh),
 # but the `php` CLI binary ships in this image either way.
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+
+# `zz-` prefix so it loads after the base image's own conf.d files.
+COPY docker/php/security.ini /usr/local/etc/php/conf.d/zz-security.ini
 
 RUN composer install --no-dev --no-interaction --no-progress --no-ansi --optimize-autoloader
 

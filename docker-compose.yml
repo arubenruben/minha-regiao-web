@@ -32,7 +32,7 @@ services:
       start_period: 40s
 
   vite:
-    image: php:8.4-cli-alpine
+    image: php:8.4.27-cli-alpine
     container_name: laravel_vite
     restart: unless-stopped
     working_dir: /var/www/html
